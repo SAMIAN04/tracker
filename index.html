@@ -2035,6 +2035,12 @@ function switchTab(name, btn) {
   btn.classList.add('active');
 }
 
+// ── Expose functions to global scope (required because script is type="module") ──
+window.switchTab = switchTab;
+window.setShift = setShift;
+window.resetToday = resetToday;
+window.toggleTask = toggleTask;
+
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
