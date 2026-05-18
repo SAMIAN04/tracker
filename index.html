@@ -14,7 +14,7 @@
   --border2: #222840;
   --german: #4ae899;
   --sysint: #4db8ff;
-  --business: #7dff9a;
+  --business: #e57dff;
   --golang: #ff7b5e;
   --red: #ff5e5e;
   --text: #dde2f0;
@@ -188,7 +188,7 @@ h1 .hl{color:var(--german);}
 
   <div class="header">
     <div>
-      <div class="eyebrow">// Operation Deutschland — Samian</div>
+      <div class="eyebrow">// Operation Deutschland — Samian &nbsp;<span id="syncStatus" style="font-size:8px;letter-spacing:.12em;color:var(--muted);transition:color .3s">⟳ connecting…</span></div>
       <h1>GERMANY<br><span class="hl">OR BUST.</span></h1>
       <p class="subtitle">8 months. 4 missions. 1 destination. Every day has a task. Just open, check, execute.</p>
     </div>
@@ -324,7 +324,11 @@ h1 .hl{color:var(--german);}
 
 </div>
 
-<script>
+<script type="module">
+// ── FIREBASE IMPORTS (must be at top of module) ──
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 // ═══════════════════════════════════════
 // DATA — SYSINT day-by-day from plan.txt
 // ═══════════════════════════════════════
@@ -1632,7 +1636,6 @@ const DAY_ABBR = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MON_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
 let S = {};
-try { S = JSON.parse(localStorage.getItem('op-deutschland-v2') || '{}'); } catch(e){}
 if (!S.tasks) S.tasks = {};
 if (!S.streak) S.streak = { count:0, lastDate:null, history:[] };
 if (!S.shift) S.shift = 'morning';
@@ -1641,7 +1644,62 @@ if (!S.week) S.week = 1;
 if (!S.day) S.day = 1;
 if (!S.planMonth) S.planMonth = 1;
 
-function save() { try { localStorage.setItem('op-deutschland-v2', JSON.stringify(S)); } catch(e){} }
+// ── FIREBASE SYNC ──
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB_WXXGBpkv6skHGaZwIHZKRFBB4bPJSZw",
+  authDomain: "op-deutschland.firebaseapp.com",
+  projectId: "op-deutschland",
+  storageBucket: "op-deutschland.firebasestorage.app",
+  messagingSenderId: "599093524802",
+  appId: "1:599093524802:web:5105c2349a1aabae23f0db"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const STATE_DOC = doc(db, 'state', 'samian');
+
+// Show sync indicator
+const syncEl = document.getElementById('syncStatus');
+let _saving = false;
+
+async function save() {
+  _saving = true;
+  if (syncEl) { syncEl.textContent = '↑ saving…'; syncEl.style.color = 'var(--muted3)'; }
+  try {
+    await setDoc(STATE_DOC, S);
+    if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
+  } catch(e) {
+    console.error('Save failed', e);
+    if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
+  }
+  _saving = false;
+}
+
+// Real-time listener — fires on both devices whenever data changes
+onSnapshot(STATE_DOC, (snap) => {
+  if (_saving) return; // skip echo while we're the ones writing
+  if (!snap.exists()) return;
+  const remote = snap.data();
+  // Merge remote into S
+  S.tasks   = remote.tasks   ?? S.tasks;
+  S.streak  = remote.streak  ?? S.streak;
+  S.shift   = remote.shift   ?? S.shift;
+  S.month   = remote.month   ?? S.month;
+  S.week    = remote.week    ?? S.week;
+  S.day     = remote.day     ?? S.day;
+  S.planMonth = remote.planMonth ?? S.planMonth;
+  // Re-render everything
+  renderDayNav();
+  renderTodayGrid();
+  renderPlanNav();
+  renderPlanContent();
+  updateStreak();
+  calcProgress();
+  if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
+}, (err) => {
+  console.error('Listener error', err);
+  if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
+});
 
 // Date display
 document.getElementById('dayNum').textContent = today.getDate();
@@ -1735,24 +1793,49 @@ function updateStreak() {
   }
 }
 
-// ═══════════════════════════════════════
-// PROGRESS BARS
-// ═══════════════════════════════════════
-function calcProgress() {
-  const counts = { german:{d:0,t:0}, sysint:{d:0,t:0}, business:{d:0,t:0}, golang:{d:0,t:0} };
+//function calcProgress() {
+  function calcProgress() {
+  // Count TOTAL tasks defined in each plan across all 8 months
+  const PLANS = {
+    german: GERMAN_PLAN,
+    sysint: SYSINT_PLAN,
+    golang: GOLANG_PLAN,
+    business: BUSINESS_PLAN
+  };
+
+  const total = { german:0, sysint:0, business:0, golang:0 };
+  const done  = { german:0, sysint:0, business:0, golang:0 };
+
+  // Count total planned tasks from plan data
+  Object.keys(PLANS).forEach(goal => {
+    const plan = PLANS[goal];
+    for (let m = 1; m <= 8; m++) {
+      for (let w = 1; w <= 4; w++) {
+        for (let d = 1; d <= 7; d++) {
+          const tasks = plan[m]?.[w]?.[d];
+          if (tasks && tasks.length) total[goal] += tasks.length;
+        }
+      }
+    }
+  });
+
+  // Count completed tasks from saved state
   Object.values(S.tasks).forEach(day => {
-    Object.entries(day).forEach(([k,v]) => {
+    Object.entries(day).forEach(([k, v]) => {
+      if (!v) return;
       const parts = k.split('-');
-      if (parts.length >= 4) {
+      // key format: month-week-day-goal-index (5 parts)
+      if (parts.length >= 5) {
         const goal = parts[3];
-        if (counts[goal]) { counts[goal].t++; if(v) counts[goal].d++; }
+        if (done.hasOwnProperty(goal)) done[goal]++;
       }
     });
   });
-  ['german','sysint','business','golang'].forEach(g => {
-    const pct = counts[g].t === 0 ? 0 : Math.round((counts[g].d/counts[g].t)*100);
-    document.getElementById(`pct-${g}`).textContent = pct+'%';
-    document.getElementById(`bar-${g}`).style.width = pct+'%';
+
+  Object.keys(total).forEach(g => {
+    const pct = total[g] === 0 ? 0 : Math.floor((done[g] / total[g]) * 100);
+    document.getElementById(`pct-${g}`).textContent = pct + '%';
+    document.getElementById(`bar-${g}`).style.width = pct + '%';
   });
 }
 
