@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Samian — Operation Deutschland</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/fav.png?v=2">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
 :root {
   --bg: #070910;
@@ -18,6 +20,7 @@
   --business: #e57dff;
   --golang: #4db8ff;
   --red: #ff5e5e;
+  --orange: #ffaa44;
   --text: #dde2f0;
   --muted: #3d4460;
   --muted2: #5a6280;
@@ -28,7 +31,6 @@ html{font-size:16px;}
 body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;min-height:100vh;overflow-x:hidden;}
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.025) 3px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9000;}
 
-/* ── LAYOUT ── */
 .app{max-width:1100px;margin:0 auto;padding:24px 16px 100px;}
 
 /* ── HEADER ── */
@@ -64,12 +66,16 @@ h1 .hl{color:var(--german);}
 .c-golang .mb-fill{background:var(--golang);}
 .mb-detail{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.1em;}
 
-/* ── STREAK ── */
+/* ── STREAK / STATS BAR ── */
 .streak-bar{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;animation:fadeDown .5s .1s ease both;}
 .streak-num{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--german);line-height:1;flex-shrink:0;}
 .streak-info{flex:1;min-width:120px;}
 .streak-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:3px;}
 .streak-sub{font-size:12px;color:var(--muted3);}
+.streak-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.sstat{text-align:center;}
+.sstat-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
+.sstat-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;}
 .streak-dots{display:flex;gap:3px;flex-wrap:wrap;max-width:200px;}
 .sdot{width:7px;height:7px;border-radius:2px;background:var(--border2);}
 .sdot.done{background:var(--german);}
@@ -89,12 +95,12 @@ h1 .hl{color:var(--german);}
 /* ── TODAY ── */
 .today-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .today-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
-.day-nav{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.today-date-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted3);letter-spacing:.12em;margin-top:3px;}
+.day-nav{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .day-nav-btn{font-family:'JetBrains Mono',monospace;font-size:9px;padding:5px 10px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted2);cursor:pointer;letter-spacing:.08em;transition:all .2s;}
 .day-nav-btn.active{background:var(--german);color:#000;border-color:var(--german);font-weight:700;}
 .day-nav-btn:hover:not(.active){color:var(--text);border-color:var(--border2);}
 .current-day-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted3);letter-spacing:.12em;}
-
 .shift-selector{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
 .shift-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-right:4px;}
 .shift-btn{font-family:'JetBrains Mono',monospace;font-size:9px;padding:5px 11px;border-radius:3px;border:1px solid var(--border2);background:none;color:var(--muted2);cursor:pointer;letter-spacing:.08em;transition:all .2s;}
@@ -128,8 +134,32 @@ h1 .hl{color:var(--german);}
 .c-business .task-item.done .task-check{background:var(--business);border-color:var(--business);}
 .c-golang .task-item.done .task-check{background:var(--golang);border-color:var(--golang);}
 .task-text{font-size:12px;line-height:1.5;color:var(--text);}
-.reset-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border2);background:none;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .2s;margin-top:16px;}
+.task-ts{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px;}
+
+/* ── RESET CONTROLS ── */
+.reset-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.reset-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border2);background:none;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .2s;}
 .reset-btn:hover{border-color:var(--red);color:var(--red);}
+.reset-btn.reset-mission:hover{border-color:var(--orange);color:var(--orange);}
+
+/* ── STATS PANEL ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:20px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:18px;}
+.stat-card-val{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--german);line-height:1;margin-bottom:4px;}
+.stat-card-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px;}
+.stat-card-sub{font-size:11px;color:var(--muted3);}
+.history-section{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:18px;margin-bottom:16px;}
+.history-title{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;}
+.history-grid{display:flex;gap:3px;flex-wrap:wrap;}
+.hday{width:10px;height:10px;border-radius:2px;background:var(--border2);position:relative;cursor:default;}
+.hday.active{background:var(--german);}
+.hday.active-p{background:rgba(74,232,153,.4);}
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.export-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border2);background:none;color:var(--muted2);border-radius:3px;cursor:pointer;transition:all .2s;}
+.export-btn:hover{border-color:var(--german);color:var(--german);}
+.export-btn.import-btn:hover{border-color:var(--golang);color:var(--golang);}
+.full-reset-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border2);background:none;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .2s;}
+.full-reset-btn:hover{border-color:var(--red);color:var(--red);}
 
 /* ── SCHEDULE TAB ── */
 .sched-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:20px;}
@@ -167,6 +197,22 @@ h1 .hl{color:var(--german);}
 .rule-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--german);margin-bottom:5px;}
 .rule-text{font-size:12px;color:var(--muted2);line-height:1.6;}
 
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:10000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:28px;max-width:400px;width:90%;animation:fadeDown .25s ease;}
+.modal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px;color:var(--red);}
+.modal-body{font-size:13px;color:var(--muted3);line-height:1.6;margin-bottom:20px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+.modal-cancel{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;padding:8px 16px;border:1px solid var(--border2);background:none;color:var(--muted2);border-radius:3px;cursor:pointer;transition:all .2s;}
+.modal-cancel:hover{color:var(--text);}
+.modal-confirm{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;padding:8px 16px;border:1px solid var(--red);background:none;color:var(--red);border-radius:3px;cursor:pointer;transition:all .2s;}
+.modal-confirm:hover{background:var(--red);color:#000;}
+
+/* ── IMPORT TEXTAREA ── */
+.import-area{width:100%;background:var(--surface);border:1px solid var(--border2);color:var(--text);border-radius:4px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:10px;height:120px;resize:vertical;margin-bottom:12px;}
+.import-area:focus{outline:none;border-color:var(--golang);}
+
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
 
 @media(max-width:640px){
@@ -191,7 +237,7 @@ h1 .hl{color:var(--german);}
     <div>
       <div class="eyebrow">// Operation Deutschland — Samian &nbsp;<span id="syncStatus" style="font-size:8px;letter-spacing:.12em;color:var(--muted);transition:color .3s">⟳ connecting…</span></div>
       <h1>GERMANY<br><span class="hl">OR BUST.</span></h1>
-      <p class="subtitle">8 months. 4 missions. 1 destination. Every day has a task. Just open, check, execute.</p>
+      <p class="subtitle">8 months. 4 missions. 1 destination. Every completed task is permanent. Your progress never resets.</p>
     </div>
     <div class="date-box">
       <div class="date-num" id="dayNum">--</div>
@@ -203,30 +249,35 @@ h1 .hl{color:var(--german);}
     <div class="mb-card c-german">
       <div class="mb-top"><div class="mb-name">🇩🇪 German B2</div><div class="mb-pct" id="pct-german">0%</div></div>
       <div class="mb-track"><div class="mb-fill" id="bar-german" style="width:0%"></div></div>
-      <div class="mb-detail">A2 → B2 — 8 MONTHS</div>
+      <div class="mb-detail" id="det-german">A2 → B2 — 8 MONTHS</div>
     </div>
     <div class="mb-card c-sysint">
       <div class="mb-top"><div class="mb-name">💻 System Integration</div><div class="mb-pct" id="pct-sysint">0%</div></div>
       <div class="mb-track"><div class="mb-fill" id="bar-sysint" style="width:0%"></div></div>
-      <div class="mb-detail">LINUX → AUSBILDUNG READY — 8 MONTHS</div>
+      <div class="mb-detail" id="det-sysint">LINUX → AUSBILDUNG READY — 8 MONTHS</div>
     </div>
     <div class="mb-card c-business">
       <div class="mb-top"><div class="mb-name">📈 Business & Finance</div><div class="mb-pct" id="pct-business">0%</div></div>
       <div class="mb-track"><div class="mb-fill" id="bar-business" style="width:0%"></div></div>
-      <div class="mb-detail">BOOKS + RESEARCH — 8 MONTHS</div>
+      <div class="mb-detail" id="det-business">BOOKS + RESEARCH — 8 MONTHS</div>
     </div>
     <div class="mb-card c-golang">
       <div class="mb-top"><div class="mb-name">⚙️ Go Backend</div><div class="mb-pct" id="pct-golang">0%</div></div>
       <div class="mb-track"><div class="mb-fill" id="bar-golang" style="width:0%"></div></div>
-      <div class="mb-detail">BEGINNER → FREELANCE READY — 8 MONTHS</div>
+      <div class="mb-detail" id="det-golang">BEGINNER → FREELANCE READY — 8 MONTHS</div>
     </div>
   </div>
 
   <div class="streak-bar">
     <div class="streak-num" id="streakNum">0</div>
     <div class="streak-info">
-      <div class="streak-label">Day Streak 🔥</div>
-      <div class="streak-sub" id="streakSub">Start today. Don't break the chain.</div>
+      <div class="streak-label">Active Days 🔥</div>
+      <div class="streak-sub" id="streakSub">Start today. Build your legacy.</div>
+    </div>
+    <div class="streak-stats">
+      <div class="sstat"><div class="sstat-val" id="statLongest">0</div><div class="sstat-lbl">Longest Streak</div></div>
+      <div class="sstat"><div class="sstat-val" id="statCurrent">0</div><div class="sstat-lbl">Current Streak</div></div>
+      <div class="sstat"><div class="sstat-val" id="statTotal">0</div><div class="sstat-lbl">Total Tasks Done</div></div>
     </div>
     <div class="streak-dots" id="streakDots"></div>
   </div>
@@ -234,6 +285,7 @@ h1 .hl{color:var(--german);}
   <div class="tabs">
     <button class="tab active" onclick="switchTab('today',this)">Today</button>
     <button class="tab" onclick="switchTab('plan',this)">8-Month Plan</button>
+    <button class="tab" onclick="switchTab('stats',this)">Stats</button>
     <button class="tab" onclick="switchTab('schedule',this)">Schedules</button>
     <button class="tab" onclick="switchTab('rules',this)">The Rules</button>
   </div>
@@ -241,7 +293,10 @@ h1 .hl{color:var(--german);}
   <!-- TODAY -->
   <div class="panel active" id="panel-today">
     <div class="today-hdr">
-      <div class="today-title" id="todayDayLabel">Loading...</div>
+      <div>
+        <div class="today-title" id="todayDayLabel">Loading...</div>
+        <div class="today-date-label" id="todayDateLabel"></div>
+      </div>
       <div class="shift-selector">
         <span class="shift-label">Shift:</span>
         <button class="shift-btn" id="sbtn-morning" onclick="setShift('morning',this)">Morning</button>
@@ -251,9 +306,12 @@ h1 .hl{color:var(--german);}
     </div>
 
     <div class="day-nav" id="dayNav"></div>
-
     <div class="today-grid" id="todayGrid"></div>
-    <button class="reset-btn" onclick="resetToday()">↺ Reset Today's Tasks</button>
+
+    <div class="reset-controls">
+      <button class="reset-btn" onclick="confirmResetDay()">↺ Reset This Day's Tasks</button>
+      <button class="reset-btn reset-mission" onclick="showResetMissionModal()">↺ Reset One Mission</button>
+    </div>
   </div>
 
   <!-- PLAN -->
@@ -261,6 +319,20 @@ h1 .hl{color:var(--german);}
     <div class="plan-month-nav" id="planMonthNav"></div>
     <div class="plan-month-title" id="planMonthTitle"></div>
     <div class="plan-weeks" id="planWeeks"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="panel" id="panel-stats">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="history-section">
+      <div class="history-title">Activity History — Last 120 Days</div>
+      <div class="history-grid" id="historyGrid"></div>
+    </div>
+    <div class="export-row">
+      <button class="export-btn" onclick="exportProgress()">⬇ Export Progress JSON</button>
+      <button class="export-btn import-btn" onclick="showImportModal()">⬆ Import Progress</button>
+      <button class="full-reset-btn" onclick="confirmFullReset()">⚠ Full Campaign Reset</button>
+    </div>
   </div>
 
   <!-- SCHEDULE -->
@@ -325,1328 +397,227 @@ h1 .hl{color:var(--german);}
 
 </div>
 
-<script type="module">
-// ── FIREBASE IMPORTS (must be at top of module) ──
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Confirm Reset</div>
+    <div class="modal-body" id="modalBody">This action cannot be undone.</div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" id="modalConfirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
 
-// ═══════════════════════════════════════
-// DATA — SYSINT day-by-day from plan.txt
-// ═══════════════════════════════════════
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-title" style="color:var(--golang)">Import Progress</div>
+    <div class="modal-body">Paste your exported JSON backup below. This will merge with existing data (completed tasks are never removed by import).</div>
+    <textarea class="import-area" id="importTextarea" placeholder='{"completedTasks":{},"streakData":{},...}'></textarea>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeImportModal()">Cancel</button>
+      <button class="modal-confirm" style="border-color:var(--golang);color:var(--golang)" onclick="doImport()">Import</button>
+    </div>
+  </div>
+</div>
 
+<!-- RESET MISSION MODAL -->
+<div class="modal-overlay" id="resetMissionModal">
+  <div class="modal">
+    <div class="modal-title">Reset One Mission</div>
+    <div class="modal-body">Select a mission to wipe all its completed tasks. This only affects that mission.</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;" id="missionResetBtns"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeResetMissionModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════════
+// PLAN DATA
+// ════════════════════════════════════════════
 const SYSINT_PLAN = {
-  1: { // Month 1: Linux Operator
-    1: { // Week 1: Linux Foundations
-      1: ['Learn Linux filesystem hierarchy (/, /etc, /var, /usr, /home)', 'Explore /etc /var /usr /home /srv /tmp directories', 'Install and use the "tree" command', 'Create filesystem markdown notes', '5 German IT words: Datei, Verzeichnis, Benutzer, Netzwerk, System'],
-      2: ['Learn chmod/chown/sudo commands', 'Create 3 test users and experiment with permissions', 'Understand root vs regular user access', 'Write permission notes with examples', 'German practice: 10 min speaking aloud'],
-      3: ['Learn systemctl (start/stop/status/enable)', 'Learn journalctl to read logs', 'Inspect all running services', 'Troubleshoot one service issue', 'Document services workflow'],
-      4: ['Install openssh-server', 'SSH into localhost', 'Generate SSH keys with ssh-keygen', 'Learn SCP file transfer', 'Learn rsync basics — document workflow'],
-      5: ['Learn ip command (ip a, ip r)', 'Learn ping, ss, curl, dig commands', 'Inspect all open local ports', 'Write networking commands cheat sheet', 'Practice: explain one command in German'],
-      6: ['Create GitHub account (if not done)', 'Learn git init/add/commit/push', 'Create professional README', 'Upload screenshots of your work', 'Organize all notes in one folder'],
-      7: ['BUILD: Complete Linux admin environment', 'Configure SSH (keys only, no password)', 'Configure UFW firewall (allow SSH/HTTP)', 'Create system services overview doc', 'Upload full project to GitHub with README']
-    },
-    2: { // Week 2
-      1: ['Learn IPv4 structure and classes (A/B/C)', 'Understand public vs private IP addresses', 'Learn loopback/localhost (127.0.0.1)', 'Practice identifying IP classes from examples', 'Document IP basics with examples'],
-      2: ['Learn subnet masks and CIDR notation', 'Practice subnet calculations (/24, /16, /8)', 'Identify network vs host portions', 'Calculate usable hosts in a subnet', 'Write subnet exercises with answers'],
-      3: ['Learn DNS workflow end-to-end', 'Understand A, CNAME, MX record types', 'Use dig and nslookup commands', 'Trace a domain resolution step by step', 'Document complete DNS flow with diagram'],
-      4: ['Learn DHCP handshake (DORA process)', 'Understand IP lease assignment', 'Inspect router DHCP settings', 'Configure one static local IP', 'Write DHCP workflow notes'],
-      5: ['Learn TCP vs UDP differences', 'Memorize 10 common ports (22/80/443/3306...)', 'Use ss and netstat to inspect ports', 'Identify all open ports on your machine', 'Document port usage notes'],
-      6: ['Learn traceroute/tracepath', 'Diagnose a connectivity issue', 'Simulate a DNS failure and fix it', 'Create a troubleshooting flowchart', 'Practice: describe network problem in German'],
-      7: ['BUILD: Create mini local network lab', 'Configure 2 VMs with static IPs', 'Test full connectivity between VMs', 'Inspect and document open ports', 'Create network diagram + upload to GitHub']
-    },
-    3: { // Week 3
-      1: ['Install nginx web server', 'Learn virtual hosts configuration', 'Serve a simple static HTML page', 'Inspect nginx access and error logs', 'Document full nginx setup'],
-      2: ['Install and configure UFW firewall', 'Open port 80 (HTTP) and 443 (HTTPS)', 'Allow SSH, block everything else', 'Test firewall behavior from another VM', 'Write detailed firewall rules notes'],
-      3: ['Learn ps, top, htop commands', 'Kill a process using kill/pkill', 'Monitor CPU and RAM usage live', 'Understand process states (R/S/Z)', 'Create monitoring notes'],
-      4: ['Learn lsblk, df, du commands', 'Mount a virtual drive', 'Understand disk partitions', 'Check filesystem usage per directory', 'Document storage administration'],
-      5: ['Learn cron job syntax (min hr day month weekday)', 'Schedule an automatic task (backup/cleanup)', 'Automate log file creation every hour', 'Test and verify scheduled job runs', 'Write cron automation notes'],
-      6: ['Monitor system logs with journalctl -f', 'Check uptime and load average', 'Inspect all resource usage at once', 'Identify any failing or stopped services', 'Create system troubleshooting checklist'],
-      7: ['BUILD: Personal Linux server', 'Deploy nginx with custom HTML page', 'Configure firewall — SSH/HTTP only', 'Add cron automation (daily backup)', 'Full documentation — upload to GitHub']
-    },
-    4: { // Week 4
-      1: ['Learn complete markdown syntax', 'Create clean structured notes using markdown', 'Format code blocks, tables, sections', 'Reformat all your existing notes', 'Practice: write a markdown README from scratch'],
-      2: ['Learn git branching (git branch, checkout)', 'Learn git clone, pull, fetch', 'Resolve a merge conflict intentionally', 'Practice commits with meaningful messages', 'Organize all GitHub repositories'],
-      3: ['Create architecture diagrams on draw.io', 'Take clean labeled screenshots of your lab', 'Label all components and IPs clearly', 'Learn basic draw.io shapes and flows', 'Organize all diagram assets'],
-      4: ['Write a professional README for Month 1 project', 'Add: what it does, how to install, how to use', 'Add screenshots and architecture diagram', 'Add troubleshooting section', 'Get feedback by reading it like a recruiter'],
-      5: ['Organize all GitHub repositories cleanly', 'Rename files to professional naming convention', 'Remove any test/junk files', 'Improve folder structure of all projects', 'Polish every README'],
-      6: ['Explain Linux filesystem in German (recorded)', 'Practice: systemctl, permissions, SSH in German', 'Improve pronunciation of technical words', 'Create German IT vocabulary notes (20 words)', 'Listen to German IT YouTube video'],
-      7: ['BUILD: Professional Linux portfolio repo', 'Combine all 4 weeks into one clean project', 'Create project index with links', 'Add all diagrams, screenshots, docs', 'Final cleanup — push to GitHub']
-    }
-  },
-  2: { // Month 2: Network Apprentice
-    1: {
-      1: ['Deep dive IPv4 ranges (private: 10.x, 172.16.x, 192.168.x)', 'Learn reserved/broadcast addresses', 'Understand default gateways and routing', 'Analyze your home network IP structure', 'Create IP address cheat sheet'],
-      2: ['Learn binary to decimal conversion', 'Practice subnet calculations in binary', 'Understand host ranges in subnets', 'Calculate /25 /26 /27 /28 subnets', 'Write 10 subnet exercises with solutions'],
-      3: ['Design 3 small networks with different /CIDR', 'Calculate usable hosts per design', 'Understand broadcast address per network', 'Create subnet diagrams on draw.io', 'Practice CIDR notation verbally'],
-      4: ['Understand NAT concepts deeply', 'Learn how local routing works', 'Inspect your router settings and NAT table', 'Analyze home LAN traffic with Wireshark', 'Document NAT workflow'],
-      5: ['Learn network interface commands (ip link)', 'Configure a network interface manually', 'Restart networking services', 'Use nmcli basics on Linux', 'Document all network commands'],
-      6: ['Build local VM network (3 VMs)', 'Assign static IPs to all VMs', 'Test full VM-to-VM communication', 'Diagnose intentional failures', 'Write troubleshooting steps'],
-      7: ['BUILD: Subnetted VM environment', 'Configure 2 separate subnets', 'Test routing between subnets', 'Create professional network topology map', 'Upload to GitHub with documentation']
-    },
-    2: {
-      1: ['Learn recursive vs iterative DNS', 'Understand DNS caching and TTL', 'Learn authoritative vs recursive servers', 'Trace a full DNS query with Wireshark', 'Document complete DNS flow diagram'],
-      2: ['Configure /etc/hosts for local DNS', 'Simulate local domain resolution', 'Test hostname resolution with dig', 'Add custom local domains', 'Create DNS configuration notes'],
-      3: ['Understand DHCP DORA packets in detail', 'Analyze lease assignment timing', 'Configure static IP reservations in DHCP', 'Inspect DHCP server logs', 'Document DHCP process fully'],
-      4: ['Learn routing logic and routing tables', 'Understand default gateway behavior', 'Inspect routing tables with "ip route"', 'Add a static route between VMs', 'Create routing concept notes'],
-      5: ['Learn NAT and port forwarding in depth', 'Configure port forwarding in VirtualBox', 'Test external access to a service', 'Analyze packet flow through NAT', 'Document NAT configuration'],
-      6: ['Install Wireshark', 'Capture packets on your network', 'Analyze DNS traffic in captures', 'Analyze DHCP traffic in captures', 'Write packet analysis report'],
-      7: ['BUILD: Routed VM network', 'Configure custom DNS behavior', 'Configure DHCP', 'Capture and analyze packets', 'Create professional network report']
-    },
-    3: {
-      1: ['Understand firewall logic (stateful vs stateless)', 'Learn inbound vs outbound traffic rules', 'Understand packet filtering concepts', 'Analyze 5 common firewall rules', 'Create security mindmap notes'],
-      2: ['Configure UFW rules in detail', 'Allow/block specific ports and IPs', 'Learn basic iptables concepts (INPUT/OUTPUT/FORWARD)', 'Test firewall behavior intentionally', 'Document all configurations'],
-      3: ['Install nmap', 'Scan local network devices', 'Identify all open ports on your VMs', 'Detect running services from scan', 'Create nmap scan reports'],
-      4: ['Harden SSH: disable password login', 'Configure SSH key-only authentication', 'Change SSH default port', 'Test secure access thoroughly', 'Document SSH hardening steps'],
-      5: ['Learn brute force concepts and how to prevent them', 'Understand MITM attacks conceptually', 'Learn about phishing + network risks', 'Understand why firewall rules matter', 'Create defense strategy notes'],
-      6: ['Inspect /var/log/auth.log for failed logins', 'Detect and note any suspicious IPs', 'Analyze firewall logs from UFW', 'Create incident response notes', 'Practice: describe a security incident in German'],
-      7: ['BUILD: Secured Linux server', 'Configure UFW firewall rules', 'Harden SSH completely', 'Scan system with nmap', 'Analyze logs — upload documentation']
-    },
-    4: {
-      1: ['Build layered troubleshooting mindset (Physical → Application)', 'Learn OSI model for troubleshooting context', 'Create troubleshooting checklist', 'Practice issue isolation methodology', 'Document your diagnostic workflow'],
-      2: ['Simulate DNS failure — diagnose and fix', 'Simulate gateway failure — diagnose and fix', 'Diagnose packet loss scenarios', 'Restore connectivity each time', 'Write solution notes for each'],
-      3: ['Troubleshoot nginx not serving content', 'Test intentional SSH failures', 'Diagnose blocked port scenarios', 'Analyze service states and fix them', 'Create service troubleshooting guide'],
-      4: ['Break VM network interface intentionally', 'Restore interfaces step by step', 'Reconfigure static routing from scratch', 'Diagnose and fix DNS issues in VM', 'Document every fix clearly'],
-      5: ['Capture live Wireshark traffic', 'Analyze TCP 3-way handshake', 'Analyze DNS query and response', 'Inspect HTTP GET requests', 'Create packet analysis report'],
-      6: ['Full review of all networking concepts', 'Identify your 3 weakest areas', 'Repeat subnet exercises until comfortable', 'Repeat 3 troubleshooting scenarios', 'Organize all notes cleanly'],
-      7: ['BUILD: Mini company network', 'Configure static IPs for all devices', 'Configure DNS resolution', 'Configure firewall and SSH security', 'Capture and analyze packets', 'Upload professional project documentation']
-    }
-  },
-  3: { // Month 3: Infrastructure Builder
-    1: {
-      1: ['Learn hypervisor concepts (Type 1 vs Type 2)', 'Understand VM benefits over physical machines', 'Learn what snapshots are and why they matter', 'Document virtualization concepts clearly', 'German IT vocab: Virtualisierung, Snapshot, Abbild'],
-      2: ['Install VirtualBox', 'Create a new Linux (Ubuntu) VM', 'Configure RAM/CPU/storage resources', 'Install Guest Additions', 'Create VirtualBox setup notes'],
-      3: ['Learn NAT networking mode in VirtualBox', 'Learn Bridged networking mode', 'Learn Host-Only networking mode', 'Test internet access in each mode', 'Document all differences with use cases'],
-      4: ['Create your first VM snapshot', 'Clone an existing VM', 'Restore a snapshot after breaking something', 'Simulate a failure and recover', 'Write snapshot recovery workflow'],
-      5: ['Monitor VM performance (CPU/RAM/disk)', 'Adjust RAM and CPU allocation', 'Optimize disk usage (dynamic vs fixed)', 'Stress test VM resources', 'Create VM performance notes'],
-      6: ['Create a second Linux VM', 'Configure Host-Only network between VMs', 'Test SSH between both VMs', 'Share a file via SCP', 'Document dual-VM architecture'],
-      7: ['BUILD: Small VM lab (2 VMs)', 'Configure isolated Host-Only network', 'Enable SSH between both VMs', 'Create snapshots of clean state', 'Create infrastructure diagram — upload to GitHub']
-    },
-    2: {
-      1: ['Build 3-VM environment', 'Configure unique static IPs on all 3', 'Test full internal communication', 'Create network topology notes', 'Diagram the entire setup'],
-      2: ['Configure nginx on one VM', 'Access it from the other two VMs', 'Diagnose why access might fail', 'Monitor connectivity', 'Document shared service architecture'],
-      3: ['Configure Samba for file sharing', 'Share a folder between Linux VMs', 'Set permissions correctly', 'Transfer files and verify integrity', 'Write Samba configuration notes'],
-      4: ['Configure SSH aliases in ~/.ssh/config', 'SSH between all VMs using aliases', 'Automate file sync with rsync', 'Use SCP to copy configs between VMs', 'Document remote admin workflow'],
-      5: ['Design a mini office network layout', 'Define: 1 server, 2 client VMs', 'Plan IP ranges and roles', 'Assign services to correct VMs', 'Create complete infrastructure map'],
-      6: ['Simulate a VM crash (force shutdown)', 'Restore from snapshot', 'Recover a broken configuration', 'Restore all services', 'Create service recovery checklist'],
-      7: ['BUILD: Mini office environment', 'Configure server and client VMs', 'Enable file sharing with Samba', 'Enable remote admin via SSH', 'Create professional documentation']
-    },
-    3: {
-      1: ['Configure SSH using ~/.ssh/config file', 'Create SSH aliases for all VMs', 'Learn verbose SSH debugging (-v flag)', 'Test all aliases work correctly', 'Document advanced SSH config'],
-      2: ['Disable root SSH login on all VMs', 'Configure key-only authentication', 'Configure fail2ban basics', 'Inspect auth.log for blocked attempts', 'Create SSH security checklist'],
-      3: ['Use rsync to sync directories', 'Automate backup with rsync + cron', 'Compress backup archives with tar', 'Verify backup file integrity', 'Create automated backup workflow notes'],
-      4: ['Restart services remotely via SSH', 'Monitor remote logs in real time', 'Transfer config files via SCP', 'Troubleshoot a broken service remotely', 'Write remote administration guide'],
-      5: ['Manage all 3 VMs from one terminal', 'Create SSH workflow for each VM', 'Configure SSH key trust between VMs', 'Organize all connection methods', 'Create multi-server notes'],
-      6: ['Write bash script to auto-update all VMs', 'Write backup script with timestamps', 'Write monitoring health check script', 'Schedule all scripts with cron', 'Document all scripts'],
-      7: ['BUILD: Remotely managed lab', 'Secure all SSH access fully', 'Automate maintenance tasks', 'Create backup system', 'Upload full documentation']
-    },
-    4: {
-      1: ['Design a 4-VM company infrastructure', 'Plan server roles (web/file/DB/admin)', 'Plan IP structure (192.168.10.x)', 'Plan remote access method', 'Create detailed architecture draft'],
-      2: ['Deploy all 4 VMs', 'Configure all services per role', 'Configure full networking', 'Configure storage per server', 'Test all VM communication'],
-      3: ['Configure UFW on all systems', 'Secure SSH on all VMs', 'Create automated backup on each', 'Restrict permissions appropriately', 'Verify complete security'],
-      4: ['Monitor all services remotely', 'Analyze logs from each VM', 'Configure uptime checks via scripts', 'Diagnose intentional failures', 'Create monitoring documentation'],
-      5: ['Automate daily backups on all VMs', 'Automate weekly security updates', 'Create maintenance scripts', 'Verify recovery works end-to-end', 'Document automation workflows'],
-      6: ['Test ALL services work correctly', 'Simulate failures and recover', 'Validate backup and restore', 'Final security review', 'Last troubleshooting pass'],
-      7: ['BUILD: Complete company infrastructure', 'Configure all 4 VM services', 'Secure all systems', 'Create full architecture documentation', 'Create network and service diagrams', 'Upload polished portfolio project']
-    }
-  },
-  4: { // Month 4: Enterprise Environment
-    1: {
-      1: ['Install Windows Server 2022 in VirtualBox', 'Understand Server editions (Standard/Datacenter)', 'Learn Server Manager interface', 'Configure hostname and computer name', 'Create installation notes'],
-      2: ['Configure static IP on Windows Server', 'Configure DNS settings manually', 'Test connectivity to internet + VMs', 'Learn Windows networking tools (ipconfig, netstat)', 'Document all network configs'],
-      3: ['Create 5 local user accounts', 'Create 3 groups with different permissions', 'Assign users to correct groups', 'Understand administrator vs standard roles', 'Create user/group permission notes'],
-      4: ['Enable Remote Desktop Protocol (RDP)', 'Configure remote access settings', 'Connect from Linux VM via xRDP', 'Learn PowerShell basics (Get-Command, Get-Help)', 'Document RDP workflow'],
-      5: ['Learn Windows Services (services.msc)', 'Start, stop, disable services', 'Inspect Event Viewer for errors', 'Analyze system and security logs', 'Create troubleshooting notes'],
-      6: ['Create a shared folder with permissions', 'Configure NTFS permissions', 'Test access from another VM', 'Map shared drive from client', 'Document sharing process'],
-      7: ['BUILD: Windows Server base environment', 'Configure users, groups, permissions', 'Configure networking and static IP', 'Enable RDP and remote access', 'Configure shared folders', 'Upload documentation to GitHub']
-    },
-    2: {
-      1: ['Understand domain vs workgroup concept', 'Learn domain controller role', 'Understand LDAP basics', 'Learn Organizational Units (OUs)', 'Document Active Directory concepts'],
-      2: ['Install AD DS role via Server Manager', 'Promote server to domain controller', 'Configure domain name (e.g. samian.local)', 'Verify DNS and AD services', 'Create AD setup notes'],
-      3: ['Create 10 domain users', 'Create 5 domain groups by department', 'Configure group permissions', 'Organize users into OUs', 'Document the hierarchy'],
-      4: ['Create Windows 10 client VM', 'Join client to your domain', 'Login with a domain user account', 'Verify domain authentication works', 'Document domain join process'],
-      5: ['Learn Group Policy Object (GPO) basics', 'Configure password policy GPO', 'Configure desktop wallpaper policy', 'Apply and test policy enforcement', 'Create GPO notes'],
-      6: ['Reset a domain user password', 'Disable a user account', 'Move users between OUs', 'Inspect AD logs in Event Viewer', 'Create administration workflow notes'],
-      7: ['BUILD: Complete Active Directory environment', 'Configure users, groups, OUs', 'Configure 3 GPOs', 'Join 2 client systems to domain', 'Document full AD infrastructure']
-    },
-    3: {
-      1: ['Configure enterprise file sharing with DFS basics', 'Set NTFS permissions per department', 'Create department folder structure', 'Test access control per user group', 'Document file sharing structure'],
-      2: ['Configure Windows DNS server role', 'Configure Windows DHCP server role', 'Assign DHCP leases to clients', 'Test domain name resolution', 'Create DNS/DHCP server notes'],
-      3: ['Learn basic print services concepts', 'Configure remote management tools (RSAT)', 'Test remote management from client', 'Learn RMM concepts overview', 'Document remote management workflow'],
-      4: ['Analyze System log in Event Viewer', 'Analyze Security log (logon events)', 'Detect failed login attempts', 'Inspect application warnings', 'Create log analysis guide'],
-      5: ['Configure Windows Firewall rules', 'Configure account lockout policies', 'Learn Windows Defender basics', 'Restrict admin access to key accounts', 'Document security practices'],
-      6: ['Simulate: domain user login failure', 'Troubleshoot DNS resolution failure', 'Diagnose file permission denied issue', 'Restore all services after failures', 'Write enterprise troubleshooting guide'],
-      7: ['BUILD: Full enterprise Windows environment', 'Configure all server roles', 'Configure security policies', 'Configure DNS/DHCP services', 'Create complete infrastructure documentation']
-    },
-    4: {
-      1: ['Connect Linux VM to Windows Server VM', 'Configure networking between both systems', 'Test ping and connectivity', 'Transfer files via shared network', 'Document Linux-Windows integration'],
-      2: ['Install Samba on Linux', 'Configure Linux shared folders', 'Access Linux shares from Windows', 'Configure permissions correctly', 'Create cross-platform sharing notes'],
-      3: ['Manage Linux VM remotely from Windows using PuTTY', 'Use WinSCP to transfer files', 'Organize your cross-platform admin workflow', 'Test all remote access methods', 'Document procedures'],
-      4: ['Configure centralized file access from both OS', 'Test authentication from both sides', 'Organize network resources clearly', 'Test all access controls', 'Create architecture notes'],
-      5: ['Harden all Linux service configurations', 'Harden Windows firewall and services', 'Review all firewall rules on both systems', 'Analyze permissions across all VMs', 'Document security review findings'],
-      6: ['Full test of all Linux services', 'Full test of all Windows services', 'Diagnose 3 intentional failures', 'Validate backup systems', 'Review and improve documentation'],
-      7: ['BUILD: Mixed enterprise lab (Linux + Windows)', 'Configure Linux and Windows VMs together', 'Configure cross-platform file sharing', 'Configure remote access from both sides', 'Configure security on all systems', 'Create infrastructure diagrams', 'Upload polished portfolio project']
-    }
-  },
-  5: { // Month 5: Modern Infrastructure
-    1: {
-      1: ['Understand containers vs VMs', 'Learn Docker images vs running containers', 'Understand Docker workflow (build/run/push)', 'Learn why containers matter in companies', 'Create Docker concept notes'],
-      2: ['Install Docker on Linux', 'Run docker hello-world', 'Pull and run nginx image', 'Inspect running containers with docker ps', 'Document all commands used'],
-      3: ['Start, stop, remove containers', 'Inspect container logs with docker logs', 'Monitor container resource usage', 'Learn docker inspect command', 'Create container management notes'],
-      4: ['Learn Docker bridge networks', 'Connect two containers to same network', 'Expose container ports to host (-p flag)', 'Test external access to container', 'Document Docker networking'],
-      5: ['Learn Docker persistent storage (volumes)', 'Mount a volume to a container', 'Stop container and verify data persists', 'Back up container data via volume', 'Write Docker storage notes'],
-      6: ['Learn Dockerfile syntax (FROM/RUN/COPY/CMD)', 'Build a custom Docker image', 'Run your custom container', 'Modify and rebuild the image', 'Document Dockerfile workflow'],
-      7: ['BUILD: Nginx container with persistent storage', 'Configure Docker networking', 'Create volume for nginx data', 'Write Docker documentation', 'Upload to GitHub']
-    },
-    2: {
-      1: ['Understand multi-container apps concept', 'Learn docker-compose workflow', 'Understand YAML syntax basics', 'Create your first docker-compose.yml', 'Document compose concepts'],
-      2: ['Build nginx + PostgreSQL stack', 'Create docker-compose.yml with both services', 'Start the multi-container environment', 'Test connectivity between services', 'Document full setup'],
-      3: ['Learn .env files for secrets', 'Configure environment variables in compose', 'Modify compose configs safely', 'Restart services after changes', 'Create .env best practices notes'],
-      4: ['Connect 3 services in one compose file', 'Test internal DNS (service names as hostnames)', 'Analyze container-to-container networking', 'Diagnose connection issues', 'Document multi-service workflow'],
-      5: ['Update containers to newer versions', 'Back up entire compose project', 'Clean unused images/containers', 'Monitor container logs in compose', 'Write container maintenance notes'],
-      6: ['Organize compose project directories', 'Create reusable service configs', 'Improve overall project structure', 'Polish all documentation', 'Review all Docker/Compose concepts'],
-      7: ['BUILD: Multi-service compose application', 'Configure Docker Compose networking', 'Configure persistent storage', 'Configure environment variables', 'Create professional documentation']
-    },
-    3: {
-      1: ['Understand reverse proxy concept', 'Learn request forwarding logic', 'Understand load balancing overview', 'Analyze how web traffic flows', 'Create reverse proxy concept notes'],
-      2: ['Configure nginx as reverse proxy', 'Forward traffic to a Docker container', 'Test routing behavior thoroughly', 'Analyze nginx proxy logs', 'Document full proxy setup'],
-      3: ['Route traffic to 3 different services', 'Configure subdomain routing locally', 'Test complete service separation', 'Diagnose routing failures', 'Create routing configuration notes'],
-      4: ['Understand SSL/TLS basics', 'Generate self-signed certificate with openssl', 'Configure HTTPS in nginx locally', 'Test HTTPS connections', 'Document SSL/HTTPS workflow'],
-      5: ['Learn load balancing concepts (round-robin)', 'Configure nginx with 2 backend services', 'Test request distribution', 'Monitor service response times', 'Create load balancing notes'],
-      6: ['Restrict access with nginx rules', 'Hide backend services from public view', 'Analyze and add security headers', 'Harden nginx configuration', 'Document security practices'],
-      7: ['BUILD: Multi-service reverse proxy lab', 'Configure HTTPS with self-signed cert', 'Route 3 services through nginx', 'Integrate with Docker containers', 'Create infrastructure diagram', 'Upload to GitHub']
-    },
-    4: {
-      1: ['Understand monitoring importance in production', 'Learn uptime vs performance monitoring', 'Learn resource monitoring concepts', 'Understand alerting basics', 'Create monitoring strategy notes'],
-      2: ['Monitor CPU and RAM live (htop)', 'Monitor disk usage (df, du)', 'Monitor active Docker containers', 'Analyze system logs in real time', 'Document findings and thresholds'],
-      3: ['Understand backup types (full/incremental/differential)', 'Plan backup schedule for all VMs', 'Analyze recovery risks and RTO/RPO', 'Create backup notes', 'Compare backup strategies'],
-      4: ['Write bash backup script with timestamps', 'Schedule daily cron backup', 'Compress backup files with tar', 'Verify backup integrity after creation', 'Document automation workflow'],
-      5: ['Restore backup from archive', 'Recover a broken nginx configuration', 'Recover container data from volume backup', 'Test complete disaster recovery scenario', 'Create disaster recovery checklist'],
-      6: ['Full review of all services', 'Review all log files', 'Verify backup systems work end-to-end', 'Analyze overall infrastructure stability', 'Organize monitoring reports'],
-      7: ['BUILD: Fully monitored infrastructure', 'Configure backup automation', 'Configure monitoring scripts', 'Test recovery process end-to-end', 'Create professional documentation', 'Upload polished portfolio project']
-    }
-  },
-  6: { // Month 6: Production Mindset
-    1: {
-      1: ['Audit full Linux attack surface', 'Review all user permissions and sudo access', 'Analyze /etc/passwd and /etc/shadow', 'Harden user account policies', 'Create security audit notes'],
-      2: ['Disable password SSH authentication fully', 'Configure SSH keys-only across all servers', 'Disable root login via SSH', 'Configure SSH connection timeout policies', 'Test all remote access works'],
-      3: ['Review all UFW firewall rules', 'Restrict any unnecessary open ports', 'Configure rate limiting concepts in nginx', 'Test blocked access attempts', 'Document all firewall changes'],
-      4: ['Disable all unnecessary system services', 'Inspect all active ports (ss -tlnp)', 'Harden nginx configuration', 'Restrict file permissions on sensitive files', 'Create hardening checklist'],
-      5: ['Analyze /var/log/auth.log deeply', 'Count and detect failed login attempts', 'Monitor suspicious IP patterns', 'Create monitoring workflow', 'Write first incident response notes'],
-      6: ['Review all system configurations', 'Test security by simulating attacks', 'Simulate brute force and verify blocking', 'Identify remaining weak spots', 'Improve security documentation'],
-      7: ['BUILD: Hardened Linux infrastructure', 'Configure SSH security completely', 'Configure firewall rules thoroughly', 'Set up log monitoring', 'Create security documentation', 'Upload hardening project']
-    },
-    2: {
-      1: ['Understand VPS vs local VM differences', 'Learn public IP and DNS concepts for VPS', 'Research VPS providers (Hetzner, DigitalOcean)', 'Create VPS deployment notes', 'German vocab: Server, Hosting, Netzwerk, Zugriff'],
-      2: ['Rent a low-cost VPS (Hetzner CX11 is cheap)', 'Connect via SSH from your home machine', 'Configure hostname and update all packages', 'Create initial user and disable root', 'Document complete VPS setup'],
-      3: ['Configure UFW on VPS', 'Harden SSH (keys only, no root, custom port)', 'Install and configure fail2ban', 'Test all security configurations', 'Document VPS security setup'],
-      4: ['Deploy nginx on VPS', 'Create a simple webpage', 'Configure domain or use IP directly', 'Test external access from your phone', 'Create VPS deployment notes'],
-      5: ['Install Docker on VPS', 'Deploy a containerized service', 'Configure persistent volume storage', 'Monitor container health', 'Document Docker-on-VPS workflow'],
-      6: ['Configure automated rsync backups to local machine', 'Monitor VPS CPU/RAM/disk remotely', 'Analyze VPS access logs', 'Verify uptime monitoring', 'Organize VPS maintenance notes'],
-      7: ['BUILD: Live public Linux server', 'Configure secure SSH access', 'Deploy nginx + Docker services', 'Configure monitoring', 'Upload professional VPS documentation']
-    },
-    3: {
-      1: ['Learn bash variables, conditions, loops', 'Write 3 simple scripts from scratch', 'Execute scripts safely with error handling', 'Create scripting notes', 'Practice: explain script in German'],
-      2: ['Write auto-update script for all packages', 'Write automated backup script with dates', 'Write cleanup script for old log files', 'Schedule all 3 scripts with cron', 'Document automation workflow'],
-      3: ['Write CPU usage monitoring script', 'Write disk usage alert script', 'Write service status checker script', 'Test all outputs', 'Organize scripts in ~/scripts directory'],
-      4: ['Create logging output for each script', 'Rotate log files automatically', 'Generate daily summary reports', 'Create log file documentation', 'Review all script outputs'],
-      5: ['Execute scripts on remote VPS via SSH', 'Sync files between local and VPS automatically', 'Test remote automation reliability', 'Write remote automation notes', 'Verify all automation works'],
-      6: ['Refactor all scripts for readability', 'Add proper comments to every script', 'Organize scripts into directories by type', 'Create documentation for each script', 'Polish all GitHub repositories'],
-      7: ['BUILD: Linux automation toolkit', 'Automate: updates, backups, monitoring', 'Deploy automation on VPS', 'Create complete script documentation', 'Upload as professional GitHub project']
-    },
-    4: {
-      1: ['Design final infrastructure project architecture', 'Plan: 3 VMs + 1 VPS networking', 'Plan all services and their roles', 'Plan security architecture', 'Create final architecture draft'],
-      2: ['Deploy all Linux servers', 'Configure Docker services on each', 'Configure full networking between all VMs', 'Configure nginx reverse proxy', 'Test all communication paths'],
-      3: ['Harden all systems', 'Configure monitoring on all servers', 'Configure centralized logging', 'Review all firewall rules', 'Verify backup systems'],
-      4: ['Configure automated maintenance scripts', 'Configure automated backups', 'Test complete recovery process', 'Analyze all system logs', 'Organize complete workflow'],
-      5: ['Break services intentionally (5 different failures)', 'Restore each service from documentation', 'Recover from backup', 'Diagnose all connectivity issues', 'Create troubleshooting notes'],
-      6: ['Create full infrastructure diagrams', 'Write professional README', 'Organize all screenshots', 'Explain architecture in plain English', 'Polish all repositories'],
-      7: ['BUILD: Production-like infrastructure', 'Configure Docker, monitoring, backups, reverse proxy', 'Secure all systems completely', 'Create full documentation', 'Upload portfolio-ready final project']
-    }
-  },
-  7: { // Month 7: German Professional Mode
-    1: {
-      1: ['Introduce yourself in German (record audio)', 'Talk about Bangladesh and why you chose Germany', 'Talk about your IT learning journey', 'Fix pronunciation mistakes from recording', 'Create self-introduction script notes'],
-      2: ['Explain why you like Linux in German', 'Explain why you chose IT as a career', 'Practice technical vocabulary (10 IT words)', 'Write 5 sentences about your skills in German', 'Record and review'],
-      3: ['Explain your Linux project in German', 'Explain your networking project in German', 'Explain your Docker setup in German', 'Practice storytelling structure', 'Record all explanations'],
-      4: ['Practice formal German (Sie form)', 'Learn 10 workplace phrases (Entschuldigung, Danke, Bitte...)', 'Learn teamwork vocabulary', 'Practice polite email communication', 'Create workplace phrases notes'],
-      5: ['Explain a troubleshooting process in German', 'Describe a technical problem and its solution', 'Practice calm structured explanations', 'Record and review communication', 'Fix any grammar patterns'],
-      6: ['Watch 20 min German IT video (Easy German or DW)', 'Shadow native speakers: repeat sentences', 'Repeat 10 technical sentences precisely', 'Improve speaking rhythm and flow', 'Practice fluency over perfection'],
-      7: ['BUILD: German self-introduction (full recording)', 'Explain 2 projects in German', 'Record mock German conversation', 'Review pronunciation carefully', 'Organize all speaking notes']
-    },
-    2: {
-      1: ['Learn 20 German networking terms (IP-Adresse, Router, Subnetz...)', 'Explain DNS in German (3 sentences)', 'Explain IP addresses in German', 'Create networking vocabulary flashcards', 'Practice all terms aloud'],
-      2: ['Learn Linux terminology in German (Berechtigungen, Dienste, Protokoll)', 'Explain chmod permissions in German', 'Explain systemctl in German', 'Explain log files in German', 'Practice speaking aloud'],
-      3: ['Learn Active Directory vocabulary in German', 'Explain users and groups in German', 'Explain file sharing concepts in German', 'Explain server management in German', 'Create notes'],
-      4: ['Explain firewalls in German (Firewall, Paketfilter, Regel)', 'Explain SSH security in German', 'Explain troubleshooting process in German', 'Describe a security incident in German', 'Practice structured explanations'],
-      5: ['Write a formal German email (Sehr geehrte...)', 'Write internship inquiry email in German', 'Practice formal grammar and sign-offs', 'Review corrections carefully', 'German vocab: 20 new words today'],
-      6: ['Simulate helpdesk conversation in German', 'Simulate customer support call', 'Explain a technical fix to a non-technical user in German', 'Practice confidence and clarity', 'Review weak vocabulary areas'],
-      7: ['BUILD: German technical presentation (recorded)', 'Explain your infrastructure project in German', 'Organize German vocabulary lists by topic', 'Upload speaking practice logs', 'Review all recorded sessions']
-    },
-    3: {
-      1: ['Practice: "Tell me about yourself" in German (full 2 min)', 'Practice: "Why Germany?" answer', 'Practice: "Why this Ausbildung?" answer', 'Record all 3 answers', 'Review speaking pace and clarity'],
-      2: ['Explain Linux concepts in interview format', 'Explain networking concepts in interview format', 'Explain your Docker project clearly', 'Practice structured STAR answers', 'Review all recordings'],
-      3: ['Simulate IT troubleshooting interview scenario', 'Explain your problem-solving approach', 'Practice logical thinking aloud', 'Speak slowly and clearly', 'Review clarity of explanations'],
-      4: ['Explain teamwork situation from past experience', 'Explain your learning discipline and consistency', 'Explain how you handle stress and shift work', 'Practice professional tone', 'Create example story bank'],
-      5: ['Learn German workplace expectations (Pünktlichkeit)', 'Learn professional communication etiquette', 'Learn email and meeting norms in Germany', 'Practice professional attitude', 'Create cultural notes'],
-      6: ['Full mock interview simulation (30 minutes)', 'Answer all technical + personal questions', 'Review every weak answer', 'Fix pronunciation issues', 'Identify top 3 improvements needed'],
-      7: ['BUILD: Complete mock interview recording', 'Review communication quality', 'Organize all interview answers', 'Create improvement checklist', 'Polish speaking confidence']
-    },
-    4: {
-      1: ['Create German-style CV (Lebenslauf) template', 'Add all technical skills and tools', 'Add all GitHub projects with links', 'Add photo and personal info (German standard)', 'Organize layout professionally'],
-      2: ['Write German motivation letter (Motivationsschreiben)', 'Explain your goals clearly and specifically', 'Explain your technical passion', 'Explain your learning discipline', 'Improve formal writing quality'],
-      3: ['Organize all GitHub repositories professionally', 'Improve all READMEs with screenshots', 'Add architecture diagrams to all projects', 'Remove or improve any messy projects', 'Polish complete portfolio presentation'],
-      4: ['Update LinkedIn profile completely', 'Add all technical projects', 'Write professional summary in German and English', 'Connect with German IT professionals', 'Review overall profile presentation'],
-      5: ['Research Ausbildung companies in Germany (Berlin, Hamburg, Frankfurt)', 'Research companies in smaller cities (less competition)', 'Save company info in a spreadsheet', 'Organize application targets by priority', 'Review company requirements vs your skills'],
-      6: ['Prepare 5 personalized application emails', 'Prepare all attachments (CV, motivation letter)', 'Prepare portfolio links', 'Review grammar on every document', 'Finalize everything for sending'],
-      7: ['BUILD: Complete application package', 'German CV finalized', 'Motivation letter finalized', 'GitHub portfolio polished', 'Ready to send applications this week']
-    }
-  },
-  8: { // Month 8: Application War
-    1: {
-      1: ['Research 5 Berlin IT companies with Ausbildung programs', 'Identify exact job requirements for each', 'Save all company details in spreadsheet', 'Analyze requirements vs your skills', 'Create action notes'],
-      2: ['Research Hamburg opportunities (3 companies)', 'Research Leipzig + Dresden (3 companies)', 'Compare competition levels in each city', 'Add all to tracking spreadsheet', 'Organize by priority'],
-      3: ['Analyze 5 job descriptions in detail', 'Match each requirement to your GitHub project', 'Identify any remaining skill gaps', 'Prioritize highest-match applications', 'Create gap analysis notes'],
-      4: ['Research company culture for top 3 targets', 'Learn what technologies they use', 'Read employee reviews (Kununu, Glassdoor)', 'Learn company structure and team size', 'Organize research notes'],
-      5: ['Customize motivation letter for 3 companies', 'Adjust CV emphasis for each role', 'Match technical keywords from job postings', 'Review professionalism of each document', 'Grammar-check everything'],
-      6: ['Create application tracking spreadsheet', 'Add: company, date sent, status, follow-up date', 'Set up follow-up reminders', 'Prepare follow-up email templates', 'Organize complete workflow'],
-      7: ['BUILD: Complete company target list', 'Prepare 10 customized applications ready to send', 'Finalize tracking system', 'Review application strategy', 'Begin sending tomorrow']
-    },
-    2: {
-      1: ['Send first batch of 5 applications', 'Verify all attachments before sending', 'Grammar-check every email', 'Track in spreadsheet immediately', 'Follow up mentally in 1 week'],
-      2: ['Send 5 more applications', 'Improve customization based on first batch', 'Refine motivation letter based on feedback', 'Analyze any patterns in rejections', 'Update tracking spreadsheet'],
-      3: ['Prepare polite follow-up emails (1 week after sending)', 'Practice professional German email communication', 'Improve formal writing tone', 'Organize all response templates', 'Review all sent applications'],
-      4: ['Improve 2 GitHub projects with better documentation', 'Add missing screenshots to READMEs', 'Polish 2 project diagrams', 'Fix any broken links in portfolio', 'Verify all GitHub projects work'],
-      5: ['Review Linux concepts (cheat sheet review)', 'Practice German technical speaking (30 min)', 'Practice explaining 3 projects confidently', 'Review 10 common interview questions', 'Build interview confidence'],
-      6: ['Send 5 more applications today', 'Expand company search to more cities', 'Review any rejection patterns', 'Improve weakest application areas', 'Update tracking spreadsheet'],
-      7: ['Reach 20+ total applications sent', 'Organize all applications in tracker', 'Polish GitHub portfolio based on feedback', 'Prepare complete interview system', 'Review and improve']
-    },
-    3: {
-      1: ['Full technical review: Linux commands cheat sheet', 'Full technical review: Networking concepts', 'Full technical review: Docker workflows', 'Full technical review: Windows Server/AD', 'Organize all review notes'],
-      2: ['Practice explaining your Linux project (3 min max)', 'Practice explaining your Docker project', 'Practice explaining your network lab', 'Record all 3 explanations', 'Review for clarity and confidence'],
-      3: ['Full German mock interview (35 min, recorded)', 'Answer formal interview questions in German', 'Practice technical communication in German', 'Improve fluency and pronunciation', 'Review mistakes carefully'],
-      4: ['Solve 3 troubleshooting scenarios from memory', 'Explain thought process clearly for each', 'Practice calm communication under pressure', 'Improve structured answers', 'Organize notes'],
-      5: ['Practice breathing and staying calm', 'Practice speaking slowly and confidently', 'Review top 3 interview weaknesses', 'Build confidence through preparation', 'Write down your strengths'],
-      6: ['Full interview rehearsal on camera (video on)', 'Review body language and eye contact', 'Improve communication clarity', 'Fix nervous speech patterns', 'Final review before real interviews'],
-      7: ['Complete final mock interview recording', 'Organize all interview answers', 'Finalize all technical explanations', 'Build maximum interview confidence', 'You are ready']
-    },
-    4: {
-      1: ['Send polite follow-up emails to week-2 applications', 'Organize all communication professionally', 'Track any responses received', 'Improve response professionalism', 'Grammar check every follow-up'],
-      2: ['Improve CV based on any feedback received', 'Improve motivation letter', 'Improve one project presentation', 'Fix weakest areas identified', 'Review formatting'],
-      3: ['Review weakest technical skill area', 'Practice networking troubleshooting', 'Practice Linux command scenarios', 'Review Docker workflow questions', 'Organize all review notes'],
-      4: ['Review all technical German vocabulary', 'Practice fluency for 20 minutes', 'Improve pronunciation of IT terms', 'Review interview communication quality', 'Record yourself speaking today'],
-      5: ['Finalize all GitHub repositories', 'Verify all diagrams and screenshots', 'Verify all documentation is complete', 'Clean up any remaining issues', 'Polish final presentation'],
-      6: ['Plan continued learning after Month 8', 'Plan next certification (AZ-900 or LPIC)', 'Plan relocation research', 'Organize your goals for Month 9+', 'Review your full journey progress'],
-      7: ['Review your entire 8-month journey', 'Write down your top 5 strengths now', 'Finalize all applications sent', 'Organize every document', 'Prepare for real interviews', 'You have done the work. Germany is waiting.']
-    }
-  }
+  1:{1:{1:['Learn Linux filesystem hierarchy (/, /etc, /var, /usr, /home)','Explore /etc /var /usr /home /srv /tmp directories','Install and use the "tree" command','Create filesystem markdown notes','5 German IT words: Datei, Verzeichnis, Benutzer, Netzwerk, System'],2:['Learn chmod/chown/sudo commands','Create 3 test users and experiment with permissions','Understand root vs regular user access','Write permission notes with examples','German practice: 10 min speaking aloud'],3:['Learn systemctl (start/stop/status/enable)','Learn journalctl to read logs','Inspect all running services','Troubleshoot one service issue','Document services workflow'],4:['Install openssh-server','SSH into localhost','Generate SSH keys with ssh-keygen','Learn SCP file transfer','Learn rsync basics — document workflow'],5:['Learn ip command (ip a, ip r)','Learn ping, ss, curl, dig commands','Inspect all open local ports','Write networking commands cheat sheet','Practice: explain one command in German'],6:['Create GitHub account (if not done)','Learn git init/add/commit/push','Create professional README','Upload screenshots of your work','Organize all notes in one folder'],7:['BUILD: Complete Linux admin environment','Configure SSH (keys only, no password)','Configure UFW firewall (allow SSH/HTTP)','Create system services overview doc','Upload full project to GitHub with README']},2:{1:['Learn IPv4 structure and classes (A/B/C)','Understand public vs private IP addresses','Learn loopback/localhost (127.0.0.1)','Practice identifying IP classes from examples','Document IP basics with examples'],2:['Learn subnet masks and CIDR notation','Practice subnet calculations (/24, /16, /8)','Identify network vs host portions','Calculate usable hosts in a subnet','Write subnet exercises with answers'],3:['Learn DNS workflow end-to-end','Understand A, CNAME, MX record types','Use dig and nslookup commands','Trace a domain resolution step by step','Document complete DNS flow with diagram'],4:['Learn DHCP handshake (DORA process)','Understand IP lease assignment','Inspect router DHCP settings','Configure one static local IP','Write DHCP workflow notes'],5:['Learn TCP vs UDP differences','Memorize 10 common ports (22/80/443/3306...)','Use ss and netstat to inspect ports','Identify all open ports on your machine','Document port usage notes'],6:['Learn traceroute/tracepath','Diagnose a connectivity issue','Simulate a DNS failure and fix it','Create a troubleshooting flowchart','Practice: describe network problem in German'],7:['BUILD: Create mini local network lab','Configure 2 VMs with static IPs','Test full connectivity between VMs','Inspect and document open ports','Create network diagram + upload to GitHub']},3:{1:['Install nginx web server','Learn virtual hosts configuration','Serve a simple static HTML page','Inspect nginx access and error logs','Document full nginx setup'],2:['Install and configure UFW firewall','Open port 80 (HTTP) and 443 (HTTPS)','Allow SSH, block everything else','Test firewall behavior from another VM','Write detailed firewall rules notes'],3:['Learn ps, top, htop commands','Kill a process using kill/pkill','Monitor CPU and RAM usage live','Understand process states (R/S/Z)','Create monitoring notes'],4:['Learn lsblk, df, du commands','Mount a virtual drive','Understand disk partitions','Check filesystem usage per directory','Document storage administration'],5:['Learn cron job syntax (min hr day month weekday)','Schedule an automatic task (backup/cleanup)','Automate log file creation every hour','Test and verify scheduled job runs','Write cron automation notes'],6:['Monitor system logs with journalctl -f','Check uptime and load average','Inspect all resource usage at once','Identify any failing or stopped services','Create system troubleshooting checklist'],7:['BUILD: Personal Linux server','Deploy nginx with custom HTML page','Configure firewall — SSH/HTTP only','Add cron automation (daily backup)','Full documentation — upload to GitHub']},4:{1:['Learn complete markdown syntax','Create clean structured notes using markdown','Format code blocks, tables, sections','Reformat all your existing notes','Practice: write a markdown README from scratch'],2:['Learn git branching (git branch, checkout)','Learn git clone, pull, fetch','Resolve a merge conflict intentionally','Practice commits with meaningful messages','Organize all GitHub repositories'],3:['Create architecture diagrams on draw.io','Take clean labeled screenshots of your lab','Label all components and IPs clearly','Learn basic draw.io shapes and flows','Organize all diagram assets'],4:['Write a professional README for Month 1 project','Add: what it does, how to install, how to use','Add screenshots and architecture diagram','Add troubleshooting section','Get feedback by reading it like a recruiter'],5:['Organize all GitHub repositories cleanly','Rename files to professional naming convention','Remove any test/junk files','Improve folder structure of all projects','Polish every README'],6:['Explain Linux filesystem in German (recorded)','Practice: systemctl, permissions, SSH in German','Improve pronunciation of technical words','Create German IT vocabulary notes (20 words)','Listen to German IT YouTube video'],7:['BUILD: Professional Linux portfolio repo','Combine all 4 weeks into one clean project','Create project index with links','Add all diagrams, screenshots, docs','Final cleanup — push to GitHub']}},
+  2:{1:{1:['Deep dive IPv4 ranges (private: 10.x, 172.16.x, 192.168.x)','Learn reserved/broadcast addresses','Understand default gateways and routing','Analyze your home network IP structure','Create IP address cheat sheet'],2:['Learn binary to decimal conversion','Practice subnet calculations in binary','Understand host ranges in subnets','Calculate /25 /26 /27 /28 subnets','Write 10 subnet exercises with solutions'],3:['Design 3 small networks with different /CIDR','Calculate usable hosts per design','Understand broadcast address per network','Create subnet diagrams on draw.io','Practice CIDR notation verbally'],4:['Understand NAT concepts deeply','Learn how local routing works','Inspect your router settings and NAT table','Analyze home LAN traffic with Wireshark','Document NAT workflow'],5:['Learn network interface commands (ip link)','Configure a network interface manually','Restart networking services','Use nmcli basics on Linux','Document all network commands'],6:['Build local VM network (3 VMs)','Assign static IPs to all VMs','Test full VM-to-VM communication','Diagnose intentional failures','Write troubleshooting steps'],7:['BUILD: Subnetted VM environment','Configure 2 separate subnets','Test routing between subnets','Create professional network topology map','Upload to GitHub with documentation']},2:{1:['Learn recursive vs iterative DNS','Understand DNS caching and TTL','Learn authoritative vs recursive servers','Trace a full DNS query with Wireshark','Document complete DNS flow diagram'],2:['Configure /etc/hosts for local DNS','Simulate local domain resolution','Test hostname resolution with dig','Add custom local domains','Create DNS configuration notes'],3:['Install and configure BIND9 DNS server','Configure forward zone file','Configure reverse zone file','Test DNS resolution from another VM','Document BIND9 setup'],4:['Install isc-dhcp-server','Configure IP address pool','Configure lease time settings','Test DHCP assignment on another VM','Document DHCP server setup'],5:['Configure static DHCP reservations','Test reserved IP assignment','Configure DNS + DHCP integration','Verify both services work together','Write combined network services notes'],6:['Simulate and fix DNS failure','Simulate and fix DHCP failure','Practice diagnostics for both services','Document troubleshooting procedures','Review all network notes'],7:['BUILD: DNS + DHCP server lab','Configure both services together','Test all network services','Create documentation','Upload to GitHub']},3:{1:['Understand firewall types (packet filter, stateful)','Learn UFW rule syntax (allow/deny/limit)','Configure UFW on VM with specific rules','Test all rule behaviors','Document firewall configuration'],2:['Learn iptables basics (INPUT/OUTPUT/FORWARD)','Add allow rules for SSH and HTTP','Block all other inbound traffic','Test iptables behavior','Compare iptables vs UFW'],3:['Install fail2ban','Configure SSH protection in jail.local','Test brute force detection','Analyze fail2ban logs','Document fail2ban setup'],4:['Configure SSH security hardening','Disable root login via SSH','Change SSH port','Configure SSH connection limits','Document all SSH security measures'],5:['Analyze /var/log/auth.log','Find failed login attempts','Find suspicious IP addresses','Create monitoring script','Document security analysis'],6:['Simulate network attack scenarios','Test all defensive measures','Verify all security configurations work','Fix identified weaknesses','Create security hardening guide'],7:['BUILD: Secured Linux network','Configure UFW, fail2ban, SSH hardening','Test all security measures','Create security documentation','Upload to GitHub']},4:{1:['Build complete troubleshooting methodology','Create step-by-step diagnostic flowchart','Practice systematic problem-solving approach','Learn when to escalate issues','Document troubleshooting methodology'],2:['Simulate 5 different network failures','Diagnose each failure systematically','Document diagnosis process for each','Time each diagnosis attempt','Improve weak diagnostic areas'],3:['Simulate 5 Linux service failures','Diagnose all service issues','Restore services from documentation','Practice recovery under pressure','Create service recovery runbook'],4:['Review all Month 2 concepts','Create comprehensive cheat sheet','Test yourself on all topics','Identify knowledge gaps','Fill all gaps with targeted study'],5:['Create professional Month 2 portfolio','Organize all lab documentation','Add all diagrams and screenshots','Write summary of all skills learned','Polish all GitHub repositories'],6:['Explain networking concepts in German (recorded)','Practice: DNS, DHCP, firewall in German','Improve technical German vocabulary','Review all networking terms','Create comprehensive German IT notes'],7:['BUILD: Complete network lab portfolio','Organize all 4 weeks of work','Create professional documentation','Add all diagrams and screenshots','Upload polished final project']}}
 };
 
-// ═══════════════════════════════════════
-// GERMAN LANGUAGE — Week-by-week tasks
-// ═══════════════════════════════════════
 const GERMAN_PLAN = {
-  1: { // Month 1: A2 Stabilization
-    1: { // Week 1
-      1: ['Review A1 grammar (articles, word order)', 'Watch 20 min DW (no subtitles first)', 'Write 10 basic sentences', 'Translate 10 EN→DE', 'Speak 10 min aloud'],
-      2: ['Learn 15 verbs (present)', 'Shadow DW video (repeat lines)', 'Write paragraph about your day', 'Translate to English', 'Record speaking'],
-      3: ['Learn connectors (weil, dass, und)', 'Write 15 sentences using connectors', 'Speak using them', 'Watch DW + repeat', 'Review mistakes'],
-      4: ['Read simple DW article', 'Mark unknown words', 'Translate manually', 'Read aloud', 'Add vocab to list'],
-      5: ['Listening only (no reading)', 'Summarize in English', 'Try again in German', 'Speak 10 min', 'Fix pronunciation'],
-      6: ['Self Q&A conversation', 'Answer 10 daily questions', 'Record', 'Fix grammar errors', 'Repeat'],
-      7: ['BUILD: Speak 5 min nonstop', 'Write 200 words', 'Translate both ways', 'Organize vocab notes']
-    },
-    2: { // Week 2
-      1: ['Learn Perfekt tense', 'Write 10 past sentences', 'Speak about yesterday', 'Watch DW', 'Repeat'],
-      2: ['Read longer article', 'Translate', 'Summarize in German', 'Speak summary', 'Review'],
-      3: ['Learn 20 vocab words', 'Use each in sentence', 'Speak aloud', 'Write paragraph', 'Review'],
-      4: ['Listen 25 min German audio', 'No subtitles', 'Write summary', 'Speak summary', 'Repeat'],
-      5: ['Conversation simulation', 'Answer complex questions', 'Record', 'Fix mistakes', 'Repeat'],
-      6: ['Describe your full day in German', 'Use connectors', 'Record', 'Review', 'Improve'],
-      7: ['BUILD: Speak 7 min nonstop', 'Write 300 words', 'Understand ~60% listening']
-    },
-    3: { // Week 3
-      1: ['Learn modal verbs (kann, muss, will)', 'Write 10 sentences', 'Speak examples', 'Watch DW'],
-      2: ['Read article', 'Translate', 'Summarize DE', 'Speak summary', 'Review'],
-      3: ['Listening practice 30 min', 'Write summary', 'Speak summary', 'Repeat'],
-      4: ['Write story (past tense)', 'Translate both ways', 'Correct mistakes', 'Rewrite'],
-      5: ['Conversation simulation', 'Topic: daily life', 'Record', 'Review'],
-      6: ['Think in German 10 min', 'Describe surroundings', 'Speak aloud', 'Improve'],
-      7: ['BUILD: 8 min speaking', '350 words writing', 'Improve listening']
-    },
-    4: { // Week 4
-      1: ['Review all grammar', 'Fix weak areas', 'Write notes'],
-      2: ['Watch DW daily 30 min', 'Summarize', 'Speak summary'],
-      3: ['Write 2 paragraphs daily', 'Translate both ways'],
-      4: ['Conversation practice daily', 'Record', 'Fix errors'],
-      5: ['Listening without subtitles', 'Understand context'],
-      6: ['Explain simple topics clearly', 'Speak slowly'],
-      7: ['BUILD: Strong A2 level (10 min speaking, 400 words)']
-    }
-  },
-
-  2: { // Month 2: A2 → B1 Transition
-    1: {
-      1: ['Full immersion (no English)', 'Think in German 10 min'],
-      2: ['Practice past tense speaking', 'Describe past events'],
-      3: ['Read + summarize in German', 'Speak summary'],
-      4: ['Learn 25 vocab words', 'Use actively'],
-      5: ['Watch German without subtitles', 'Understand context'],
-      6: ['Explain your daily routine fully in German'],
-      7: ['BUILD: 12 min speaking, 70% listening']
-    },
-    2: {
-      1: ['Learn future tense (werden)', 'Write examples'],
-      2: ['Describe future plans', 'Speak + write'],
-      3: ['Listening 35 min', 'Summarize'],
-      4: ['Conversation simulation', 'Topic: goals'],
-      5: ['Write essay (200 words)', 'Correct mistakes'],
-      6: ['Shadow native speakers', 'Improve rhythm'],
-      7: ['BUILD: Fluent daily topics speaking']
-    },
-    3: {
-      1: ['Learn adjective endings basics'],
-      2: ['Use adjectives in sentences'],
-      3: ['Read article + summarize'],
-      4: ['Speak summary'],
-      5: ['Write paragraph'],
-      6: ['Translate both ways'],
-      7: ['BUILD: Grammar + fluency improvement']
-    },
-    4: {
-      1: ['Conversation practice daily'],
-      2: ['Listening 40 min'],
-      3: ['Write 300 words'],
-      4: ['Speak 15 min'],
-      5: ['Explain topics clearly'],
-      6: ['Fix mistakes'],
-      7: ['BUILD: B1 entry level']
-    }
-  },
-
-  3: { // Month 3: B1 Development
-    1: {
-      1: ['Speak 15 min daily'],
-      2: ['Write 300 words'],
-      3: ['Watch native content'],
-      4: ['Summarize verbally'],
-      5: ['Improve vocabulary'],
-      6: ['Shadow speaking'],
-      7: ['BUILD: Strong fluency base']
-    },
-    2: {
-      1: ['Explain technical topics (IT basics)'],
-      2: ['Describe processes'],
-      3: ['Write explanations'],
-      4: ['Speak clearly'],
-      5: ['Record + review'],
-      6: ['Fix clarity'],
-      7: ['BUILD: Technical speaking']
-    },
-    3: {
-      1: ['Interview Q&A practice'],
-      2: ['Answer common questions'],
-      3: ['Speak confidently'],
-      4: ['Write answers'],
-      5: ['Correct mistakes'],
-      6: ['Repeat'],
-      7: ['BUILD: Interview readiness']
-    },
-    4: {
-      1: ['Listening 45 min'],
-      2: ['Understand native speech'],
-      3: ['Summarize'],
-      4: ['Speak summary'],
-      5: ['Improve speed'],
-      6: ['Fix weak areas'],
-      7: ['BUILD: B1 strong']
-    }
-  },
-
-  4: { // Month 4: B1 Strength
-    1: {
-      1: ['Speak 20 min daily'],
-      2: ['Write 400 words'],
-      3: ['Explain complex ideas'],
-      4: ['Listen native content'],
-      5: ['Shadow speaking'],
-      6: ['Fix fluency'],
-      7: ['BUILD: Strong B1']
-    },
-    2: {
-      1: ['Debate simple topics'],
-      2: ['Express opinions'],
-      3: ['Write arguments'],
-      4: ['Speak clearly'],
-      5: ['Improve structure'],
-      6: ['Repeat'],
-      7: ['BUILD: Opinion fluency']
-    },
-    3: {
-      1: ['Explain business topics'],
-      2: ['Describe real estate ideas'],
-      3: ['Write explanations'],
-      4: ['Speak clearly'],
-      5: ['Fix vocab gaps'],
-      6: ['Practice'],
-      7: ['BUILD: Business German base']
-    },
-    4: {
-      1: ['Listening 50 min'],
-      2: ['Summarize'],
-      3: ['Speak summary'],
-      4: ['Improve understanding'],
-      5: ['Fix mistakes'],
-      6: ['Repeat'],
-      7: ['BUILD: B1/B2 bridge']
-    }
-  },
-
-  5: { // Month 5: B1 → B2
-    1: {
-      1: ['Speak 25 min'],
-      2: ['Write 400+ words'],
-      3: ['Explain complex topics'],
-      4: ['Listen native content'],
-      5: ['Shadow speaking'],
-      6: ['Improve fluency'],
-      7: ['BUILD: B1 strong']
-    },
-    2: {
-      1: ['Advanced listening'],
-      2: ['Summarize fast'],
-      3: ['Speak clearly'],
-      4: ['Improve speed'],
-      5: ['Fix weak areas'],
-      6: ['Repeat'],
-      7: ['BUILD: Listening mastery']
-    },
-    3: {
-      1: ['Interview simulation'],
-      2: ['Answer technical questions'],
-      3: ['Speak confidently'],
-      4: ['Record'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Interview strong']
-    },
-    4: {
-      1: ['Write 500 words'],
-      2: ['Translate'],
-      3: ['Correct mistakes'],
-      4: ['Rewrite'],
-      5: ['Improve grammar'],
-      6: ['Practice'],
-      7: ['BUILD: Writing strong']
-    }
-  },
-
-  6: { // Month 6: B2 Development
-    1: {
-      1: ['Speak 30 min'],
-      2: ['Explain everything in German'],
-      3: ['Listen native speed'],
-      4: ['Summarize'],
-      5: ['Improve clarity'],
-      6: ['Practice'],
-      7: ['BUILD: B2 speaking']
-    },
-    2: {
-      1: ['Advanced writing'],
-      2: ['500+ words'],
-      3: ['Formal style'],
-      4: ['Correct grammar'],
-      5: ['Rewrite'],
-      6: ['Practice'],
-      7: ['BUILD: Professional writing']
-    },
-    3: {
-      1: ['Interview simulation full'],
-      2: ['Technical explanation'],
-      3: ['Speak confidently'],
-      4: ['Record'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Interview ready']
-    },
-    4: {
-      1: ['Listening 60 min'],
-      2: ['Understand 80%'],
-      3: ['Summarize'],
-      4: ['Speak summary'],
-      5: ['Improve'],
-      6: ['Repeat'],
-      7: ['BUILD: Strong B2']
-    }
-  },
-
-  7: { // Month 7: Professional German
-    1: {
-      1: ['Speak 30+ min'],
-      2: ['Explain projects'],
-      3: ['Use technical vocab'],
-      4: ['Speak clearly'],
-      5: ['Improve fluency'],
-      6: ['Practice'],
-      7: ['BUILD: Professional speaking']
-    },
-    2: {
-      1: ['Formal writing'],
-      2: ['Emails'],
-      3: ['Reports'],
-      4: ['Correct grammar'],
-      5: ['Rewrite'],
-      6: ['Improve'],
-      7: ['BUILD: Workplace writing']
-    },
-    3: {
-      1: ['Interview practice'],
-      2: ['Answer confidently'],
-      3: ['Speak clearly'],
-      4: ['Record'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Interview mastery']
-    },
-    4: {
-      1: ['Listening native'],
-      2: ['Understand fully'],
-      3: ['Summarize'],
-      4: ['Speak'],
-      5: ['Improve'],
-      6: ['Repeat'],
-      7: ['BUILD: Near fluent']
-    }
-  },
-
-  8: { // Month 8: B2 Readiness
-    1: {
-      1: ['Full German daily'],
-      2: ['Speak 40 min'],
-      3: ['Write 600 words'],
-      4: ['Listen native'],
-      5: ['Summarize'],
-      6: ['Improve'],
-      7: ['BUILD: B2 ready']
-    },
-    2: {
-      1: ['Interview simulation full'],
-      2: ['Answer all questions'],
-      3: ['Speak confidently'],
-      4: ['Record'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Interview ready']
-    },
-    3: {
-      1: ['Fluency refinement'],
-      2: ['Fix weak areas'],
-      3: ['Speak clearly'],
-      4: ['Improve speed'],
-      5: ['Practice'],
-      6: ['Repeat'],
-      7: ['BUILD: Fluent speaking']
-    },
-    4: {
-      1: ['Final review all skills'],
-      2: ['Speaking test'],
-      3: ['Writing test'],
-      4: ['Listening test'],
-      5: ['Fix last gaps'],
-      6: ['Polish'],
-      7: ['BUILD: Full B2 readiness']
-    }
-  }
+  1:{1:{1:['Review A1 grammar (articles, word order)','Watch 20 min DW (no subtitles first)','Write 10 basic sentences','Translate 10 EN→DE','Speak 10 min aloud'],2:['Learn 15 verbs (present)','Shadow DW video (repeat lines)','Write paragraph about your day','Translate to English','Record speaking'],3:['Learn connectors (weil, dass, und)','Write 15 sentences using connectors','Speak using them','Watch DW + repeat','Review mistakes'],4:['Read simple DW article','Mark unknown words','Translate manually','Read aloud','Add vocab to list'],5:['Listening only (no reading)','Summarize in English','Try again in German','Speak 10 min','Fix pronunciation'],6:['Self Q&A conversation','Answer 10 daily questions','Record','Fix grammar errors','Repeat'],7:['BUILD: Speak 5 min nonstop','Write 200 words','Translate both ways','Organize vocab notes']},2:{1:['Learn Perfekt tense','Write 10 past sentences','Speak about yesterday','Watch DW','Repeat'],2:['Read longer article','Translate','Summarize in German','Speak summary','Review'],3:['Learn 20 vocab words','Use each in sentence','Speak aloud','Write paragraph','Review'],4:['Listen 25 min German audio','No subtitles','Write summary','Speak summary','Repeat'],5:['Conversation simulation','Answer complex questions','Record','Fix mistakes','Repeat'],6:['Describe your full day in German','Use connectors','Record','Review','Improve'],7:['BUILD: Speak 7 min nonstop','Write 300 words','Understand ~60% listening']},3:{1:['Learn modal verbs (kann, muss, will)','Write 10 sentences','Speak examples','Watch DW'],2:['Read article','Translate','Summarize DE','Speak summary','Review'],3:['Listening practice 30 min','Write summary','Speak summary','Repeat'],4:['Write story (past tense)','Translate both ways','Correct mistakes','Rewrite'],5:['Conversation simulation','Topic: daily life','Record','Review'],6:['Think in German 10 min','Describe surroundings','Speak aloud','Improve'],7:['BUILD: 8 min speaking','350 words writing','Improve listening']},4:{1:['Review all grammar','Fix weak areas','Write notes'],2:['Watch DW daily 30 min','Summarize','Speak summary'],3:['Write 2 paragraphs daily','Translate both ways'],4:['Conversation practice daily','Record','Fix errors'],5:['Listening without subtitles','Understand context'],6:['Explain simple topics clearly','Speak slowly'],7:['BUILD: Strong A2 level (10 min speaking, 400 words)']}},
+  2:{1:{1:['Full immersion (no English)','Think in German 10 min'],2:['Practice past tense speaking','Describe past events'],3:['Read + summarize in German','Speak summary'],4:['Learn 25 vocab words','Use actively'],5:['Watch German without subtitles','Understand context'],6:['Explain your daily routine fully in German'],7:['BUILD: 12 min speaking, 70% listening']},2:{1:['Learn future tense (werden)','Write examples'],2:['Describe future plans','Speak + write'],3:['Listening 35 min','Summarize'],4:['Conversation simulation','Topic: goals'],5:['Write essay (200 words)','Correct mistakes'],6:['Shadow native speakers','Improve rhythm'],7:['BUILD: Future tense fluent, essay writing strong']},3:{1:['Learn Konjunktiv II','Write polite requests'],2:['Practice formal speaking','Slow and clear'],3:['Read complex articles','Understand 70%'],4:['Write formal letter draft','Correct'],5:['Listen + write key points'],6:['Explain topics in German clearly'],7:['BUILD: Formal German improving']},4:{1:['Review all grammar points','Create notes'],2:['Listening marathon (60 min)'],3:['Speak for 15 min nonstop'],4:['Write 400-word essay'],5:['Conversation: explain IT job goal in German'],6:['Full A2→B1 review'],7:['BUILD: B1 entry level achieved']}}
 };
-// ═══════════════════════════════════════
-// GO BACKEND — month-by-month
-// ═══════════════════════════════════════
+
 const GOLANG_PLAN = {
-  1: { // Month 1: Fundamentals Recovery + Control
-    1: { // Week 1: Core Refresh
-      1: ['Review variables, types, loops', 'Write 5 small programs', 'Recreate from memory', 'Push to GitHub'],
-      2: ['Review functions + structs', 'Build mini CLI tool', 'Refactor code', 'Write notes'],
-      3: ['Deep dive interfaces', 'Implement 2 examples', 'Explain in comments', 'Test'],
-      4: ['Error handling patterns', 'Create custom errors', 'Rewrite old code cleanly'],
-      5: ['Packages & modules', 'Split into multiple files', 'Organize project structure'],
-      6: ['Goroutines basics', 'Write 2 concurrent programs', 'Test behavior'],
-      7: ['BUILD: CLI Tool (structs + interfaces + concurrency)']
-    },
-    2: { // Week 2: Concurrency + Thinking in Go
-      1: ['Channels basics', 'Producer/consumer example'],
-      2: ['Select statement', 'Timeout handling'],
-      3: ['Worker pool implementation'],
-      4: ['Concurrency problem solving (race conditions)', 'Fix issues'],
-      5: ['Context package basics'],
-      6: ['Combine goroutines + channels + context'],
-      7: ['BUILD: Concurrent task processor']
-    },
-    3: { // Week 3: Code Quality
-      1: ['Learn Go project structure best practices'],
-      2: ['Refactor previous projects'],
-      3: ['Error handling standardization'],
-      4: ['Logging basics (log package)'],
-      5: ['Write clean reusable functions'],
-      6: ['Add comments + documentation'],
-      7: ['BUILD: Clean structured CLI project']
-    },
-    4: { // Week 4: Prep for Backend
-      1: ['Learn net/http basics'],
-      2: ['Create simple HTTP server'],
-      3: ['Handle routes manually'],
-      4: ['Return JSON responses'],
-      5: ['Handle query params'],
-      6: ['Test endpoints'],
-      7: ['BUILD: Basic HTTP API']
-    }
-  },
-
-  2: { // Month 2: Backend Core
-    1: {
-      1: ['Routing system build'],
-      2: ['Request/response handling'],
-      3: ['JSON parsing'],
-      4: ['Validation basics'],
-      5: ['Error responses'],
-      6: ['Refactor structure'],
-      7: ['BUILD: REST API skeleton']
-    },
-    2: {
-      1: ['Install PostgreSQL'],
-      2: ['Connect DB (database/sql)'],
-      3: ['Run queries'],
-      4: ['Create schema'],
-      5: ['CRUD operations'],
-      6: ['Handle DB errors'],
-      7: ['BUILD: API + DB']
-    },
-    3: {
-      1: ['Repository pattern'],
-      2: ['Service layer'],
-      3: ['Separate handlers'],
-      4: ['Clean architecture intro'],
-      5: ['Refactor full project'],
-      6: ['Improve readability'],
-      7: ['BUILD: Structured backend']
-    },
-    4: {
-      1: ['Middleware concept'],
-      2: ['Logging middleware'],
-      3: ['Auth middleware basic'],
-      4: ['Request validation'],
-      5: ['Error middleware'],
-      6: ['Test flow'],
-      7: ['BUILD: Middleware system']
-    }
-  },
-
-  3: { // Month 3: Real Backend Features
-    1: {
-      1: ['JWT authentication'],
-      2: ['Login/register system'],
-      3: ['Password hashing'],
-      4: ['Secure endpoints'],
-      5: ['Token validation'],
-      6: ['Testing auth'],
-      7: ['BUILD: Auth system']
-    },
-    2: {
-      1: ['Pagination'],
-      2: ['Filtering'],
-      3: ['Sorting'],
-      4: ['Query optimization'],
-      5: ['Test endpoints'],
-      6: ['Refactor'],
-      7: ['BUILD: Advanced API']
-    },
-    3: {
-      1: ['File upload handling'],
-      2: ['Static file serving'],
-      3: ['Validation improve'],
-      4: ['Error handling improve'],
-      5: ['Testing'],
-      6: ['Refactor'],
-      7: ['BUILD: Feature-rich API']
-    },
-    4: {
-      1: ['Docker basics'],
-      2: ['Dockerize Go app'],
-      3: ['Run container'],
-      4: ['Connect DB container'],
-      5: ['Test'],
-      6: ['Document'],
-      7: ['BUILD: Dockerized backend']
-    }
-  },
-
-  4: { // Month 4: Production Thinking
-    1: {
-      1: ['Logging system (structured logs)'],
-      2: ['Error tracking'],
-      3: ['Request tracing'],
-      4: ['Improve logs'],
-      5: ['Test logs'],
-      6: ['Refactor'],
-      7: ['BUILD: Logging system']
-    },
-    2: {
-      1: ['Environment variables'],
-      2: ['Config management'],
-      3: ['Secure secrets'],
-      4: ['Refactor config'],
-      5: ['Test'],
-      6: ['Improve'],
-      7: ['BUILD: Config system']
-    },
-    3: {
-      1: ['Unit testing basics'],
-      2: ['Test handlers'],
-      3: ['Test services'],
-      4: ['Mock DB'],
-      5: ['Improve coverage'],
-      6: ['Refactor'],
-      7: ['BUILD: Tested backend']
-    },
-    4: {
-      1: ['Performance basics'],
-      2: ['Profiling'],
-      3: ['Optimize queries'],
-      4: ['Improve response time'],
-      5: ['Test load'],
-      6: ['Refactor'],
-      7: ['BUILD: Optimized API']
-    }
-  },
-
-  5: { // Month 5: Advanced Backend
-    1: {
-      1: ['Redis basics'],
-      2: ['Caching system'],
-      3: ['Cache invalidation'],
-      4: ['Test performance'],
-      5: ['Refactor'],
-      6: ['Improve'],
-      7: ['BUILD: Cached backend']
-    },
-    2: {
-      1: ['Rate limiting'],
-      2: ['Security improvements'],
-      3: ['Input sanitization'],
-      4: ['Test attacks'],
-      5: ['Fix vulnerabilities'],
-      6: ['Refactor'],
-      7: ['BUILD: Secure backend']
-    },
-    3: {
-      1: ['Background jobs'],
-      2: ['Worker queues'],
-      3: ['Task processing'],
-      4: ['Retry logic'],
-      5: ['Test'],
-      6: ['Refactor'],
-      7: ['BUILD: Job system']
-    },
-    4: {
-      1: ['API versioning'],
-      2: ['Refactor routes'],
-      3: ['Backward compatibility'],
-      4: ['Test'],
-      5: ['Improve'],
-      6: ['Document'],
-      7: ['BUILD: Versioned API']
-    }
-  },
-
-  6: { // Month 6: Deployment + Real World
-    1: {
-      1: ['Setup VPS'],
-      2: ['Deploy Go app'],
-      3: ['Configure Nginx'],
-      4: ['Test public API'],
-      5: ['Fix issues'],
-      6: ['Document'],
-      7: ['BUILD: Live backend']
-    },
-    2: {
-      1: ['CI/CD basics'],
-      2: ['Auto deploy setup'],
-      3: ['Test pipeline'],
-      4: ['Improve workflow'],
-      5: ['Refactor'],
-      6: ['Document'],
-      7: ['BUILD: CI/CD pipeline']
-    },
-    3: {
-      1: ['Monitoring basics'],
-      2: ['Health checks'],
-      3: ['Logging analysis'],
-      4: ['Fix issues'],
-      5: ['Improve'],
-      6: ['Refactor'],
-      7: ['BUILD: Monitored backend']
-    },
-    4: {
-      1: ['Security review'],
-      2: ['Fix vulnerabilities'],
-      3: ['Improve auth'],
-      4: ['Test'],
-      5: ['Refactor'],
-      6: ['Document'],
-      7: ['BUILD: Production-ready API']
-    }
-  },
-
-  7: { // Month 7: System Design
-    1: {
-      1: ['Learn microservices concept'],
-      2: ['Split services'],
-      3: ['Service communication'],
-      4: ['Test'],
-      5: ['Refactor'],
-      6: ['Improve'],
-      7: ['BUILD: Multi-service system']
-    },
-    2: {
-      1: ['API gateway concept'],
-      2: ['Routing requests'],
-      3: ['Test'],
-      4: ['Refactor'],
-      5: ['Improve'],
-      6: ['Document'],
-      7: ['BUILD: Gateway system']
-    },
-    3: {
-      1: ['Scalability concepts'],
-      2: ['Load balancing'],
-      3: ['Test'],
-      4: ['Analyze'],
-      5: ['Improve'],
-      6: ['Refactor'],
-      7: ['BUILD: Scalable backend']
-    },
-    4: {
-      1: ['Refactor all projects'],
-      2: ['Clean architecture'],
-      3: ['Improve performance'],
-      4: ['Fix issues'],
-      5: ['Polish'],
-      6: ['Document'],
-      7: ['BUILD: Final system']
-    }
-  },
-
-  8: { // Month 8: Portfolio + Mastery
-    1: {
-      1: ['Polish all projects'],
-      2: ['Improve README'],
-      3: ['Add documentation'],
-      4: ['Fix bugs'],
-      5: ['Optimize'],
-      6: ['Test'],
-      7: ['BUILD: Portfolio ready']
-    },
-    2: {
-      1: ['Build final SaaS backend'],
-      2: ['Auth + DB + cache'],
-      3: ['Docker + deploy'],
-      4: ['Test'],
-      5: ['Fix'],
-      6: ['Improve'],
-      7: ['BUILD: SaaS system']
-    },
-    3: {
-      1: ['Practice explaining system design'],
-      2: ['Explain API flow'],
-      3: ['Record explanations'],
-      4: ['Improve clarity'],
-      5: ['Repeat'],
-      6: ['Refine'],
-      7: ['BUILD: Interview ready']
-    },
-    4: {
-      1: ['Final review'],
-      2: ['Fix weak areas'],
-      3: ['Polish code'],
-      4: ['Optimize'],
-      5: ['Document'],
-      6: ['Prepare'],
-      7: ['BUILD: Backend engineer level']
-    }
-  }
+  1:{1:{1:['Install Go and configure workspace','Write first Hello World program','Understand Go file structure','Learn go run and go build commands','Create notes: Go workspace setup'],2:['Learn variables, constants, data types','Practice: int, string, bool, float64','Write 10 variable declarations','Understand zero values','Document all basic types'],3:['Learn if/else conditions','Learn switch statements','Write 5 condition examples','Practice nested conditions','Document control flow'],4:['Learn for loops (all 3 forms)','Write 5 loop examples','Practice range loops','Understand break and continue','Document loop patterns'],5:['Learn functions: declaration, parameters, returns','Write 5 functions','Practice multiple return values','Understand named returns','Document function patterns'],6:['Learn arrays and slices','Practice slice operations (append, copy)','Write array/slice exercises','Understand slice internals','Document slice patterns'],7:['BUILD: CLI calculator in Go','Use functions, loops, conditions','Push to GitHub with README']},2:{1:['Learn maps in Go','Practice map operations','Write map exercises','Understand map iteration','Document map patterns'],2:['Learn structs','Create custom types','Practice struct methods','Understand value vs pointer receivers','Document struct patterns'],3:['Learn interfaces','Implement basic interfaces','Practice polymorphism','Write interface examples','Document interface patterns'],4:['Learn error handling','Practice returning errors','Understand fmt.Errorf','Write error handling examples','Document error patterns'],5:['Learn goroutines basics','Understand concurrency concepts','Write simple goroutine examples','Practice sync.WaitGroup','Document concurrency basics'],6:['Learn channels','Practice channel communication','Write producer/consumer example','Understand blocking behavior','Document channel patterns'],7:['BUILD: Concurrent task processor','Use goroutines and channels','Push to GitHub with README']}},
+  3:{1:{1:['Review Go basics','Build simple CLI tool','Push to GitHub'],2:['Learn file I/O','Read and write files','Write file processing tool'],3:['Learn JSON encoding/decoding','Parse JSON data','Write JSON API consumer'],4:['Learn HTTP client','Make GET/POST requests','Build simple API caller'],5:['Learn HTTP server basics','Create simple REST endpoint','Test with curl'],6:['Add error handling to all projects','Improve all code quality','Review best practices'],7:['BUILD: REST API client tool in Go']}}
 };
-// ═══════════════════════════════════════
-// BUSINESS & FINANCE — week tasks
-// ═══════════════════════════════════════
+
 const BUSINESS_PLAN = {
-  1: { // Month 1: Discipline + Financial Awareness
-    1: { // Week 1: Absolute Control
-      1: ['Wake up fixed time (no excuse)', 'Track every hour', 'Read 20 pages finance book', 'Write 5 key lessons', 'No social media >30 min'],
-      2: ['Repeat wake time', 'Track time strictly', 'Track every expense', 'Categorize spending', 'Cut 1 useless expense'],
-      3: ['Study John D. Rockefeller habits', 'Write 5 principles', 'Apply 1 rule today', 'Journal discipline failure'],
-      4: ['Read 20 pages', 'Write insights', 'Apply to your life', 'Track time + money'],
-      5: ['No dopamine distractions', 'Deep focus 3+ hours', 'Journal productivity', 'Fix 1 bad habit'],
-      6: ['Weekly review: time + money', 'Identify leaks', 'Plan fixes', 'Journal'],
-      7: ['BUILD: Discipline system (time tracker + expense tracker + rules)']
-    },
-
-    2: { // Week 2: Financial Thinking
-      1: ['Learn income vs assets deeply', 'Write real examples', 'Identify fake assets'],
-      2: ['Study cashflow concept', 'Draw your own cashflow map'],
-      3: ['Read 25 pages finance book', 'Extract 5 principles'],
-      4: ['Analyze 1 rich person strategy (Rockefeller-style)', 'Write breakdown'],
-      5: ['Track all expenses again', 'Reduce 1 more cost'],
-      6: ['Journal your money mindset', 'Fix weak thinking'],
-      7: ['BUILD: Personal financial awareness doc']
-    },
-
-    3: { // Week 3: EU Food Supply Chain Intro
-      1: ['Research EU food supply chain overview', 'Map flow (producer → consumer)'],
-      2: ['Identify key players (farmers, distributors, retailers)', 'Write notes'],
-      3: ['Research logistics companies in Europe', 'Write breakdown'],
-      4: ['Find inefficiencies (delay, cost, waste)', 'List opportunities'],
-      5: ['Read 20 pages finance/business book', 'Apply insights'],
-      6: ['Journal business ideas', 'Refine thinking'],
-      7: ['BUILD: EU supply chain overview report']
-    },
-
-    4: { // Week 4: Real Estate Basics
-      1: ['Learn property types (residential/commercial/mixed)'],
-      2: ['Understand rent vs buy strategy'],
-      3: ['Research Germany property market basics'],
-      4: ['Learn rental yield concept'],
-      5: ['Analyze 1 real property example (numbers)'],
-      6: ['Write notes clearly'],
-      7: ['BUILD: Real estate fundamentals doc']
-    }
-  },
-
-  2: { // Month 2: Investor Thinking
-    1: {
-      1: ['Study leverage (debt vs equity)', 'Apply to real estate'],
-      2: ['Write leverage examples', 'Calculate simple scenarios'],
-      3: ['Understand risk vs reward deeply'],
-      4: ['Read 30 pages', 'Extract insights'],
-      5: ['Journal thinking improvements'],
-      6: ['Review discipline system'],
-      7: ['BUILD: Leverage understanding doc']
-    },
-
-    2: {
-      1: ['Research 3 German cities (price vs rent)'],
-      2: ['Compare rental yields'],
-      3: ['Identify best opportunity zones'],
-      4: ['Write market comparison'],
-      5: ['Journal insights'],
-      6: ['Refine thinking'],
-      7: ['BUILD: Market comparison report']
-    },
-
-    3: {
-      1: ['Deep research EU food logistics'],
-      2: ['Analyze cost structure'],
-      3: ['Identify inefficiencies'],
-      4: ['Write 3 business ideas'],
-      5: ['Refine ideas'],
-      6: ['Journal'],
-      7: ['BUILD: Opportunity ideas doc']
-    },
-
-    4: {
-      1: ['Analyze 2 real businesses'],
-      2: ['Break revenue + scaling'],
-      3: ['Compare strategies'],
-      4: ['Write reports'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Business analysis doc']
-    }
-  },
-
-  3: { // Month 3: Strategy Formation
-    1: {
-      1: ['Design personal wealth plan (cashflow → assets)'],
-      2: ['Define long-term goals (EU real estate)'],
-      3: ['Break into phases'],
-      4: ['Write structured plan'],
-      5: ['Review'],
-      6: ['Refine'],
-      7: ['BUILD: Wealth roadmap']
-    },
-
-    2: {
-      1: ['Study rental vs flipping'],
-      2: ['Compare profits'],
-      3: ['Write notes'],
-      4: ['Apply scenarios'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Investment model doc']
-    },
-
-    3: {
-      1: ['Research EU tax basics (real estate)'],
-      2: ['Understand impact'],
-      3: ['Write summary'],
-      4: ['Apply simple examples'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Tax basics doc']
-    },
-
-    4: {
-      1: ['Build food supply chain business model'],
-      2: ['Define revenue streams'],
-      3: ['Define costs'],
-      4: ['Think scalability'],
-      5: ['Refine'],
-      6: ['Journal'],
-      7: ['BUILD: Business model draft']
-    }
-  },
-
-  4: { // Month 4: Execution Thinking
-    1: {
-      1: ['Simulate buying property (paper deal)'],
-      2: ['Calculate total cost'],
-      3: ['Estimate rent'],
-      4: ['Analyze profit'],
-      5: ['Write report'],
-      6: ['Review'],
-      7: ['BUILD: Deal analysis']
-    },
-
-    2: {
-      1: ['Study negotiation basics'],
-      2: ['Write 3 negotiation scenarios'],
-      3: ['Apply to property deals'],
-      4: ['Practice mentally'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Negotiation notes']
-    },
-
-    3: {
-      1: ['Deep research supply chain entry point'],
-      2: ['Where you can enter market'],
-      3: ['Analyze barriers'],
-      4: ['Write strategy'],
-      5: ['Refine'],
-      6: ['Journal'],
-      7: ['BUILD: Entry strategy']
-    },
-
-    4: {
-      1: ['Upgrade discipline system'],
-      2: ['Remove all time waste'],
-      3: ['Increase deep work hours'],
-      4: ['Track performance'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Discipline upgrade']
-    }
-  },
-
-  5: { // Month 5: Advanced Thinking
-    1: {
-      1: ['Study real estate developers in Europe'],
-      2: ['Analyze strategies'],
-      3: ['Write notes'],
-      4: ['Compare'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Developer analysis']
-    },
-
-    2: {
-      1: ['Analyze real deals online'],
-      2: ['Break numbers'],
-      3: ['Evaluate risk'],
-      4: ['Write report'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Deal evaluation']
-    },
-
-    3: {
-      1: ['Study financing (loans, interest)'],
-      2: ['Understand leverage impact'],
-      3: ['Write notes'],
-      4: ['Apply examples'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Financing doc']
-    },
-
-    4: {
-      1: ['Refine supply chain business idea'],
-      2: ['Improve scalability'],
-      3: ['Strengthen model'],
-      4: ['Write updated plan'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Strategy refinement']
-    }
-  },
-
-  6: { // Month 6: Execution Ready
-    1: {
-      1: ['Build personal investment strategy'],
-      2: ['Define asset allocation'],
-      3: ['Plan risk control'],
-      4: ['Write plan'],
-      5: ['Review'],
-      6: ['Refine'],
-      7: ['BUILD: Portfolio strategy']
-    },
-
-    2: {
-      1: ['Simulate 3 property deals'],
-      2: ['Compare ROI'],
-      3: ['Select best'],
-      4: ['Write analysis'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Deal selection system']
-    },
-
-    3: {
-      1: ['Study market cycles'],
-      2: ['Understand timing'],
-      3: ['Write notes'],
-      4: ['Apply thinking'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Timing strategy']
-    },
-
-    4: {
-      1: ['Full knowledge review'],
-      2: ['Fix weak areas'],
-      3: ['Organize all notes'],
-      4: ['Refine system'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Complete system']
-    }
-  },
-
-  7: { // Month 7: Integration
-    1: {
-      1: ['Combine business + real estate strategy'],
-      2: ['Create unified plan'],
-      3: ['Write full system'],
-      4: ['Review'],
-      5: ['Refine'],
-      6: ['Journal'],
-      7: ['BUILD: Master strategy']
-    },
-
-    2: {
-      1: ['Analyze top 5 opportunities'],
-      2: ['Compare'],
-      3: ['Select best'],
-      4: ['Write decision'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Opportunity focus']
-    },
-
-    3: {
-      1: ['Execution planning'],
-      2: ['Step-by-step breakdown'],
-      3: ['Timeline creation'],
-      4: ['Write plan'],
-      5: ['Review'],
-      6: ['Refine'],
-      7: ['BUILD: Execution roadmap']
-    },
-
-    4: {
-      1: ['Discipline check'],
-      2: ['Fix weaknesses'],
-      3: ['Upgrade system'],
-      4: ['Track performance'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Discipline mastery']
-    }
-  },
-
-  8: { // Month 8: Operator Mode
-    1: {
-      1: ['Finalize business model'],
-      2: ['Refine numbers'],
-      3: ['Risk control'],
-      4: ['Write final document'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Final model']
-    },
-
-    2: {
-      1: ['Full system review'],
-      2: ['Fix all weak areas'],
-      3: ['Polish knowledge'],
-      4: ['Organize docs'],
-      5: ['Review'],
-      6: ['Improve'],
-      7: ['BUILD: Clean system']
-    },
-
-    3: {
-      1: ['Simulate real execution'],
-      2: ['Run multiple scenarios'],
-      3: ['Fix problems'],
-      4: ['Improve'],
-      5: ['Journal'],
-      6: ['Review'],
-      7: ['BUILD: Execution confidence']
-    },
-
-    4: {
-      1: ['Final discipline test (no missed tasks)'],
-      2: ['Full focus mode'],
-      3: ['Review 8-month progress'],
-      4: ['Write lessons learned'],
-      5: ['Prepare next phase'],
-      6: ['Mental reset'],
-      7: ['BUILD: Operator mindset']
-    }
-  }
+  1:{1:{1:['Start reading "The Lean Startup" — Chapter 1','Write 3 key takeaways','Research: What is a Startup Minimum Viable Product','Write 1 business insight'],2:['Read Chapter 2','Write 3 takeaways','Research: European startup ecosystem overview','Find 1 European success story'],3:['Read Chapter 3','Write takeaways','Research: Germany startup ecosystem (Berlin, Munich)','Write notes on opportunities'],4:['Read Chapter 4','Takeaways','Research: Food supply chain logistics in Europe','Write insights'],5:['Read Chapter 5','Takeaways','Research: How import/export works in EU','Write notes'],6:['Read Chapter 6','Takeaways','Research: Bangladesh to Germany trade routes','Write insights'],7:['BUILD: Week 1 business reading notes complete','Summarize Lean Startup progress']},2:{1:['Read Chapter 7','Research: German business registration process'],2:['Read Chapter 8','Research: GmbH vs UG in Germany'],3:['Read Chapter 9','Research: German tax basics for entrepreneurs'],4:['Read Chapter 10','Research: EU business grants and funding'],5:['Read Chapter 11','Research: E-commerce opportunities in Germany'],6:['Read Chapter 12','Research: Digital marketing in DACH region'],7:['BUILD: Business model research notes complete']}}
 };
-// ═══════════════════════════════════════
+
+// ════════════════════════════════════════════
+// STABLE TASK ID REGISTRY
+// Maps m-w-d-goal-idx → stable ID
+// ════════════════════════════════════════════
+const TASK_ID_CACHE = {};
+function getTaskId(m, w, d, goal, idx) {
+  var k = m+'-'+w+'-'+d+'-'+goal+'-'+idx;
+  if (!TASK_ID_CACHE[k]) TASK_ID_CACHE[k] = k;
+  return TASK_ID_CACHE[k];
+}
+
+// ════════════════════════════════════════════
 // RULES
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 const RULES = [
-  { t:'Study Every Day Without Exception', b:'Your shift changes. Your energy changes. Your routine adapts. But you never take a zero day. Even 20 minutes counts. The chain must not break.' },
-  { t:'Build, Don\'t Just Watch', b:'For every video you watch, open a terminal and reproduce what you learned. Employers hire people who have done things, not watched things.' },
-  { t:'German Is Not Optional', b:'Even 20 minutes per day of German is mandatory. Language is exponential — but only if it\'s daily. One German phrase in an interview wins hearts.' },
-  { t:'Document Everything', b:'GitHub, Notion, a notebook — every lab you do, every problem you solve. A documented project beats 10 undocumented ones.' },
-  { t:'This Plan Does Not Change', b:'You will feel overwhelmed. You will want to add something. You will feel behind. IGNORE IT. Execute the plan as written. Discipline beats motivation every time.' },
-  { t:'Rejections Are Data, Not Verdicts', b:'You will be rejected. Many times. Each rejection is information. Analyze it, fix what you can, move on. The first "yes" changes everything.' },
-  { t:'Apply From Month 7', b:'Do not wait until you feel 100% ready. Nobody ever does. Apply, go through the process, learn from interviews, iterate. The process is the preparation.' },
-  { t:'Your Shift Is Never an Excuse', b:'Morning, afternoon, night — you always have time. Your study window is fixed. 15:00 on morning/night shift. 06:00 on afternoon shift. No exceptions.' },
-  { t:'The 5-Year Vision Feeds Daily Discipline', b:'On hard days, remember: real estate in Germany, your own business, financial freedom. Today\'s 2 hours of study is one brick. The house takes 1,825 bricks.' },
-  { t:'Streak Is Everything', b:'The visual chain of completed days is your most powerful tool. Don\'t break it. If you break it, rebuild it immediately — never take two days off in a row.' }
+  {t:'Execute First, Feel Later',b:'Motivation follows action, not the reverse. Open the app, pick one task, do it. The feeling of momentum comes from doing, not deciding.'},
+  {t:'Tasks Are Permanent',b:'Once completed, a task stays done forever. You are not chasing a daily reset. You are building a permanent record of who you became.'},
+  {t:'Every Checked Box Is a Brick',b:'This campaign is a wall. 1,825 days of bricks. You do not need inspiration. You need to place one brick per day. That is all.'},
+  {t:'Document Everything',b:'GitHub, Notion, a notebook — every lab you do, every problem you solve. A documented project beats 10 undocumented ones.'},
+  {t:'This Plan Does Not Change',b:'You will feel overwhelmed. You will want to add something. You will feel behind. IGNORE IT. Execute the plan as written. Discipline beats motivation every time.'},
+  {t:'Rejections Are Data, Not Verdicts',b:'You will be rejected. Many times. Each rejection is information. Analyze it, fix what you can, move on. The first "yes" changes everything.'},
+  {t:'Apply From Month 7',b:'Do not wait until you feel 100% ready. Nobody ever does. Apply, go through the process, learn from interviews, iterate. The process is the preparation.'},
+  {t:'Your Shift Is Never an Excuse',b:'Morning, afternoon, night — you always have time. Your study window is fixed. 15:00 on morning/night shift. 06:00 on afternoon shift. No exceptions.'},
+  {t:'The 5-Year Vision Feeds Daily Discipline',b:'On hard days, remember: real estate in Germany, your own business, financial freedom. Today\'s 2 hours of study is one brick. The house takes 1,825 bricks.'},
+  {t:'Active Days Never Die',b:'Your lifetime active days count never resets. Every day you touch this system, you advance. Missing a day is just a gap — not the end. Come back and continue.'}
 ];
 
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-const today = new Date();
-const DAY_ABBR = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-const MON_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const PLAN_META = [
+  {title:'Month 1 — Linux Operator',weeks:[{t:'Week 1',f:'Linux Foundations'},{t:'Week 2',f:'Network Foundations'},{t:'Week 3',f:'Servers & Services'},{t:'Week 4',f:'Professional Documentation'}]},
+  {title:'Month 2 — Network Apprentice',weeks:[{t:'Week 1',f:'Advanced IP & Subnetting'},{t:'Week 2',f:'DNS, DHCP & Routing'},{t:'Week 3',f:'Firewalls & Security'},{t:'Week 4',f:'Network Troubleshooting'}]},
+  {title:'Month 3 — Infrastructure Builder',weeks:[{t:'Week 1',f:'Virtualization Foundations'},{t:'Week 2',f:'Multi-VM Infrastructure'},{t:'Week 3',f:'SSH & Remote Management'},{t:'Week 4',f:'Infrastructure Project'}]},
+  {title:'Month 4 — Enterprise Environment',weeks:[{t:'Week 1',f:'Windows Server Foundations'},{t:'Week 2',f:'Active Directory'},{t:'Week 3',f:'Enterprise Services'},{t:'Week 4',f:'Mixed Linux+Windows Lab'}]},
+  {title:'Month 5 — Modern Infrastructure',weeks:[{t:'Week 1',f:'Docker Foundations'},{t:'Week 2',f:'Docker Compose'},{t:'Week 3',f:'Reverse Proxy & HTTPS'},{t:'Week 4',f:'Monitoring & Backups'}]},
+  {title:'Month 6 — Production Mindset',weeks:[{t:'Week 1',f:'Security Hardening'},{t:'Week 2',f:'VPS Deployment'},{t:'Week 3',f:'Automation & Scripting'},{t:'Week 4',f:'Final Infrastructure Project'}]},
+  {title:'Month 7 — German Professional Mode',weeks:[{t:'Week 1',f:'Self Introduction & Communication'},{t:'Week 2',f:'Technical German Vocabulary'},{t:'Week 3',f:'Interview Simulation'},{t:'Week 4',f:'CV & Applications'}]},
+  {title:'Month 8 — Application War',weeks:[{t:'Week 1',f:'Company Research'},{t:'Week 2',f:'Application Sending'},{t:'Week 3',f:'Interview Preparation'},{t:'Week 4',f:'Optimization & Follow-ups'}]}
+];
 
-let S = {};
-if (!S.tasks) S.tasks = {};
-if (!S.streak) S.streak = { count:0, lastDate:null, history:[] };
-if (!S.shift) S.shift = 'morning';
-if (!S.month) S.month = 1;
-if (!S.week) S.week = 1;
-if (!S.day) S.day = 1;
-if (!S.planMonth) S.planMonth = 1;
+const DAY_ABBR=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const MON_ABBR=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
-// ── FIREBASE SYNC ──
+// ════════════════════════════════════════════
+// DATE UTILITIES
+// ════════════════════════════════════════════
+function localDateKey(date) {
+  var d = date || new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
 
+function today() { return new Date(); }
+
+function dateFromKey(key) {
+  var parts = key.split('-');
+  return new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+}
+
+function daysBetween(keyA, keyB) {
+  var a = dateFromKey(keyA), b = dateFromKey(keyB);
+  return Math.round((b - a) / 86400000);
+}
+
+// Given m/w/d position, compute approximate calendar date from campaign start
+function campaignDayToDate(m, w, d) {
+  if (!S.campaignStartDate) return null;
+  var dayOffset = (m-1)*28 + (w-1)*7 + (d-1);
+  var start = dateFromKey(S.campaignStartDate);
+  var result = new Date(start.getTime() + dayOffset * 86400000);
+  return result;
+}
+
+function formatDisplayDate(date) {
+  if (!date) return '';
+  var todayStr = localDateKey(new Date());
+  var dStr = localDateKey(date);
+  var diff = daysBetween(dStr, todayStr);
+  if (diff === 0) return 'Today — '+DAY_ABBR[date.getDay()]+' '+date.getDate()+' '+MON_ABBR[date.getMonth()];
+  if (diff === 1) return 'Yesterday — '+DAY_ABBR[date.getDay()]+' '+date.getDate()+' '+MON_ABBR[date.getMonth()];
+  if (diff > 1) return diff+' Days Ago — '+DAY_ABBR[date.getDay()]+' '+date.getDate()+' '+MON_ABBR[date.getMonth()];
+  return 'Day '+Math.abs(diff)+' Ahead — '+DAY_ABBR[date.getDay()]+' '+date.getDate()+' '+MON_ABBR[date.getMonth()];
+}
+
+// ════════════════════════════════════════════
+// STATE SCHEMA (Persistent Campaign Architecture)
+// ════════════════════════════════════════════
+var S = {
+  // Core navigation
+  month: 1, week: 1, day: 1,
+  planMonth: 1,
+  shift: 'morning',
+
+  // Permanent task completion store { "m-w-d-goal-idx": { done: true, ts: "ISO", date: "YYYY-MM-DD" } }
+  completedTasks: {},
+
+  // Streak & activity
+  streakData: {
+    lifetimeActiveDays: 0,
+    longestStreak: 0,
+    currentStreak: 0,
+    lastActiveDate: null,
+    activeDatesHistory: [] // ["YYYY-MM-DD", ...]
+  },
+
+  // Progress cache (recalculated dynamically, stored for reload speed)
+  progressStats: {
+    german: { total: 0, done: 0 },
+    sysint: { total: 0, done: 0 },
+    business: { total: 0, done: 0 },
+    golang: { total: 0, done: 0 }
+  },
+
+  // Campaign timeline
+  campaignStartDate: null, // YYYY-MM-DD — set on first open
+  lastOpenedDate: null
+};
+
+const LS_KEY = 'opDeutschland_v3';
+
+// ════════════════════════════════════════════
+// LOCAL STORAGE
+// ════════════════════════════════════════════
+function lsSave() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      completedTasks: S.completedTasks,
+      streakData: S.streakData,
+      month: S.month, week: S.week, day: S.day,
+      planMonth: S.planMonth, shift: S.shift,
+      campaignStartDate: S.campaignStartDate,
+      lastOpenedDate: S.lastOpenedDate
+    }));
+  } catch(e) { console.warn('localStorage save failed', e); }
+}
+
+function lsLoad() {
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (!raw) return false;
+    var d = JSON.parse(raw);
+    if (d.completedTasks) S.completedTasks = d.completedTasks;
+    if (d.streakData) {
+      S.streakData = Object.assign({
+        lifetimeActiveDays: 0, longestStreak: 0, currentStreak: 0,
+        lastActiveDate: null, activeDatesHistory: []
+      }, d.streakData);
+    }
+    if (d.month) S.month = d.month;
+    if (d.week) S.week = d.week;
+    if (d.day) S.day = d.day;
+    if (d.planMonth) S.planMonth = d.planMonth;
+    if (d.shift) S.shift = d.shift;
+    if (d.campaignStartDate) S.campaignStartDate = d.campaignStartDate;
+    if (d.lastOpenedDate) S.lastOpenedDate = d.lastOpenedDate;
+    return true;
+  } catch(e) { console.warn('localStorage load failed', e); return false; }
+}
+
+// ════════════════════════════════════════════
+// FIREBASE
+// ════════════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyB_WXXGBpkv6skHGaZwIHZKRFBB4bPJSZw",
   authDomain: "op-deutschland.firebaseapp.com",
@@ -1655,407 +626,682 @@ const firebaseConfig = {
   messagingSenderId: "599093524802",
   appId: "1:599093524802:web:5105c2349a1aabae23f0db"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const STATE_DOC = doc(db, 'state', 'samian');
+var _app, _db, _doc, _saving = false, _fbReady = false;
+var syncEl;
 
-// Show sync indicator
-const syncEl = document.getElementById('syncStatus');
-let _saving = false;
-
-async function save() {
-  _saving = true;
-  if (syncEl) { syncEl.textContent = '↑ saving…'; syncEl.style.color = 'var(--muted3)'; }
+function initFirebase() {
   try {
-    await setDoc(STATE_DOC, S);
-    if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
+    _app = firebase.initializeApp(firebaseConfig);
+    _db  = firebase.firestore(_app);
+    _doc = _db.collection('stateV3').doc('samian');
+    syncEl = document.getElementById('syncStatus');
+
+    _doc.onSnapshot(function(snap) {
+      if (_saving) return;
+      if (snap.exists) {
+        var r = snap.data();
+        // Merge: remote wins for completed tasks (union — never remove completed)
+        if (r.completedTasks) {
+          Object.assign(S.completedTasks, r.completedTasks);
+        }
+        if (r.streakData) {
+          var rs = r.streakData;
+          var ls = S.streakData;
+          // Take the maximum values to prevent data loss
+          S.streakData.lifetimeActiveDays = Math.max(ls.lifetimeActiveDays||0, rs.lifetimeActiveDays||0);
+          S.streakData.longestStreak = Math.max(ls.longestStreak||0, rs.longestStreak||0);
+          S.streakData.currentStreak = rs.currentStreak || ls.currentStreak || 0;
+          S.streakData.lastActiveDate = rs.lastActiveDate || ls.lastActiveDate;
+          // Merge history arrays
+          var hist = new Set((ls.activeDatesHistory||[]).concat(rs.activeDatesHistory||[]));
+          S.streakData.activeDatesHistory = Array.from(hist).sort();
+        }
+        if (r.month) S.month = r.month;
+        if (r.week) S.week = r.week;
+        if (r.day) S.day = r.day;
+        if (r.planMonth) S.planMonth = r.planMonth;
+        if (r.shift) S.shift = r.shift;
+        if (r.campaignStartDate) S.campaignStartDate = r.campaignStartDate;
+        if (r.lastOpenedDate) S.lastOpenedDate = r.lastOpenedDate;
+        lsSave();
+      }
+      _fbReady = true;
+      renderAll();
+      calcProgress();
+      if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
+    }, function(err) {
+      console.error('Snapshot error', err);
+      if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
+    });
   } catch(e) {
-    console.error('Save failed', e);
+    console.error('Firebase init failed', e);
     if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
   }
-  _saving = false;
 }
 
-// Real-time listener — fires on both devices whenever data changes
-onSnapshot(STATE_DOC, (snap) => {
-  if (_saving) return; // skip echo while we're the ones writing
-  if (!snap.exists()) return;
-  const remote = snap.data();
-  // Merge remote into S
-  S.tasks   = remote.tasks   ?? S.tasks;
-  S.streak  = remote.streak  ?? S.streak;
-  S.shift   = remote.shift   ?? S.shift;
-  S.month   = remote.month   ?? S.month;
-  S.week    = remote.week    ?? S.week;
-  S.day     = remote.day     ?? S.day;
-  S.planMonth = remote.planMonth ?? S.planMonth;
-  // Re-render everything
-  renderDayNav();
-  renderTodayGrid();
-  renderPlanNav();
-  renderPlanContent();
-  updateStreak();
-  calcProgress();
-  if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
-}, (err) => {
-  console.error('Listener error', err);
-  if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-});
-
-// Date display
-document.getElementById('dayNum').textContent = today.getDate();
-document.getElementById('dateStr').textContent = `${DAY_ABBR[today.getDay()]} ${MON_ABBR[today.getMonth()]} ${today.getFullYear()}`;
-
-// ═══════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════
-function dateKey() {
-  const d = today;
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function save() {
+  lsSave();
+  if (!_doc) return;
+  _saving = true;
+  if (syncEl) { syncEl.textContent = '↑ saving…'; syncEl.style.color = 'var(--muted3)'; }
+  var payload = {
+    completedTasks: S.completedTasks,
+    streakData: S.streakData,
+    month: S.month, week: S.week, day: S.day,
+    planMonth: S.planMonth, shift: S.shift,
+    campaignStartDate: S.campaignStartDate,
+    lastOpenedDate: S.lastOpenedDate
+  };
+  _doc.set(payload).then(function() {
+    if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
+    _saving = false;
+  }).catch(function(e) {
+    console.error('Save failed', e);
+    if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
+    _saving = false;
+  });
 }
 
-function taskKey(goal, idx) { return `${S.month}-${S.week}-${S.day}-${goal}-${idx}`; }
-
-function getTasksDone(goal, tasks) {
-  const dk = dateKey();
-  if (!S.tasks[dk]) return 0;
-  return tasks.filter((_,i) => S.tasks[dk][taskKey(goal,i)]).length;
-}
-
-// ═══════════════════════════════════════
-// GET TASKS FOR CURRENT DAY
-// ═══════════════════════════════════════
-function getTasksForGoal(goal) {
-  const m = S.month, w = S.week, d = S.day, shift = S.shift;
-  
+// ════════════════════════════════════════════
+// TASK DATA HELPERS
+// ════════════════════════════════════════════
+function getTasksForGoal(goal, m, w, d, shift) {
+  var p;
+  var defShift = shift || S.shift;
   if (goal === 'sysint') {
-    const p = SYSINT_PLAN[m]?.[w]?.[d];
-    return p ? p : ['Continue current week\'s system integration study', 'Review your notes from yesterday', 'Practice one lab task from this week', 'Push any code or notes to GitHub'];
+    p = SYSINT_PLAN[m] && SYSINT_PLAN[m][w] && SYSINT_PLAN[m][w][d];
+    return p || ['Continue current week\'s system integration study','Review your notes from yesterday','Practice one lab task from this week','Push any code or notes to GitHub'];
   }
   if (goal === 'german') {
-    const p = GERMAN_PLAN[m]?.[w]?.[d];
+    p = GERMAN_PLAN[m] && GERMAN_PLAN[m][w] && GERMAN_PLAN[m][w][d];
     if (p) return p;
-    // Fallback generic german tasks by shift
-    const fallbacks = {
-      morning: ['Anki — 20 new German words before commute', 'Listen to German podcast during commute (30 min)', 'Write 5 German sentences about your day', 'Review yesterday\'s vocabulary (10 min)'],
-      afternoon: ['Anki — 20 new German words (morning session)', 'Watch Easy German YouTube episode (20 min)', 'Write 5 German sentences + check with DeepL', 'Read 1 German news article on DW.com'],
-      night: ['Anki — 20 words review during break', 'Listen to German audio on commute to work', 'Write 3 German sentences on phone', 'German podcast while working (background)']
-    };
-    return fallbacks[shift] || fallbacks.morning;
+    var gf = {morning:['Anki — 20 new German words','Listen to German podcast (30 min)','Write 5 German sentences','Review yesterday\'s vocabulary'],afternoon:['Anki — 20 new German words','Watch Easy German YouTube (20 min)','Write 5 German sentences','Read 1 German news article'],night:['Anki — 20 words review','Listen to German audio','Write 3 German sentences','German podcast background']};
+    return gf[defShift] || gf.morning;
   }
   if (goal === 'golang') {
-    const p = GOLANG_PLAN[m]?.[w]?.[d];
+    p = GOLANG_PLAN[m] && GOLANG_PLAN[m][w] && GOLANG_PLAN[m][w][d];
     if (p) return p;
-    const fallbacks = {
-      morning: ['Complete 1 Go coding exercise (45 min)', 'Review Go documentation for current topic', 'Push code to GitHub with commit message', 'Read 1 Go blog post or article'],
-      afternoon: ['Code 1 hour in Go — build something real', 'Push code to GitHub with meaningful commit', 'Write 1 unit test for existing code', 'Review Go standard library docs'],
-      night: ['1 Go coding challenge (30 min)', 'Review Go syntax concepts on phone (20 min)', 'Write or review one Go function', 'Read Go documentation on one topic']
-    };
-    return fallbacks[shift] || fallbacks.morning;
+    var gof = {morning:['Complete 1 Go coding exercise (45 min)','Review Go documentation','Push code to GitHub','Read 1 Go blog post'],afternoon:['Code 1 hour in Go','Push code to GitHub','Write 1 unit test','Review Go standard library'],night:['1 Go coding challenge (30 min)','Review Go syntax on phone','Write or review one Go function','Read Go documentation']};
+    return gof[defShift] || gof.morning;
   }
   if (goal === 'business') {
-    const p = BUSINESS_PLAN[m]?.[w]?.[d];
+    p = BUSINESS_PLAN[m] && BUSINESS_PLAN[m][w] && BUSINESS_PLAN[m][w][d];
     if (p) return p;
-    const fallbacks = {
-      morning: ['Read 10 pages of current business book', 'Write 3 key takeaways in your notebook', 'Research 15 min: European food supply chain'],
-      afternoon: ['Read 10 pages of business/finance book', 'Write key takeaways (3 bullet points)', 'Research 15 min: German business topic'],
-      night: ['Read 10 pages (before or after shift)', 'Save 1 article about food supply chain in Europe', 'Write 1 insight from today\'s reading']
-    };
-    return fallbacks[shift] || fallbacks.morning;
+    var bf = {morning:['Read 10 pages of current business book','Write 3 key takeaways','Research 15 min: European food supply chain'],afternoon:['Read 10 pages of business book','Write key takeaways (3 points)','Research 15 min: German business topic'],night:['Read 10 pages','Save 1 article about food supply chain','Write 1 insight from today\'s reading']};
+    return bf[defShift] || bf.morning;
   }
   return [];
 }
 
-// ═══════════════════════════════════════
-// STREAK
-// ═══════════════════════════════════════
-function updateStreak() {
-  const s = S.streak;
-  const todayStr = dateKey();
-  const yesterStr = (() => { const d2 = new Date(today.getTime()-86400000); return `${d2.getFullYear()}-${String(d2.getMonth()+1).padStart(2,'0')}-${String(d2.getDate()).padStart(2,'0')}`; })();
-  const dayTasks = S.tasks[todayStr] || {};
-  const anyDone = Object.values(dayTasks).some(v=>v);
-  if (anyDone && s.lastDate !== todayStr) {
-    s.count = (s.lastDate === yesterStr) ? s.count + 1 : 1;
-    s.lastDate = todayStr;
-    if (!s.history.includes(todayStr)) s.history.push(todayStr);
-    save();
+function isTaskDone(m, w, d, goal, idx) {
+  var id = getTaskId(m, w, d, goal, idx);
+  return !!(S.completedTasks[id] && S.completedTasks[id].done);
+}
+
+function getTaskTimestamp(m, w, d, goal, idx) {
+  var id = getTaskId(m, w, d, goal, idx);
+  return S.completedTasks[id] ? S.completedTasks[id].ts : null;
+}
+
+function countDoneForGoal(goal) {
+  var count = 0;
+  Object.keys(S.completedTasks).forEach(function(id) {
+    if (!S.completedTasks[id].done) return;
+    var parts = id.split('-');
+    if (parts.length >= 5 && parts[3] === goal) count++;
+  });
+  return count;
+}
+
+function countTotalTasksForGoal(goal) {
+  var plan = {german:GERMAN_PLAN,sysint:SYSINT_PLAN,golang:GOLANG_PLAN,business:BUSINESS_PLAN}[goal];
+  var total = 0;
+  for (var m=1;m<=8;m++) for (var w=1;w<=4;w++) for (var d=1;d<=7;d++) {
+    var t = plan[m]&&plan[m][w]&&plan[m][w][d];
+    if (t&&t.length) total += t.length;
   }
-  document.getElementById('streakNum').textContent = s.count;
-  document.getElementById('streakSub').textContent = s.count === 0 ? 'Start today. Don\'t break the chain.' : s.count < 7 ? `${s.count} day${s.count===1?'':'s'} strong. Keep going.` : `${s.count} days! You are on fire. Don't stop.`;
-  const dots = document.getElementById('streakDots');
+  return total;
+}
+
+function countTotalDone() {
+  return Object.keys(S.completedTasks).filter(function(k){ return S.completedTasks[k].done; }).length;
+}
+
+// ════════════════════════════════════════════
+// STREAK — PERMANENT MODE
+// ════════════════════════════════════════════
+function updateStreak(newActivityDate) {
+  var sd = S.streakData;
+  var todayStr = localDateKey(new Date());
+
+  if (newActivityDate) {
+    // Record new active day
+    if (sd.activeDatesHistory.indexOf(newActivityDate) === -1) {
+      sd.activeDatesHistory.push(newActivityDate);
+      sd.activeDatesHistory.sort();
+      sd.lifetimeActiveDays = sd.activeDatesHistory.length;
+    }
+
+    // Recalculate current streak from today backward
+    var streak = 0;
+    var checkDate = new Date();
+    for (var i = 0; i < 365; i++) {
+      var checkStr = localDateKey(checkDate);
+      if (sd.activeDatesHistory.indexOf(checkStr) >= 0) {
+        streak++;
+        checkDate = new Date(checkDate.getTime() - 86400000);
+      } else if (i === 0) {
+        // today not yet active, look back from yesterday
+        checkDate = new Date(checkDate.getTime() - 86400000);
+        continue;
+      } else {
+        break;
+      }
+    }
+    sd.currentStreak = streak;
+    sd.longestStreak = Math.max(sd.longestStreak, streak);
+    sd.lastActiveDate = todayStr;
+  }
+
+  // Render
+  document.getElementById('streakNum').textContent = sd.lifetimeActiveDays;
+  var sub = sd.lifetimeActiveDays === 0
+    ? 'Start today. Build your legacy.'
+    : sd.lifetimeActiveDays < 10
+    ? sd.lifetimeActiveDays + ' active days in the campaign. Keep going.'
+    : sd.lifetimeActiveDays + ' days of permanent progression. Unstoppable.';
+  document.getElementById('streakSub').textContent = sub;
+  document.getElementById('statLongest').textContent = sd.longestStreak;
+  document.getElementById('statCurrent').textContent = sd.currentStreak;
+  document.getElementById('statTotal').textContent = countTotalDone();
+
+  // Dots — last 30 days
+  var dots = document.getElementById('streakDots');
   dots.innerHTML = '';
-  for (let i=29;i>=0;i--) {
-    const d2 = new Date(today.getTime()-i*86400000);
-    const dstr = `${d2.getFullYear()}-${String(d2.getMonth()+1).padStart(2,'0')}-${String(d2.getDate()).padStart(2,'0')}`;
-    const dot = document.createElement('div');
-    dot.className = 'sdot' + (dstr===todayStr?' today':s.history.includes(dstr)?' done':'');
+  for (var j = 29; j >= 0; j--) {
+    var dd = new Date(new Date().getTime() - j * 86400000);
+    var dStr = localDateKey(dd);
+    var dot = document.createElement('div');
+    var isToday = (dStr === todayStr);
+    var isDone = sd.activeDatesHistory.indexOf(dStr) >= 0;
+    dot.className = 'sdot' + (isToday && isDone ? ' today' : isDone ? ' done' : '');
+    dot.title = dStr;
     dots.appendChild(dot);
   }
 }
 
-//function calcProgress() {
-  function calcProgress() {
-  // Count TOTAL tasks defined in each plan across all 8 months
-  const PLANS = {
-    german: GERMAN_PLAN,
-    sysint: SYSINT_PLAN,
-    golang: GOLANG_PLAN,
-    business: BUSINESS_PLAN
-  };
-
-  const total = { german:0, sysint:0, business:0, golang:0 };
-  const done  = { german:0, sysint:0, business:0, golang:0 };
-
-  // Count total planned tasks from plan data
-  Object.keys(PLANS).forEach(goal => {
-    const plan = PLANS[goal];
-    for (let m = 1; m <= 8; m++) {
-      for (let w = 1; w <= 4; w++) {
-        for (let d = 1; d <= 7; d++) {
-          const tasks = plan[m]?.[w]?.[d];
-          if (tasks && tasks.length) total[goal] += tasks.length;
-        }
-      }
-    }
+// ════════════════════════════════════════════
+// PROGRESS BARS
+// ════════════════════════════════════════════
+var _progressCache = null;
+function calcProgress() {
+  var goals = ['german','sysint','business','golang'];
+  var result = {};
+  goals.forEach(function(g) {
+    var total = countTotalTasksForGoal(g);
+    var done = countDoneForGoal(g);
+    result[g] = { total: total, done: done };
+    var pct = total === 0 ? 0 : Math.floor((done/total)*100);
+    document.getElementById('pct-'+g).textContent = pct+'%';
+    document.getElementById('bar-'+g).style.width = pct+'%';
+    document.getElementById('det-'+g).textContent = done+'/'+total+' TASKS COMPLETED';
   });
-
-  // Count completed tasks from saved state
-  Object.values(S.tasks).forEach(day => {
-    Object.entries(day).forEach(([k, v]) => {
-      if (!v) return;
-      const parts = k.split('-');
-      // key format: month-week-day-goal-index (5 parts)
-      if (parts.length >= 5) {
-        const goal = parts[3];
-        if (done.hasOwnProperty(goal)) done[goal]++;
-      }
-    });
-  });
-
-  Object.keys(total).forEach(g => {
-    const pct = total[g] === 0 ? 0 : Math.floor((done[g] / total[g]) * 100);
-    document.getElementById(`pct-${g}`).textContent = pct + '%';
-    document.getElementById(`bar-${g}`).style.width = pct + '%';
-  });
+  _progressCache = result;
+  S.progressStats = result;
 }
 
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 // TODAY TAB
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 function renderDayNav() {
-  const nav = document.getElementById('dayNav');
+  var nav = document.getElementById('dayNav');
   nav.innerHTML = '';
-  const label = document.createElement('span');
-  label.className = 'current-day-label';
-  label.textContent = `M${S.month} · W${S.week} · `;
-  nav.appendChild(label);
-  for (let d=1;d<=7;d++) {
-    const btn = document.createElement('button');
-    btn.className = 'day-nav-btn' + (d===S.day?' active':'');
-    btn.textContent = 'D'+d;
-    btn.onclick = () => { S.day=d; save(); renderDayNav(); renderTodayGrid(); };
-    nav.appendChild(btn);
+
+  // Day buttons
+  for (var d=1;d<=7;d++) {
+    (function(dd){
+      var btn = document.createElement('button');
+      btn.className = 'day-nav-btn'+(dd===S.day?' active':'');
+      btn.textContent = 'D'+dd;
+      btn.onclick = function(){ S.day=dd; save(); renderDayNav(); renderTodayGrid(); };
+      nav.appendChild(btn);
+    })(d);
   }
-  // Week nav
-  const wDiv = document.createElement('div');
+
+  // Week buttons
+  var wDiv = document.createElement('div');
   wDiv.style.cssText = 'display:flex;gap:4px;margin-left:8px;';
-  for (let w=1;w<=4;w++) {
-    const wb = document.createElement('button');
-    wb.className = 'day-nav-btn' + (w===S.week?' active':'');
-    wb.textContent = 'W'+w;
-    wb.style.cssText = 'opacity:.7;';
-    wb.onclick = () => { S.week=w; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
-    wDiv.appendChild(wb);
+  for (var w=1;w<=4;w++) {
+    (function(ww){
+      var wb = document.createElement('button');
+      wb.className = 'day-nav-btn'+(ww===S.week?' active':'');
+      wb.textContent = 'W'+ww;
+      wb.style.cssText = 'opacity:.7;';
+      wb.onclick = function(){ S.week=ww; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
+      wDiv.appendChild(wb);
+    })(w);
   }
   nav.appendChild(wDiv);
-  const mDiv = document.createElement('div');
+
+  // Month buttons
+  var mDiv = document.createElement('div');
   mDiv.style.cssText = 'display:flex;gap:4px;margin-left:4px;';
-  for (let m=1;m<=8;m++) {
-    const mb = document.createElement('button');
-    mb.className = 'day-nav-btn' + (m===S.month?' active':'');
-    mb.textContent = 'M'+m;
-    mb.style.cssText = 'opacity:.6;';
-    mb.onclick = () => { S.month=m; S.week=1; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
-    mDiv.appendChild(mb);
+  for (var m=1;m<=8;m++) {
+    (function(mm){
+      var mb = document.createElement('button');
+      mb.className = 'day-nav-btn'+(mm===S.month?' active':'');
+      mb.textContent = 'M'+mm;
+      mb.style.cssText = 'opacity:.6;';
+      mb.onclick = function(){ S.month=mm; S.week=1; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
+      mDiv.appendChild(mb);
+    })(m);
   }
   nav.appendChild(mDiv);
 }
 
 function renderTodayGrid() {
-  const grid = document.getElementById('todayGrid');
+  var m = S.month, w = S.week, d = S.day;
+  var grid = document.getElementById('todayGrid');
   grid.innerHTML = '';
-  const dk = dateKey();
-  if (!S.tasks[dk]) S.tasks[dk] = {};
-  
-  const dayLabel = document.getElementById('todayDayLabel');
-  dayLabel.textContent = `Month ${S.month} · Week ${S.week} · Day ${S.day}`;
 
-  const goals = [
-    { key:'sysint', label:'💻 System Integration', col:'c-sysint' },
-    { key:'german', label:'🇩🇪 German B2', col:'c-german' },
-    { key:'golang', label:'⚙️ Go Backend', col:'c-golang' },
-    { key:'business', label:'📈 Business & Finance', col:'c-business' }
+  // Header labels
+  document.getElementById('todayDayLabel').textContent = 'M'+m+' · W'+w+' · D'+d;
+  var camDate = campaignDayToDate(m, w, d);
+  document.getElementById('todayDateLabel').textContent = camDate ? formatDisplayDate(camDate) : '';
+
+  var goals = [
+    {key:'sysint',  label:'💻 System Integration',col:'c-sysint'},
+    {key:'german',  label:'🇩🇪 German B2',          col:'c-german'},
+    {key:'golang',  label:'⚙️ Go Backend',           col:'c-golang'},
+    {key:'business',label:'📈 Business & Finance',   col:'c-business'}
   ];
 
-  goals.forEach(({key, label, col}) => {
-    const tasks = getTasksForGoal(key);
-    const done = getTasksDone(key, tasks);
-    const pct = tasks.length ? Math.round((done/tasks.length)*100) : 0;
+  goals.forEach(function(g) {
+    var tasks = getTasksForGoal(g.key, m, w, d, S.shift);
+    var doneCount = 0;
+    tasks.forEach(function(_, i){ if (isTaskDone(m,w,d,g.key,i)) doneCount++; });
+    var pct = tasks.length ? Math.round((doneCount/tasks.length)*100) : 0;
 
-    const card = document.createElement('div');
-    card.className = `goal-card ${col}`;
-    card.innerHTML = `
-      <div class="gc-mini-bar"><div class="gc-mini-fill" style="width:${pct}%"></div></div>
-      <div class="gc-hdr">
-        <span class="gc-name">${label}</span>
-        <span class="gc-progress">${done}/${tasks.length}</span>
-      </div>
-      <div class="task-list" id="tasks-${key}"></div>
-    `;
+    var card = document.createElement('div');
+    card.className = 'goal-card '+g.col;
+    card.innerHTML = '<div class="gc-mini-bar"><div class="gc-mini-fill" style="width:'+pct+'%"></div></div>'
+      +'<div class="gc-hdr"><span class="gc-name">'+g.label+'</span><span class="gc-progress">'+doneCount+'/'+tasks.length+'</span></div>'
+      +'<div class="task-list" id="tlist-'+g.key+'"></div>';
     grid.appendChild(card);
 
-    const tlist = card.querySelector(`#tasks-${key}`);
-    tasks.forEach((t, i) => {
-      const k = taskKey(key, i);
-      const isDone = !!(S.tasks[dk]?.[k]);
-      const item = document.createElement('div');
-      item.className = `task-item${isDone?' done':''}`;
-      item.innerHTML = `<div class="task-check">${isDone?'✓':''}</div><div class="task-text">${t}</div>`;
-      item.onclick = () => toggleTask(key, i);
+    var tlist = card.querySelector('#tlist-'+g.key);
+    tasks.forEach(function(t, i) {
+      var done = isTaskDone(m, w, d, g.key, i);
+      var ts = getTaskTimestamp(m, w, d, g.key, i);
+      var item = document.createElement('div');
+      item.className = 'task-item'+(done?' done':'');
+      var tsHtml = (done && ts) ? '<div class="task-ts">✓ '+new Date(ts).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})+'</div>' : '';
+      item.innerHTML = '<div class="task-check">'+(done?'✓':'')+'</div><div><div class="task-text">'+t+'</div>'+tsHtml+'</div>';
+      item.onclick = (function(gk,ii){ return function(){ toggleTask(m,w,d,gk,ii); }; })(g.key, i);
       tlist.appendChild(item);
     });
   });
 }
 
-function toggleTask(goal, idx) {
-  const dk = dateKey();
-  if (!S.tasks[dk]) S.tasks[dk] = {};
-  const k = taskKey(goal, idx);
-  S.tasks[dk][k] = !S.tasks[dk][k];
+function toggleTask(m, w, d, goal, idx) {
+  var id = getTaskId(m, w, d, goal, idx);
+  var wasDate = isTaskDone(m, w, d, goal, idx);
+
+  if (!wasDate) {
+    // Completing a task
+    var now = new Date();
+    S.completedTasks[id] = { done: true, ts: now.toISOString(), date: localDateKey(now) };
+    // Record activity
+    var todayStr = localDateKey(now);
+    updateStreak(todayStr);
+  } else {
+    // Uncompleting — only removes the specific task (permanent by default but manually removable)
+    S.completedTasks[id] = { done: false, ts: null, date: null };
+  }
+
   save();
   renderTodayGrid();
-  updateStreak();
   calcProgress();
+  renderStatsPanel();
 }
 
 function setShift(shift, btn) {
   S.shift = shift;
   save();
-  document.querySelectorAll('.shift-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.shift-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   renderTodayGrid();
 }
 
-function resetToday() {
-  if (!confirm('Reset all tasks for today?')) return;
-  delete S.tasks[dateKey()];
-  save();
-  renderTodayGrid();
-  calcProgress();
+// ════════════════════════════════════════════
+// RESET SYSTEM
+// ════════════════════════════════════════════
+var _pendingConfirm = null;
+
+function confirmResetDay() {
+  showConfirmModal(
+    'Reset This Day',
+    'This will permanently uncheck all tasks for M'+S.month+' W'+S.week+' D'+S.day+'. This cannot be undone.',
+    function() {
+      var prefix = S.month+'-'+S.week+'-'+S.day+'-';
+      Object.keys(S.completedTasks).forEach(function(k){
+        if (k.indexOf(prefix) === 0) S.completedTasks[k] = { done: false, ts: null, date: null };
+      });
+      save(); renderTodayGrid(); calcProgress();
+    }
+  );
 }
 
-// ═══════════════════════════════════════
-// PLAN TAB
-// ═══════════════════════════════════════
-const PLAN_META = [
-  { title:'Month 1 — Linux Operator', weeks:[{t:'Week 1',f:'Linux Foundations'},{t:'Week 2',f:'Network Foundations'},{t:'Week 3',f:'Servers & Services'},{t:'Week 4',f:'Professional Documentation'}] },
-  { title:'Month 2 — Network Apprentice', weeks:[{t:'Week 1',f:'Advanced IP & Subnetting'},{t:'Week 2',f:'DNS, DHCP & Routing'},{t:'Week 3',f:'Firewalls & Security'},{t:'Week 4',f:'Network Troubleshooting'}] },
-  { title:'Month 3 — Infrastructure Builder', weeks:[{t:'Week 1',f:'Virtualization Foundations'},{t:'Week 2',f:'Multi-VM Infrastructure'},{t:'Week 3',f:'SSH & Remote Management'},{t:'Week 4',f:'Infrastructure Project'}] },
-  { title:'Month 4 — Enterprise Environment', weeks:[{t:'Week 1',f:'Windows Server Foundations'},{t:'Week 2',f:'Active Directory'},{t:'Week 3',f:'Enterprise Services'},{t:'Week 4',f:'Mixed Linux+Windows Lab'}] },
-  { title:'Month 5 — Modern Infrastructure', weeks:[{t:'Week 1',f:'Docker Foundations'},{t:'Week 2',f:'Docker Compose'},{t:'Week 3',f:'Reverse Proxy & HTTPS'},{t:'Week 4',f:'Monitoring & Backups'}] },
-  { title:'Month 6 — Production Mindset', weeks:[{t:'Week 1',f:'Security Hardening'},{t:'Week 2',f:'VPS Deployment'},{t:'Week 3',f:'Automation & Scripting'},{t:'Week 4',f:'Final Infrastructure Project'}] },
-  { title:'Month 7 — German Professional Mode', weeks:[{t:'Week 1',f:'Self Introduction & Communication'},{t:'Week 2',f:'Technical German Vocabulary'},{t:'Week 3',f:'Interview Simulation'},{t:'Week 4',f:'CV & Applications'}] },
-  { title:'Month 8 — Application War', weeks:[{t:'Week 1',f:'Company Research'},{t:'Week 2',f:'Application Sending'},{t:'Week 3',f:'Interview Preparation'},{t:'Week 4',f:'Optimization & Follow-ups'}] }
-];
+function showResetMissionModal() {
+  var modal = document.getElementById('resetMissionModal');
+  var btns = document.getElementById('missionResetBtns');
+  btns.innerHTML = '';
+  var missions = [
+    {key:'sysint',  label:'💻 System Integration', color:'var(--sysint)'},
+    {key:'german',  label:'🇩🇪 German B2',           color:'var(--german)'},
+    {key:'golang',  label:'⚙️ Go Backend',            color:'var(--golang)'},
+    {key:'business',label:'📈 Business & Finance',    color:'var(--business)'}
+  ];
+  missions.forEach(function(ms) {
+    var btn = document.createElement('button');
+    btn.style.cssText = 'font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;padding:9px 16px;border:1px solid '+ms.color+';background:none;color:'+ms.color+';border-radius:3px;cursor:pointer;text-align:left;transition:all .2s;';
+    btn.textContent = ms.label + ' — Reset All Tasks';
+    btn.onclick = function() {
+      closeResetMissionModal();
+      showConfirmModal(
+        'Reset Mission: '+ms.label,
+        'This will permanently uncheck ALL completed tasks for this mission across all months. This cannot be undone.',
+        function() {
+          Object.keys(S.completedTasks).forEach(function(k){
+            var parts = k.split('-');
+            if (parts[3] === ms.key) S.completedTasks[k] = { done: false, ts: null, date: null };
+          });
+          save(); renderTodayGrid(); calcProgress(); renderStatsPanel();
+        }
+      );
+    };
+    btns.appendChild(btn);
+  });
+  modal.classList.add('open');
+}
 
+function closeResetMissionModal() {
+  document.getElementById('resetMissionModal').classList.remove('open');
+}
+
+function confirmFullReset() {
+  showConfirmModal(
+    '⚠ FULL CAMPAIGN RESET',
+    'This will PERMANENTLY delete ALL progress: every completed task, your entire streak history, and all statistics. This is irreversible. Are you absolutely sure?',
+    function() {
+      S.completedTasks = {};
+      S.streakData = { lifetimeActiveDays:0, longestStreak:0, currentStreak:0, lastActiveDate:null, activeDatesHistory:[] };
+      S.progressStats = {};
+      save();
+      renderAll();
+      calcProgress();
+      renderStatsPanel();
+    }
+  );
+}
+
+function showConfirmModal(title, body, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').textContent = body;
+  document.getElementById('modalConfirmBtn').onclick = function() {
+    closeModal();
+    onConfirm();
+  };
+  document.getElementById('confirmModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+}
+
+// ════════════════════════════════════════════
+// EXPORT / IMPORT
+// ════════════════════════════════════════════
+function exportProgress() {
+  var data = {
+    version: 3,
+    exportDate: new Date().toISOString(),
+    completedTasks: S.completedTasks,
+    streakData: S.streakData,
+    campaignStartDate: S.campaignStartDate
+  };
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'operation-deutschland-backup-' + localDateKey(new Date()) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showImportModal() {
+  document.getElementById('importTextarea').value = '';
+  document.getElementById('importModal').classList.add('open');
+}
+
+function closeImportModal() {
+  document.getElementById('importModal').classList.remove('open');
+}
+
+function doImport() {
+  var raw = document.getElementById('importTextarea').value.trim();
+  try {
+    var data = JSON.parse(raw);
+    if (data.completedTasks) {
+      // Merge: never remove already completed tasks
+      Object.keys(data.completedTasks).forEach(function(k) {
+        if (!S.completedTasks[k] || !S.completedTasks[k].done) {
+          S.completedTasks[k] = data.completedTasks[k];
+        }
+      });
+    }
+    if (data.streakData) {
+      var rs = data.streakData;
+      S.streakData.lifetimeActiveDays = Math.max(S.streakData.lifetimeActiveDays||0, rs.lifetimeActiveDays||0);
+      S.streakData.longestStreak = Math.max(S.streakData.longestStreak||0, rs.longestStreak||0);
+      var hist = new Set((S.streakData.activeDatesHistory||[]).concat(rs.activeDatesHistory||[]));
+      S.streakData.activeDatesHistory = Array.from(hist).sort();
+      S.streakData.lifetimeActiveDays = S.streakData.activeDatesHistory.length;
+    }
+    if (data.campaignStartDate && !S.campaignStartDate) {
+      S.campaignStartDate = data.campaignStartDate;
+    }
+    closeImportModal();
+    save();
+    renderAll();
+    calcProgress();
+    renderStatsPanel();
+    alert('Import successful! ' + Object.keys(data.completedTasks || {}).length + ' task records merged.');
+  } catch(e) {
+    alert('Import failed: invalid JSON. Check your file and try again.\n' + e.message);
+  }
+}
+
+// ════════════════════════════════════════════
+// STATS PANEL
+// ════════════════════════════════════════════
+function renderStatsPanel() {
+  var goals = ['german','sysint','business','golang'];
+  var colors = {german:'var(--german)',sysint:'var(--sysint)',business:'var(--business)',golang:'var(--golang)'};
+  var labels = {german:'🇩🇪 German B2',sysint:'💻 System Integration',business:'📈 Business',golang:'⚙️ Go Backend'};
+
+  var totalDone = countTotalDone();
+  var totalAll = goals.reduce(function(acc, g){ return acc + countTotalTasksForGoal(g); }, 0);
+  var overallPct = totalAll ? Math.floor((totalDone/totalAll)*100) : 0;
+  var sd = S.streakData;
+
+  var statsGrid = document.getElementById('statsGrid');
+  statsGrid.innerHTML = '';
+
+  var cards = [
+    { val: sd.lifetimeActiveDays, lbl: 'Lifetime Active Days', sub: 'Days you showed up', color: 'var(--german)' },
+    { val: sd.longestStreak, lbl: 'Longest Streak', sub: 'Consecutive active days', color: 'var(--sysint)' },
+    { val: sd.currentStreak, lbl: 'Current Streak', sub: 'Active days in a row now', color: 'var(--golang)' },
+    { val: totalDone, lbl: 'Total Tasks Done', sub: 'Permanent completions', color: 'var(--business)' },
+    { val: overallPct + '%', lbl: 'Campaign Progress', sub: totalDone + '/' + totalAll + ' total tasks', color: 'var(--german)' }
+  ];
+
+  goals.forEach(function(g) {
+    var total = countTotalTasksForGoal(g);
+    var done = countDoneForGoal(g);
+    var pct = total ? Math.floor((done/total)*100) : 0;
+    cards.push({ val: pct+'%', lbl: labels[g], sub: done+'/'+total+' tasks done', color: colors[g] });
+  });
+
+  cards.forEach(function(c) {
+    var card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = '<div class="stat-card-val" style="color:'+c.color+'">'+c.val+'</div>'
+      +'<div class="stat-card-lbl">'+c.lbl+'</div>'
+      +'<div class="stat-card-sub">'+c.sub+'</div>';
+    statsGrid.appendChild(card);
+  });
+
+  // History grid — last 120 days
+  var hGrid = document.getElementById('historyGrid');
+  hGrid.innerHTML = '';
+  var todayStr = localDateKey(new Date());
+  for (var i = 119; i >= 0; i--) {
+    var dd = new Date(new Date().getTime() - i * 86400000);
+    var dStr = localDateKey(dd);
+    var isActive = sd.activeDatesHistory.indexOf(dStr) >= 0;
+    var div = document.createElement('div');
+    div.className = 'hday' + (isActive ? ' active' : '');
+    div.title = dStr + (isActive ? ' ✓' : '');
+    hGrid.appendChild(div);
+  }
+}
+
+// ════════════════════════════════════════════
+// PLAN TAB
+// ════════════════════════════════════════════
 function renderPlanNav() {
-  const nav = document.getElementById('planMonthNav');
+  var nav = document.getElementById('planMonthNav');
   nav.innerHTML = '';
-  PLAN_META.forEach((m, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'pmn-btn' + (i+1===S.planMonth?' active':'');
-    btn.textContent = `M${i+1}`;
-    btn.onclick = () => { S.planMonth=i+1; save(); renderPlanNav(); renderPlanContent(); };
+  PLAN_META.forEach(function(m, i) {
+    var btn = document.createElement('button');
+    btn.className = 'pmn-btn'+(i+1===S.planMonth?' active':'');
+    btn.textContent = 'M'+(i+1);
+    btn.onclick = (function(ii){ return function(){ S.planMonth=ii+1; save(); renderPlanNav(); renderPlanContent(); }; })(i);
     nav.appendChild(btn);
   });
 }
 
 function renderPlanContent() {
-  const meta = PLAN_META[S.planMonth-1];
+  var meta = PLAN_META[S.planMonth-1];
   document.getElementById('planMonthTitle').textContent = meta.title;
-  const container = document.getElementById('planWeeks');
+  var container = document.getElementById('planWeeks');
   container.innerHTML = '';
-  meta.weeks.forEach((w, wi) => {
-    const weekNum = wi+1;
-    const card = document.createElement('div');
+  var PLANS = {sysint:SYSINT_PLAN, german:GERMAN_PLAN, golang:GOLANG_PLAN, business:BUSINESS_PLAN};
+  meta.weeks.forEach(function(w, wi) {
+    var weekNum = wi+1;
+    var card = document.createElement('div');
     card.className = 'week-card';
-    card.innerHTML = `<div class="wk-hdr"><div class="wk-title">${w.t}</div><div class="wk-focus">${w.f}</div></div><div class="wk-days" id="wk-days-${weekNum}"></div>`;
+    card.innerHTML = '<div class="wk-hdr"><div class="wk-title">'+w.t+'</div><div class="wk-focus">'+w.f+'</div></div><div class="wk-days" id="wkd-'+weekNum+'"></div>';
     container.appendChild(card);
-    const daysEl = card.querySelector(`#wk-days-${weekNum}`);
-    const goalLabels = [
-      { key:'sysint', label:'💻 SysInt', color:'var(--sysint)', plan: SYSINT_PLAN },
-      { key:'german', label:'🇩🇪 German', color:'var(--german)', plan: GERMAN_PLAN },
-      { key:'golang', label:'⚙️ Go', color:'var(--golang)', plan: GOLANG_PLAN },
-      { key:'business', label:'📈 Business', color:'var(--business)', plan: BUSINESS_PLAN }
+    var daysEl = card.querySelector('#wkd-'+weekNum);
+    var goalLabels = [
+      {key:'sysint',   label:'💻 SysInt',   color:'var(--sysint)'},
+      {key:'german',   label:'🇩🇪 German',   color:'var(--german)'},
+      {key:'golang',   label:'⚙️ Go',        color:'var(--golang)'},
+      {key:'business', label:'📈 Business',  color:'var(--business)'}
     ];
-    goalLabels.forEach(({key, label, color, plan}) => {
-      const dayEl = document.createElement('div');
+    goalLabels.forEach(function(gl) {
+      var dayEl = document.createElement('div');
       dayEl.className = 'wk-day';
-      const tasks7 = [];
-      for (let d=1;d<=7;d++) {
-        const t = plan[S.planMonth]?.[weekNum]?.[d];
-        if (t && t.length) tasks7.push({d, tasks:t});
+      var tasks7 = [];
+      for (var d=1;d<=7;d++) {
+        var t = PLANS[gl.key][S.planMonth] && PLANS[gl.key][S.planMonth][weekNum] && PLANS[gl.key][S.planMonth][weekNum][d];
+        if (t && t.length) tasks7.push({d:d, tasks:t});
       }
-      dayEl.innerHTML = `<div class="wk-day-label" style="color:${color}">${label}</div><div class="wk-day-tasks">${tasks7.map(({d,tasks})=>`<div class="wk-task"><strong style="color:${color};opacity:.7">D${d}</strong> — ${tasks.slice(0,2).join(' · ')}</div>`).join('')}</div>`;
+      dayEl.innerHTML = '<div class="wk-day-label" style="color:'+gl.color+'">'+gl.label+'</div>'
+        +'<div class="wk-day-tasks">'+tasks7.map(function(x){ return '<div class="wk-task"><strong style="color:'+gl.color+';opacity:.7">D'+x.d+'</strong> — '+x.tasks.slice(0,2).join(' · ')+'</div>'; }).join('')+'</div>';
       daysEl.appendChild(dayEl);
     });
   });
 }
 
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 // RULES
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 function renderRules() {
-  const grid = document.getElementById('rulesGrid');
-  RULES.forEach((r, i) => {
-    const card = document.createElement('div');
+  var grid = document.getElementById('rulesGrid');
+  grid.innerHTML = '';
+  RULES.forEach(function(r, i) {
+    var card = document.createElement('div');
     card.className = 'rule-card';
-    card.innerHTML = `<div class="rule-num">${String(i+1).padStart(2,'0')}</div><div><div class="rule-title">${r.t}</div><div class="rule-text">${r.b}</div></div>`;
+    card.innerHTML = '<div class="rule-num">'+String(i+1).padStart(2,'0')+'</div><div><div class="rule-title">'+r.t+'</div><div class="rule-text">'+r.b+'</div></div>';
     grid.appendChild(card);
   });
 }
 
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 // TAB SWITCHING
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 function switchTab(name, btn) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById(`panel-${name}`).classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-'+name).classList.add('active');
   btn.classList.add('active');
+  if (name === 'stats') renderStatsPanel();
 }
 
-// ── Expose functions to global scope (required because script is type="module") ──
-window.switchTab = switchTab;
-window.setShift = setShift;
-window.resetToday = resetToday;
-window.toggleTask = toggleTask;
+// ════════════════════════════════════════════
+// RENDER ALL
+// ════════════════════════════════════════════
+function renderAll() {
+  renderDayNav();
+  renderTodayGrid();
+  renderPlanNav();
+  renderPlanContent();
+  updateStreak(null);
+}
 
-// ═══════════════════════════════════════
+// ════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════
-// Set active shift button
-const activeShiftBtn = document.getElementById(`sbtn-${S.shift}`);
-if (activeShiftBtn) activeShiftBtn.classList.add('active');
+// ════════════════════════════════════════════
+window.addEventListener('load', function() {
+  syncEl = document.getElementById('syncStatus');
 
-renderDayNav();
-renderTodayGrid();
-renderPlanNav();
-renderPlanContent();
-renderRules();
-updateStreak();
-calcProgress();
+  // Load from localStorage first (instant)
+  lsLoad();
+
+  // Set campaign start date if first ever open
+  if (!S.campaignStartDate) {
+    S.campaignStartDate = localDateKey(new Date());
+  }
+
+  // Update last opened date
+  var todayStr = localDateKey(new Date());
+  S.lastOpenedDate = todayStr;
+
+  // Display header date
+  var now = new Date();
+  document.getElementById('dayNum').textContent = now.getDate();
+  document.getElementById('dateStr').textContent = DAY_ABBR[now.getDay()]+' '+MON_ABBR[now.getMonth()]+' '+now.getFullYear();
+
+  // Active shift button
+  var activeShiftBtn = document.getElementById('sbtn-'+S.shift);
+  if (activeShiftBtn) activeShiftBtn.classList.add('active');
+
+  // Render immediately from local state
+  renderRules();
+  renderAll();
+  calcProgress();
+
+  // Then connect Firebase (will re-render when remote data arrives)
+  initFirebase();
+
+  // Close modals on overlay click
+  document.getElementById('confirmModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+  document.getElementById('importModal').addEventListener('click', function(e){ if(e.target===this) closeImportModal(); });
+  document.getElementById('resetMissionModal').addEventListener('click', function(e){ if(e.target===this) closeResetMissionModal(); });
+});
 </script>
 </body>
 </html>
