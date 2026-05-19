@@ -468,9 +468,312 @@ h1 .hl{color:var(--german);}
 // PLAN DATA
 // ════════════════════════════════════════════
 const SYSINT_PLAN = {
-  1:{1:{1:['Learn Linux filesystem hierarchy (/, /etc, /var, /usr, /home)','Explore /etc /var /usr /home /srv /tmp directories','Install and use the "tree" command','Create filesystem markdown notes','5 German IT words: Datei, Verzeichnis, Benutzer, Netzwerk, System'],2:['Learn chmod/chown/sudo commands','Create 3 test users and experiment with permissions','Understand root vs regular user access','Write permission notes with examples','German practice: 10 min speaking aloud'],3:['Learn systemctl (start/stop/status/enable)','Learn journalctl to read logs','Inspect all running services','Troubleshoot one service issue','Document services workflow'],4:['Install openssh-server','SSH into localhost','Generate SSH keys with ssh-keygen','Learn SCP file transfer','Learn rsync basics — document workflow'],5:['Learn ip command (ip a, ip r)','Learn ping, ss, curl, dig commands','Inspect all open local ports','Write networking commands cheat sheet','Practice: explain one command in German'],6:['Create GitHub account (if not done)','Learn git init/add/commit/push','Create professional README','Upload screenshots of your work','Organize all notes in one folder'],7:['BUILD: Complete Linux admin environment','Configure SSH (keys only, no password)','Configure UFW firewall (allow SSH/HTTP)','Create system services overview doc','Upload full project to GitHub with README']},2:{1:['Learn IPv4 structure and classes (A/B/C)','Understand public vs private IP addresses','Learn loopback/localhost (127.0.0.1)','Practice identifying IP classes from examples','Document IP basics with examples'],2:['Learn subnet masks and CIDR notation','Practice subnet calculations (/24, /16, /8)','Identify network vs host portions','Calculate usable hosts in a subnet','Write subnet exercises with answers'],3:['Learn DNS workflow end-to-end','Understand A, CNAME, MX record types','Use dig and nslookup commands','Trace a domain resolution step by step','Document complete DNS flow with diagram'],4:['Learn DHCP handshake (DORA process)','Understand IP lease assignment','Inspect router DHCP settings','Configure one static local IP','Write DHCP workflow notes'],5:['Learn TCP vs UDP differences','Memorize 10 common ports (22/80/443/3306...)','Use ss and netstat to inspect ports','Identify all open ports on your machine','Document port usage notes'],6:['Learn traceroute/tracepath','Diagnose a connectivity issue','Simulate a DNS failure and fix it','Create a troubleshooting flowchart','Practice: describe network problem in German'],7:['BUILD: Create mini local network lab','Configure 2 VMs with static IPs','Test full connectivity between VMs','Inspect and document open ports','Create network diagram + upload to GitHub']},3:{1:['Install nginx web server','Learn virtual hosts configuration','Serve a simple static HTML page','Inspect nginx access and error logs','Document full nginx setup'],2:['Install and configure UFW firewall','Open port 80 (HTTP) and 443 (HTTPS)','Allow SSH, block everything else','Test firewall behavior from another VM','Write detailed firewall rules notes'],3:['Learn ps, top, htop commands','Kill a process using kill/pkill','Monitor CPU and RAM usage live','Understand process states (R/S/Z)','Create monitoring notes'],4:['Learn lsblk, df, du commands','Mount a virtual drive','Understand disk partitions','Check filesystem usage per directory','Document storage administration'],5:['Learn cron job syntax (min hr day month weekday)','Schedule an automatic task (backup/cleanup)','Automate log file creation every hour','Test and verify scheduled job runs','Write cron automation notes'],6:['Monitor system logs with journalctl -f','Check uptime and load average','Inspect all resource usage at once','Identify any failing or stopped services','Create system troubleshooting checklist'],7:['BUILD: Personal Linux server','Deploy nginx with custom HTML page','Configure firewall — SSH/HTTP only','Add cron automation (daily backup)','Full documentation — upload to GitHub']},4:{1:['Learn complete markdown syntax','Create clean structured notes using markdown','Format code blocks, tables, sections','Reformat all your existing notes','Practice: write a markdown README from scratch'],2:['Learn git branching (git branch, checkout)','Learn git clone, pull, fetch','Resolve a merge conflict intentionally','Practice commits with meaningful messages','Organize all GitHub repositories'],3:['Create architecture diagrams on draw.io','Take clean labeled screenshots of your lab','Label all components and IPs clearly','Learn basic draw.io shapes and flows','Organize all diagram assets'],4:['Write a professional README for Month 1 project','Add: what it does, how to install, how to use','Add screenshots and architecture diagram','Add troubleshooting section','Get feedback by reading it like a recruiter'],5:['Organize all GitHub repositories cleanly','Rename files to professional naming convention','Remove any test/junk files','Improve folder structure of all projects','Polish every README'],6:['Explain Linux filesystem in German (recorded)','Practice: systemctl, permissions, SSH in German','Improve pronunciation of technical words','Create German IT vocabulary notes (20 words)','Listen to German IT YouTube video'],7:['BUILD: Professional Linux portfolio repo','Combine all 4 weeks into one clean project','Create project index with links','Add all diagrams, screenshots, docs','Final cleanup — push to GitHub']}},
-  2:{1:{1:['Deep dive IPv4 ranges (private: 10.x, 172.16.x, 192.168.x)','Learn reserved/broadcast addresses','Understand default gateways and routing','Analyze your home network IP structure','Create IP address cheat sheet'],2:['Learn binary to decimal conversion','Practice subnet calculations in binary','Understand host ranges in subnets','Calculate /25 /26 /27 /28 subnets','Write 10 subnet exercises with solutions'],3:['Design 3 small networks with different /CIDR','Calculate usable hosts per design','Understand broadcast address per network','Create subnet diagrams on draw.io','Practice CIDR notation verbally'],4:['Understand NAT concepts deeply','Learn how local routing works','Inspect your router settings and NAT table','Analyze home LAN traffic with Wireshark','Document NAT workflow'],5:['Learn network interface commands (ip link)','Configure a network interface manually','Restart networking services','Use nmcli basics on Linux','Document all network commands'],6:['Build local VM network (3 VMs)','Assign static IPs to all VMs','Test full VM-to-VM communication','Diagnose intentional failures','Write troubleshooting steps'],7:['BUILD: Subnetted VM environment','Configure 2 separate subnets','Test routing between subnets','Create professional network topology map','Upload to GitHub with documentation']},2:{1:['Learn recursive vs iterative DNS','Understand DNS caching and TTL','Learn authoritative vs recursive servers','Trace a full DNS query with Wireshark','Document complete DNS flow diagram'],2:['Configure /etc/hosts for local DNS','Simulate local domain resolution','Test hostname resolution with dig','Add custom local domains','Create DNS configuration notes'],3:['Install and configure BIND9 DNS server','Configure forward zone file','Configure reverse zone file','Test DNS resolution from another VM','Document BIND9 setup'],4:['Install isc-dhcp-server','Configure IP address pool','Configure lease time settings','Test DHCP assignment on another VM','Document DHCP server setup'],5:['Configure static DHCP reservations','Test reserved IP assignment','Configure DNS + DHCP integration','Verify both services work together','Write combined network services notes'],6:['Simulate and fix DNS failure','Simulate and fix DHCP failure','Practice diagnostics for both services','Document troubleshooting procedures','Review all network notes'],7:['BUILD: DNS + DHCP server lab','Configure both services together','Test all network services','Create documentation','Upload to GitHub']},3:{1:['Understand firewall types (packet filter, stateful)','Learn UFW rule syntax (allow/deny/limit)','Configure UFW on VM with specific rules','Test all rule behaviors','Document firewall configuration'],2:['Learn iptables basics (INPUT/OUTPUT/FORWARD)','Add allow rules for SSH and HTTP','Block all other inbound traffic','Test iptables behavior','Compare iptables vs UFW'],3:['Install fail2ban','Configure SSH protection in jail.local','Test brute force detection','Analyze fail2ban logs','Document fail2ban setup'],4:['Configure SSH security hardening','Disable root login via SSH','Change SSH port','Configure SSH connection limits','Document all SSH security measures'],5:['Analyze /var/log/auth.log','Find failed login attempts','Find suspicious IP addresses','Create monitoring script','Document security analysis'],6:['Simulate network attack scenarios','Test all defensive measures','Verify all security configurations work','Fix identified weaknesses','Create security hardening guide'],7:['BUILD: Secured Linux network','Configure UFW, fail2ban, SSH hardening','Test all security measures','Create security documentation','Upload to GitHub']},4:{1:['Build complete troubleshooting methodology','Create step-by-step diagnostic flowchart','Practice systematic problem-solving approach','Learn when to escalate issues','Document troubleshooting methodology'],2:['Simulate 5 different network failures','Diagnose each failure systematically','Document diagnosis process for each','Time each diagnosis attempt','Improve weak diagnostic areas'],3:['Simulate 5 Linux service failures','Diagnose all service issues','Restore services from documentation','Practice recovery under pressure','Create service recovery runbook'],4:['Review all Month 2 concepts','Create comprehensive cheat sheet','Test yourself on all topics','Identify knowledge gaps','Fill all gaps with targeted study'],5:['Create professional Month 2 portfolio','Organize all lab documentation','Add all diagrams and screenshots','Write summary of all skills learned','Polish all GitHub repositories'],6:['Explain networking concepts in German (recorded)','Practice: DNS, DHCP, firewall in German','Improve technical German vocabulary','Review all networking terms','Create comprehensive German IT notes'],7:['BUILD: Complete network lab portfolio','Organize all 4 weeks of work','Create professional documentation','Add all diagrams and screenshots','Upload polished final project']}}
+  1: { // Month 1: Linux Operator
+    1: { // Week 1: Linux Foundations
+      1: ['Learn Linux filesystem hierarchy (/, /etc, /var, /usr, /home)', 'Explore /etc /var /usr /home /srv /tmp directories', 'Install and use the "tree" command', 'Create filesystem markdown notes', '5 German IT words: Datei, Verzeichnis, Benutzer, Netzwerk, System'],
+      2: ['Learn chmod/chown/sudo commands', 'Create 3 test users and experiment with permissions', 'Understand root vs regular user access', 'Write permission notes with examples', 'German practice: 10 min speaking aloud'],
+      3: ['Learn systemctl (start/stop/status/enable)', 'Learn journalctl to read logs', 'Inspect all running services', 'Troubleshoot one service issue', 'Document services workflow'],
+      4: ['Install openssh-server', 'SSH into localhost', 'Generate SSH keys with ssh-keygen', 'Learn SCP file transfer', 'Learn rsync basics — document workflow'],
+      5: ['Learn ip command (ip a, ip r)', 'Learn ping, ss, curl, dig commands', 'Inspect all open local ports', 'Write networking commands cheat sheet', 'Practice: explain one command in German'],
+      6: ['Create GitHub account (if not done)', 'Learn git init/add/commit/push', 'Create professional README', 'Upload screenshots of your work', 'Organize all notes in one folder'],
+      7: ['BUILD: Complete Linux admin environment', 'Configure SSH (keys only, no password)', 'Configure UFW firewall (allow SSH/HTTP)', 'Create system services overview doc', 'Upload full project to GitHub with README']
+    },
+    2: { // Week 2
+      1: ['Learn IPv4 structure and classes (A/B/C)', 'Understand public vs private IP addresses', 'Learn loopback/localhost (127.0.0.1)', 'Practice identifying IP classes from examples', 'Document IP basics with examples'],
+      2: ['Learn subnet masks and CIDR notation', 'Practice subnet calculations (/24, /16, /8)', 'Identify network vs host portions', 'Calculate usable hosts in a subnet', 'Write subnet exercises with answers'],
+      3: ['Learn DNS workflow end-to-end', 'Understand A, CNAME, MX record types', 'Use dig and nslookup commands', 'Trace a domain resolution step by step', 'Document complete DNS flow with diagram'],
+      4: ['Learn DHCP handshake (DORA process)', 'Understand IP lease assignment', 'Inspect router DHCP settings', 'Configure one static local IP', 'Write DHCP workflow notes'],
+      5: ['Learn TCP vs UDP differences', 'Memorize 10 common ports (22/80/443/3306...)', 'Use ss and netstat to inspect ports', 'Identify all open ports on your machine', 'Document port usage notes'],
+      6: ['Learn traceroute/tracepath', 'Diagnose a connectivity issue', 'Simulate a DNS failure and fix it', 'Create a troubleshooting flowchart', 'Practice: describe network problem in German'],
+      7: ['BUILD: Create mini local network lab', 'Configure 2 VMs with static IPs', 'Test full connectivity between VMs', 'Inspect and document open ports', 'Create network diagram + upload to GitHub']
+    },
+    3: { // Week 3
+      1: ['Install nginx web server', 'Learn virtual hosts configuration', 'Serve a simple static HTML page', 'Inspect nginx access and error logs', 'Document full nginx setup'],
+      2: ['Install and configure UFW firewall', 'Open port 80 (HTTP) and 443 (HTTPS)', 'Allow SSH, block everything else', 'Test firewall behavior from another VM', 'Write detailed firewall rules notes'],
+      3: ['Learn ps, top, htop commands', 'Kill a process using kill/pkill', 'Monitor CPU and RAM usage live', 'Understand process states (R/S/Z)', 'Create monitoring notes'],
+      4: ['Learn lsblk, df, du commands', 'Mount a virtual drive', 'Understand disk partitions', 'Check filesystem usage per directory', 'Document storage administration'],
+      5: ['Learn cron job syntax (min hr day month weekday)', 'Schedule an automatic task (backup/cleanup)', 'Automate log file creation every hour', 'Test and verify scheduled job runs', 'Write cron automation notes'],
+      6: ['Monitor system logs with journalctl -f', 'Check uptime and load average', 'Inspect all resource usage at once', 'Identify any failing or stopped services', 'Create system troubleshooting checklist'],
+      7: ['BUILD: Personal Linux server', 'Deploy nginx with custom HTML page', 'Configure firewall — SSH/HTTP only', 'Add cron automation (daily backup)', 'Full documentation — upload to GitHub']
+    },
+    4: { // Week 4
+      1: ['Learn complete markdown syntax', 'Create clean structured notes using markdown', 'Format code blocks, tables, sections', 'Reformat all your existing notes', 'Practice: write a markdown README from scratch'],
+      2: ['Learn git branching (git branch, checkout)', 'Learn git clone, pull, fetch', 'Resolve a merge conflict intentionally', 'Practice commits with meaningful messages', 'Organize all GitHub repositories'],
+      3: ['Create architecture diagrams on draw.io', 'Take clean labeled screenshots of your lab', 'Label all components and IPs clearly', 'Learn basic draw.io shapes and flows', 'Organize all diagram assets'],
+      4: ['Write a professional README for Month 1 project', 'Add: what it does, how to install, how to use', 'Add screenshots and architecture diagram', 'Add troubleshooting section', 'Get feedback by reading it like a recruiter'],
+      5: ['Organize all GitHub repositories cleanly', 'Rename files to professional naming convention', 'Remove any test/junk files', 'Improve folder structure of all projects', 'Polish every README'],
+      6: ['Explain Linux filesystem in German (recorded)', 'Practice: systemctl, permissions, SSH in German', 'Improve pronunciation of technical words', 'Create German IT vocabulary notes (20 words)', 'Listen to German IT YouTube video'],
+      7: ['BUILD: Professional Linux portfolio repo', 'Combine all 4 weeks into one clean project', 'Create project index with links', 'Add all diagrams, screenshots, docs', 'Final cleanup — push to GitHub']
+    }
+  },
+  2: { // Month 2: Network Apprentice
+    1: {
+      1: ['Deep dive IPv4 ranges (private: 10.x, 172.16.x, 192.168.x)', 'Learn reserved/broadcast addresses', 'Understand default gateways and routing', 'Analyze your home network IP structure', 'Create IP address cheat sheet'],
+      2: ['Learn binary to decimal conversion', 'Practice subnet calculations in binary', 'Understand host ranges in subnets', 'Calculate /25 /26 /27 /28 subnets', 'Write 10 subnet exercises with solutions'],
+      3: ['Design 3 small networks with different /CIDR', 'Calculate usable hosts per design', 'Understand broadcast address per network', 'Create subnet diagrams on draw.io', 'Practice CIDR notation verbally'],
+      4: ['Understand NAT concepts deeply', 'Learn how local routing works', 'Inspect your router settings and NAT table', 'Analyze home LAN traffic with Wireshark', 'Document NAT workflow'],
+      5: ['Learn network interface commands (ip link)', 'Configure a network interface manually', 'Restart networking services', 'Use nmcli basics on Linux', 'Document all network commands'],
+      6: ['Build local VM network (3 VMs)', 'Assign static IPs to all VMs', 'Test full VM-to-VM communication', 'Diagnose intentional failures', 'Write troubleshooting steps'],
+      7: ['BUILD: Subnetted VM environment', 'Configure 2 separate subnets', 'Test routing between subnets', 'Create professional network topology map', 'Upload to GitHub with documentation']
+    },
+    2: {
+      1: ['Learn recursive vs iterative DNS', 'Understand DNS caching and TTL', 'Learn authoritative vs recursive servers', 'Trace a full DNS query with Wireshark', 'Document complete DNS flow diagram'],
+      2: ['Configure /etc/hosts for local DNS', 'Simulate local domain resolution', 'Test hostname resolution with dig', 'Add custom local domains', 'Create DNS configuration notes'],
+      3: ['Understand DHCP DORA packets in detail', 'Analyze lease assignment timing', 'Configure static IP reservations in DHCP', 'Inspect DHCP server logs', 'Document DHCP process fully'],
+      4: ['Learn routing logic and routing tables', 'Understand default gateway behavior', 'Inspect routing tables with "ip route"', 'Add a static route between VMs', 'Create routing concept notes'],
+      5: ['Learn NAT and port forwarding in depth', 'Configure port forwarding in VirtualBox', 'Test external access to a service', 'Analyze packet flow through NAT', 'Document NAT configuration'],
+      6: ['Install Wireshark', 'Capture packets on your network', 'Analyze DNS traffic in captures', 'Analyze DHCP traffic in captures', 'Write packet analysis report'],
+      7: ['BUILD: Routed VM network', 'Configure custom DNS behavior', 'Configure DHCP', 'Capture and analyze packets', 'Create professional network report']
+    },
+    3: {
+      1: ['Understand firewall logic (stateful vs stateless)', 'Learn inbound vs outbound traffic rules', 'Understand packet filtering concepts', 'Analyze 5 common firewall rules', 'Create security mindmap notes'],
+      2: ['Configure UFW rules in detail', 'Allow/block specific ports and IPs', 'Learn basic iptables concepts (INPUT/OUTPUT/FORWARD)', 'Test firewall behavior intentionally', 'Document all configurations'],
+      3: ['Install nmap', 'Scan local network devices', 'Identify all open ports on your VMs', 'Detect running services from scan', 'Create nmap scan reports'],
+      4: ['Harden SSH: disable password login', 'Configure SSH key-only authentication', 'Change SSH default port', 'Test secure access thoroughly', 'Document SSH hardening steps'],
+      5: ['Learn brute force concepts and how to prevent them', 'Understand MITM attacks conceptually', 'Learn about phishing + network risks', 'Understand why firewall rules matter', 'Create defense strategy notes'],
+      6: ['Inspect /var/log/auth.log for failed logins', 'Detect and note any suspicious IPs', 'Analyze firewall logs from UFW', 'Create incident response notes', 'Practice: describe a security incident in German'],
+      7: ['BUILD: Secured Linux server', 'Configure UFW firewall rules', 'Harden SSH completely', 'Scan system with nmap', 'Analyze logs — upload documentation']
+    },
+    4: {
+      1: ['Build layered troubleshooting mindset (Physical → Application)', 'Learn OSI model for troubleshooting context', 'Create troubleshooting checklist', 'Practice issue isolation methodology', 'Document your diagnostic workflow'],
+      2: ['Simulate DNS failure — diagnose and fix', 'Simulate gateway failure — diagnose and fix', 'Diagnose packet loss scenarios', 'Restore connectivity each time', 'Write solution notes for each'],
+      3: ['Troubleshoot nginx not serving content', 'Test intentional SSH failures', 'Diagnose blocked port scenarios', 'Analyze service states and fix them', 'Create service troubleshooting guide'],
+      4: ['Break VM network interface intentionally', 'Restore interfaces step by step', 'Reconfigure static routing from scratch', 'Diagnose and fix DNS issues in VM', 'Document every fix clearly'],
+      5: ['Capture live Wireshark traffic', 'Analyze TCP 3-way handshake', 'Analyze DNS query and response', 'Inspect HTTP GET requests', 'Create packet analysis report'],
+      6: ['Full review of all networking concepts', 'Identify your 3 weakest areas', 'Repeat subnet exercises until comfortable', 'Repeat 3 troubleshooting scenarios', 'Organize all notes cleanly'],
+      7: ['BUILD: Mini company network', 'Configure static IPs for all devices', 'Configure DNS resolution', 'Configure firewall and SSH security', 'Capture and analyze packets', 'Upload professional project documentation']
+    }
+  },
+  3: { // Month 3: Infrastructure Builder
+    1: {
+      1: ['Learn hypervisor concepts (Type 1 vs Type 2)', 'Understand VM benefits over physical machines', 'Learn what snapshots are and why they matter', 'Document virtualization concepts clearly', 'German IT vocab: Virtualisierung, Snapshot, Abbild'],
+      2: ['Install VirtualBox', 'Create a new Linux (Ubuntu) VM', 'Configure RAM/CPU/storage resources', 'Install Guest Additions', 'Create VirtualBox setup notes'],
+      3: ['Learn NAT networking mode in VirtualBox', 'Learn Bridged networking mode', 'Learn Host-Only networking mode', 'Test internet access in each mode', 'Document all differences with use cases'],
+      4: ['Create your first VM snapshot', 'Clone an existing VM', 'Restore a snapshot after breaking something', 'Simulate a failure and recover', 'Write snapshot recovery workflow'],
+      5: ['Monitor VM performance (CPU/RAM/disk)', 'Adjust RAM and CPU allocation', 'Optimize disk usage (dynamic vs fixed)', 'Stress test VM resources', 'Create VM performance notes'],
+      6: ['Create a second Linux VM', 'Configure Host-Only network between VMs', 'Test SSH between both VMs', 'Share a file via SCP', 'Document dual-VM architecture'],
+      7: ['BUILD: Small VM lab (2 VMs)', 'Configure isolated Host-Only network', 'Enable SSH between both VMs', 'Create snapshots of clean state', 'Create infrastructure diagram — upload to GitHub']
+    },
+    2: {
+      1: ['Build 3-VM environment', 'Configure unique static IPs on all 3', 'Test full internal communication', 'Create network topology notes', 'Diagram the entire setup'],
+      2: ['Configure nginx on one VM', 'Access it from the other two VMs', 'Diagnose why access might fail', 'Monitor connectivity', 'Document shared service architecture'],
+      3: ['Configure Samba for file sharing', 'Share a folder between Linux VMs', 'Set permissions correctly', 'Transfer files and verify integrity', 'Write Samba configuration notes'],
+      4: ['Configure SSH aliases in ~/.ssh/config', 'SSH between all VMs using aliases', 'Automate file sync with rsync', 'Use SCP to copy configs between VMs', 'Document remote admin workflow'],
+      5: ['Design a mini office network layout', 'Define: 1 server, 2 client VMs', 'Plan IP ranges and roles', 'Assign services to correct VMs', 'Create complete infrastructure map'],
+      6: ['Simulate a VM crash (force shutdown)', 'Restore from snapshot', 'Recover a broken configuration', 'Restore all services', 'Create service recovery checklist'],
+      7: ['BUILD: Mini office environment', 'Configure server and client VMs', 'Enable file sharing with Samba', 'Enable remote admin via SSH', 'Create professional documentation']
+    },
+    3: {
+      1: ['Configure SSH using ~/.ssh/config file', 'Create SSH aliases for all VMs', 'Learn verbose SSH debugging (-v flag)', 'Test all aliases work correctly', 'Document advanced SSH config'],
+      2: ['Disable root SSH login on all VMs', 'Configure key-only authentication', 'Configure fail2ban basics', 'Inspect auth.log for blocked attempts', 'Create SSH security checklist'],
+      3: ['Use rsync to sync directories', 'Automate backup with rsync + cron', 'Compress backup archives with tar', 'Verify backup file integrity', 'Create automated backup workflow notes'],
+      4: ['Restart services remotely via SSH', 'Monitor remote logs in real time', 'Transfer config files via SCP', 'Troubleshoot a broken service remotely', 'Write remote administration guide'],
+      5: ['Manage all 3 VMs from one terminal', 'Create SSH workflow for each VM', 'Configure SSH key trust between VMs', 'Organize all connection methods', 'Create multi-server notes'],
+      6: ['Write bash script to auto-update all VMs', 'Write backup script with timestamps', 'Write monitoring health check script', 'Schedule all scripts with cron', 'Document all scripts'],
+      7: ['BUILD: Remotely managed lab', 'Secure all SSH access fully', 'Automate maintenance tasks', 'Create backup system', 'Upload full documentation']
+    },
+    4: {
+      1: ['Design a 4-VM company infrastructure', 'Plan server roles (web/file/DB/admin)', 'Plan IP structure (192.168.10.x)', 'Plan remote access method', 'Create detailed architecture draft'],
+      2: ['Deploy all 4 VMs', 'Configure all services per role', 'Configure full networking', 'Configure storage per server', 'Test all VM communication'],
+      3: ['Configure UFW on all systems', 'Secure SSH on all VMs', 'Create automated backup on each', 'Restrict permissions appropriately', 'Verify complete security'],
+      4: ['Monitor all services remotely', 'Analyze logs from each VM', 'Configure uptime checks via scripts', 'Diagnose intentional failures', 'Create monitoring documentation'],
+      5: ['Automate daily backups on all VMs', 'Automate weekly security updates', 'Create maintenance scripts', 'Verify recovery works end-to-end', 'Document automation workflows'],
+      6: ['Test ALL services work correctly', 'Simulate failures and recover', 'Validate backup and restore', 'Final security review', 'Last troubleshooting pass'],
+      7: ['BUILD: Complete company infrastructure', 'Configure all 4 VM services', 'Secure all systems', 'Create full architecture documentation', 'Create network and service diagrams', 'Upload polished portfolio project']
+    }
+  },
+  4: { // Month 4: Enterprise Environment
+    1: {
+      1: ['Install Windows Server 2022 in VirtualBox', 'Understand Server editions (Standard/Datacenter)', 'Learn Server Manager interface', 'Configure hostname and computer name', 'Create installation notes'],
+      2: ['Configure static IP on Windows Server', 'Configure DNS settings manually', 'Test connectivity to internet + VMs', 'Learn Windows networking tools (ipconfig, netstat)', 'Document all network configs'],
+      3: ['Create 5 local user accounts', 'Create 3 groups with different permissions', 'Assign users to correct groups', 'Understand administrator vs standard roles', 'Create user/group permission notes'],
+      4: ['Enable Remote Desktop Protocol (RDP)', 'Configure remote access settings', 'Connect from Linux VM via xRDP', 'Learn PowerShell basics (Get-Command, Get-Help)', 'Document RDP workflow'],
+      5: ['Learn Windows Services (services.msc)', 'Start, stop, disable services', 'Inspect Event Viewer for errors', 'Analyze system and security logs', 'Create troubleshooting notes'],
+      6: ['Create a shared folder with permissions', 'Configure NTFS permissions', 'Test access from another VM', 'Map shared drive from client', 'Document sharing process'],
+      7: ['BUILD: Windows Server base environment', 'Configure users, groups, permissions', 'Configure networking and static IP', 'Enable RDP and remote access', 'Configure shared folders', 'Upload documentation to GitHub']
+    },
+    2: {
+      1: ['Understand domain vs workgroup concept', 'Learn domain controller role', 'Understand LDAP basics', 'Learn Organizational Units (OUs)', 'Document Active Directory concepts'],
+      2: ['Install AD DS role via Server Manager', 'Promote server to domain controller', 'Configure domain name (e.g. samian.local)', 'Verify DNS and AD services', 'Create AD setup notes'],
+      3: ['Create 10 domain users', 'Create 5 domain groups by department', 'Configure group permissions', 'Organize users into OUs', 'Document the hierarchy'],
+      4: ['Create Windows 10 client VM', 'Join client to your domain', 'Login with a domain user account', 'Verify domain authentication works', 'Document domain join process'],
+      5: ['Learn Group Policy Object (GPO) basics', 'Configure password policy GPO', 'Configure desktop wallpaper policy', 'Apply and test policy enforcement', 'Create GPO notes'],
+      6: ['Reset a domain user password', 'Disable a user account', 'Move users between OUs', 'Inspect AD logs in Event Viewer', 'Create administration workflow notes'],
+      7: ['BUILD: Complete Active Directory environment', 'Configure users, groups, OUs', 'Configure 3 GPOs', 'Join 2 client systems to domain', 'Document full AD infrastructure']
+    },
+    3: {
+      1: ['Configure enterprise file sharing with DFS basics', 'Set NTFS permissions per department', 'Create department folder structure', 'Test access control per user group', 'Document file sharing structure'],
+      2: ['Configure Windows DNS server role', 'Configure Windows DHCP server role', 'Assign DHCP leases to clients', 'Test domain name resolution', 'Create DNS/DHCP server notes'],
+      3: ['Learn basic print services concepts', 'Configure remote management tools (RSAT)', 'Test remote management from client', 'Learn RMM concepts overview', 'Document remote management workflow'],
+      4: ['Analyze System log in Event Viewer', 'Analyze Security log (logon events)', 'Detect failed login attempts', 'Inspect application warnings', 'Create log analysis guide'],
+      5: ['Configure Windows Firewall rules', 'Configure account lockout policies', 'Learn Windows Defender basics', 'Restrict admin access to key accounts', 'Document security practices'],
+      6: ['Simulate: domain user login failure', 'Troubleshoot DNS resolution failure', 'Diagnose file permission denied issue', 'Restore all services after failures', 'Write enterprise troubleshooting guide'],
+      7: ['BUILD: Full enterprise Windows environment', 'Configure all server roles', 'Configure security policies', 'Configure DNS/DHCP services', 'Create complete infrastructure documentation']
+    },
+    4: {
+      1: ['Connect Linux VM to Windows Server VM', 'Configure networking between both systems', 'Test ping and connectivity', 'Transfer files via shared network', 'Document Linux-Windows integration'],
+      2: ['Install Samba on Linux', 'Configure Linux shared folders', 'Access Linux shares from Windows', 'Configure permissions correctly', 'Create cross-platform sharing notes'],
+      3: ['Manage Linux VM remotely from Windows using PuTTY', 'Use WinSCP to transfer files', 'Organize your cross-platform admin workflow', 'Test all remote access methods', 'Document procedures'],
+      4: ['Configure centralized file access from both OS', 'Test authentication from both sides', 'Organize network resources clearly', 'Test all access controls', 'Create architecture notes'],
+      5: ['Harden all Linux service configurations', 'Harden Windows firewall and services', 'Review all firewall rules on both systems', 'Analyze permissions across all VMs', 'Document security review findings'],
+      6: ['Full test of all Linux services', 'Full test of all Windows services', 'Diagnose 3 intentional failures', 'Validate backup systems', 'Review and improve documentation'],
+      7: ['BUILD: Mixed enterprise lab (Linux + Windows)', 'Configure Linux and Windows VMs together', 'Configure cross-platform file sharing', 'Configure remote access from both sides', 'Configure security on all systems', 'Create infrastructure diagrams', 'Upload polished portfolio project']
+    }
+  },
+  5: { // Month 5: Modern Infrastructure
+    1: {
+      1: ['Understand containers vs VMs', 'Learn Docker images vs running containers', 'Understand Docker workflow (build/run/push)', 'Learn why containers matter in companies', 'Create Docker concept notes'],
+      2: ['Install Docker on Linux', 'Run docker hello-world', 'Pull and run nginx image', 'Inspect running containers with docker ps', 'Document all commands used'],
+      3: ['Start, stop, remove containers', 'Inspect container logs with docker logs', 'Monitor container resource usage', 'Learn docker inspect command', 'Create container management notes'],
+      4: ['Learn Docker bridge networks', 'Connect two containers to same network', 'Expose container ports to host (-p flag)', 'Test external access to container', 'Document Docker networking'],
+      5: ['Learn Docker persistent storage (volumes)', 'Mount a volume to a container', 'Stop container and verify data persists', 'Back up container data via volume', 'Write Docker storage notes'],
+      6: ['Learn Dockerfile syntax (FROM/RUN/COPY/CMD)', 'Build a custom Docker image', 'Run your custom container', 'Modify and rebuild the image', 'Document Dockerfile workflow'],
+      7: ['BUILD: Nginx container with persistent storage', 'Configure Docker networking', 'Create volume for nginx data', 'Write Docker documentation', 'Upload to GitHub']
+    },
+    2: {
+      1: ['Understand multi-container apps concept', 'Learn docker-compose workflow', 'Understand YAML syntax basics', 'Create your first docker-compose.yml', 'Document compose concepts'],
+      2: ['Build nginx + PostgreSQL stack', 'Create docker-compose.yml with both services', 'Start the multi-container environment', 'Test connectivity between services', 'Document full setup'],
+      3: ['Learn .env files for secrets', 'Configure environment variables in compose', 'Modify compose configs safely', 'Restart services after changes', 'Create .env best practices notes'],
+      4: ['Connect 3 services in one compose file', 'Test internal DNS (service names as hostnames)', 'Analyze container-to-container networking', 'Diagnose connection issues', 'Document multi-service workflow'],
+      5: ['Update containers to newer versions', 'Back up entire compose project', 'Clean unused images/containers', 'Monitor container logs in compose', 'Write container maintenance notes'],
+      6: ['Organize compose project directories', 'Create reusable service configs', 'Improve overall project structure', 'Polish all documentation', 'Review all Docker/Compose concepts'],
+      7: ['BUILD: Multi-service compose application', 'Configure Docker Compose networking', 'Configure persistent storage', 'Configure environment variables', 'Create professional documentation']
+    },
+    3: {
+      1: ['Understand reverse proxy concept', 'Learn request forwarding logic', 'Understand load balancing overview', 'Analyze how web traffic flows', 'Create reverse proxy concept notes'],
+      2: ['Configure nginx as reverse proxy', 'Forward traffic to a Docker container', 'Test routing behavior thoroughly', 'Analyze nginx proxy logs', 'Document full proxy setup'],
+      3: ['Route traffic to 3 different services', 'Configure subdomain routing locally', 'Test complete service separation', 'Diagnose routing failures', 'Create routing configuration notes'],
+      4: ['Understand SSL/TLS basics', 'Generate self-signed certificate with openssl', 'Configure HTTPS in nginx locally', 'Test HTTPS connections', 'Document SSL/HTTPS workflow'],
+      5: ['Learn load balancing concepts (round-robin)', 'Configure nginx with 2 backend services', 'Test request distribution', 'Monitor service response times', 'Create load balancing notes'],
+      6: ['Restrict access with nginx rules', 'Hide backend services from public view', 'Analyze and add security headers', 'Harden nginx configuration', 'Document security practices'],
+      7: ['BUILD: Multi-service reverse proxy lab', 'Configure HTTPS with self-signed cert', 'Route 3 services through nginx', 'Integrate with Docker containers', 'Create infrastructure diagram', 'Upload to GitHub']
+    },
+    4: {
+      1: ['Understand monitoring importance in production', 'Learn uptime vs performance monitoring', 'Learn resource monitoring concepts', 'Understand alerting basics', 'Create monitoring strategy notes'],
+      2: ['Monitor CPU and RAM live (htop)', 'Monitor disk usage (df, du)', 'Monitor active Docker containers', 'Analyze system logs in real time', 'Document findings and thresholds'],
+      3: ['Understand backup types (full/incremental/differential)', 'Plan backup schedule for all VMs', 'Analyze recovery risks and RTO/RPO', 'Create backup notes', 'Compare backup strategies'],
+      4: ['Write bash backup script with timestamps', 'Schedule daily cron backup', 'Compress backup files with tar', 'Verify backup integrity after creation', 'Document automation workflow'],
+      5: ['Restore backup from archive', 'Recover a broken nginx configuration', 'Recover container data from volume backup', 'Test complete disaster recovery scenario', 'Create disaster recovery checklist'],
+      6: ['Full review of all services', 'Review all log files', 'Verify backup systems work end-to-end', 'Analyze overall infrastructure stability', 'Organize monitoring reports'],
+      7: ['BUILD: Fully monitored infrastructure', 'Configure backup automation', 'Configure monitoring scripts', 'Test recovery process end-to-end', 'Create professional documentation', 'Upload polished portfolio project']
+    }
+  },
+  6: { // Month 6: Production Mindset
+    1: {
+      1: ['Audit full Linux attack surface', 'Review all user permissions and sudo access', 'Analyze /etc/passwd and /etc/shadow', 'Harden user account policies', 'Create security audit notes'],
+      2: ['Disable password SSH authentication fully', 'Configure SSH keys-only across all servers', 'Disable root login via SSH', 'Configure SSH connection timeout policies', 'Test all remote access works'],
+      3: ['Review all UFW firewall rules', 'Restrict any unnecessary open ports', 'Configure rate limiting concepts in nginx', 'Test blocked access attempts', 'Document all firewall changes'],
+      4: ['Disable all unnecessary system services', 'Inspect all active ports (ss -tlnp)', 'Harden nginx configuration', 'Restrict file permissions on sensitive files', 'Create hardening checklist'],
+      5: ['Analyze /var/log/auth.log deeply', 'Count and detect failed login attempts', 'Monitor suspicious IP patterns', 'Create monitoring workflow', 'Write first incident response notes'],
+      6: ['Review all system configurations', 'Test security by simulating attacks', 'Simulate brute force and verify blocking', 'Identify remaining weak spots', 'Improve security documentation'],
+      7: ['BUILD: Hardened Linux infrastructure', 'Configure SSH security completely', 'Configure firewall rules thoroughly', 'Set up log monitoring', 'Create security documentation', 'Upload hardening project']
+    },
+    2: {
+      1: ['Understand VPS vs local VM differences', 'Learn public IP and DNS concepts for VPS', 'Research VPS providers (Hetzner, DigitalOcean)', 'Create VPS deployment notes', 'German vocab: Server, Hosting, Netzwerk, Zugriff'],
+      2: ['Rent a low-cost VPS (Hetzner CX11 is cheap)', 'Connect via SSH from your home machine', 'Configure hostname and update all packages', 'Create initial user and disable root', 'Document complete VPS setup'],
+      3: ['Configure UFW on VPS', 'Harden SSH (keys only, no root, custom port)', 'Install and configure fail2ban', 'Test all security configurations', 'Document VPS security setup'],
+      4: ['Deploy nginx on VPS', 'Create a simple webpage', 'Configure domain or use IP directly', 'Test external access from your phone', 'Create VPS deployment notes'],
+      5: ['Install Docker on VPS', 'Deploy a containerized service', 'Configure persistent volume storage', 'Monitor container health', 'Document Docker-on-VPS workflow'],
+      6: ['Configure automated rsync backups to local machine', 'Monitor VPS CPU/RAM/disk remotely', 'Analyze VPS access logs', 'Verify uptime monitoring', 'Organize VPS maintenance notes'],
+      7: ['BUILD: Live public Linux server', 'Configure secure SSH access', 'Deploy nginx + Docker services', 'Configure monitoring', 'Upload professional VPS documentation']
+    },
+    3: {
+      1: ['Learn bash variables, conditions, loops', 'Write 3 simple scripts from scratch', 'Execute scripts safely with error handling', 'Create scripting notes', 'Practice: explain script in German'],
+      2: ['Write auto-update script for all packages', 'Write automated backup script with dates', 'Write cleanup script for old log files', 'Schedule all 3 scripts with cron', 'Document automation workflow'],
+      3: ['Write CPU usage monitoring script', 'Write disk usage alert script', 'Write service status checker script', 'Test all outputs', 'Organize scripts in ~/scripts directory'],
+      4: ['Create logging output for each script', 'Rotate log files automatically', 'Generate daily summary reports', 'Create log file documentation', 'Review all script outputs'],
+      5: ['Execute scripts on remote VPS via SSH', 'Sync files between local and VPS automatically', 'Test remote automation reliability', 'Write remote automation notes', 'Verify all automation works'],
+      6: ['Refactor all scripts for readability', 'Add proper comments to every script', 'Organize scripts into directories by type', 'Create documentation for each script', 'Polish all GitHub repositories'],
+      7: ['BUILD: Linux automation toolkit', 'Automate: updates, backups, monitoring', 'Deploy automation on VPS', 'Create complete script documentation', 'Upload as professional GitHub project']
+    },
+    4: {
+      1: ['Design final infrastructure project architecture', 'Plan: 3 VMs + 1 VPS networking', 'Plan all services and their roles', 'Plan security architecture', 'Create final architecture draft'],
+      2: ['Deploy all Linux servers', 'Configure Docker services on each', 'Configure full networking between all VMs', 'Configure nginx reverse proxy', 'Test all communication paths'],
+      3: ['Harden all systems', 'Configure monitoring on all servers', 'Configure centralized logging', 'Review all firewall rules', 'Verify backup systems'],
+      4: ['Configure automated maintenance scripts', 'Configure automated backups', 'Test complete recovery process', 'Analyze all system logs', 'Organize complete workflow'],
+      5: ['Break services intentionally (5 different failures)', 'Restore each service from documentation', 'Recover from backup', 'Diagnose all connectivity issues', 'Create troubleshooting notes'],
+      6: ['Create full infrastructure diagrams', 'Write professional README', 'Organize all screenshots', 'Explain architecture in plain English', 'Polish all repositories'],
+      7: ['BUILD: Production-like infrastructure', 'Configure Docker, monitoring, backups, reverse proxy', 'Secure all systems completely', 'Create full documentation', 'Upload portfolio-ready final project']
+    }
+  },
+  7: { // Month 7: German Professional Mode
+    1: {
+      1: ['Introduce yourself in German (record audio)', 'Talk about Bangladesh and why you chose Germany', 'Talk about your IT learning journey', 'Fix pronunciation mistakes from recording', 'Create self-introduction script notes'],
+      2: ['Explain why you like Linux in German', 'Explain why you chose IT as a career', 'Practice technical vocabulary (10 IT words)', 'Write 5 sentences about your skills in German', 'Record and review'],
+      3: ['Explain your Linux project in German', 'Explain your networking project in German', 'Explain your Docker setup in German', 'Practice storytelling structure', 'Record all explanations'],
+      4: ['Practice formal German (Sie form)', 'Learn 10 workplace phrases (Entschuldigung, Danke, Bitte...)', 'Learn teamwork vocabulary', 'Practice polite email communication', 'Create workplace phrases notes'],
+      5: ['Explain a troubleshooting process in German', 'Describe a technical problem and its solution', 'Practice calm structured explanations', 'Record and review communication', 'Fix any grammar patterns'],
+      6: ['Watch 20 min German IT video (Easy German or DW)', 'Shadow native speakers: repeat sentences', 'Repeat 10 technical sentences precisely', 'Improve speaking rhythm and flow', 'Practice fluency over perfection'],
+      7: ['BUILD: German self-introduction (full recording)', 'Explain 2 projects in German', 'Record mock German conversation', 'Review pronunciation carefully', 'Organize all speaking notes']
+    },
+    2: {
+      1: ['Learn 20 German networking terms (IP-Adresse, Router, Subnetz...)', 'Explain DNS in German (3 sentences)', 'Explain IP addresses in German', 'Create networking vocabulary flashcards', 'Practice all terms aloud'],
+      2: ['Learn Linux terminology in German (Berechtigungen, Dienste, Protokoll)', 'Explain chmod permissions in German', 'Explain systemctl in German', 'Explain log files in German', 'Practice speaking aloud'],
+      3: ['Learn Active Directory vocabulary in German', 'Explain users and groups in German', 'Explain file sharing concepts in German', 'Explain server management in German', 'Create notes'],
+      4: ['Explain firewalls in German (Firewall, Paketfilter, Regel)', 'Explain SSH security in German', 'Explain troubleshooting process in German', 'Describe a security incident in German', 'Practice structured explanations'],
+      5: ['Write a formal German email (Sehr geehrte...)', 'Write internship inquiry email in German', 'Practice formal grammar and sign-offs', 'Review corrections carefully', 'German vocab: 20 new words today'],
+      6: ['Simulate helpdesk conversation in German', 'Simulate customer support call', 'Explain a technical fix to a non-technical user in German', 'Practice confidence and clarity', 'Review weak vocabulary areas'],
+      7: ['BUILD: German technical presentation (recorded)', 'Explain your infrastructure project in German', 'Organize German vocabulary lists by topic', 'Upload speaking practice logs', 'Review all recorded sessions']
+    },
+    3: {
+      1: ['Practice: "Tell me about yourself" in German (full 2 min)', 'Practice: "Why Germany?" answer', 'Practice: "Why this Ausbildung?" answer', 'Record all 3 answers', 'Review speaking pace and clarity'],
+      2: ['Explain Linux concepts in interview format', 'Explain networking concepts in interview format', 'Explain your Docker project clearly', 'Practice structured STAR answers', 'Review all recordings'],
+      3: ['Simulate IT troubleshooting interview scenario', 'Explain your problem-solving approach', 'Practice logical thinking aloud', 'Speak slowly and clearly', 'Review clarity of explanations'],
+      4: ['Explain teamwork situation from past experience', 'Explain your learning discipline and consistency', 'Explain how you handle stress and shift work', 'Practice professional tone', 'Create example story bank'],
+      5: ['Learn German workplace expectations (Pünktlichkeit)', 'Learn professional communication etiquette', 'Learn email and meeting norms in Germany', 'Practice professional attitude', 'Create cultural notes'],
+      6: ['Full mock interview simulation (30 minutes)', 'Answer all technical + personal questions', 'Review every weak answer', 'Fix pronunciation issues', 'Identify top 3 improvements needed'],
+      7: ['BUILD: Complete mock interview recording', 'Review communication quality', 'Organize all interview answers', 'Create improvement checklist', 'Polish speaking confidence']
+    },
+    4: {
+      1: ['Create German-style CV (Lebenslauf) template', 'Add all technical skills and tools', 'Add all GitHub projects with links', 'Add photo and personal info (German standard)', 'Organize layout professionally'],
+      2: ['Write German motivation letter (Motivationsschreiben)', 'Explain your goals clearly and specifically', 'Explain your technical passion', 'Explain your learning discipline', 'Improve formal writing quality'],
+      3: ['Organize all GitHub repositories professionally', 'Improve all READMEs with screenshots', 'Add architecture diagrams to all projects', 'Remove or improve any messy projects', 'Polish complete portfolio presentation'],
+      4: ['Update LinkedIn profile completely', 'Add all technical projects', 'Write professional summary in German and English', 'Connect with German IT professionals', 'Review overall profile presentation'],
+      5: ['Research Ausbildung companies in Germany (Berlin, Hamburg, Frankfurt)', 'Research companies in smaller cities (less competition)', 'Save company info in a spreadsheet', 'Organize application targets by priority', 'Review company requirements vs your skills'],
+      6: ['Prepare 5 personalized application emails', 'Prepare all attachments (CV, motivation letter)', 'Prepare portfolio links', 'Review grammar on every document', 'Finalize everything for sending'],
+      7: ['BUILD: Complete application package', 'German CV finalized', 'Motivation letter finalized', 'GitHub portfolio polished', 'Ready to send applications this week']
+    }
+  },
+  8: { // Month 8: Application War
+    1: {
+      1: ['Research 5 Berlin IT companies with Ausbildung programs', 'Identify exact job requirements for each', 'Save all company details in spreadsheet', 'Analyze requirements vs your skills', 'Create action notes'],
+      2: ['Research Hamburg opportunities (3 companies)', 'Research Leipzig + Dresden (3 companies)', 'Compare competition levels in each city', 'Add all to tracking spreadsheet', 'Organize by priority'],
+      3: ['Analyze 5 job descriptions in detail', 'Match each requirement to your GitHub project', 'Identify any remaining skill gaps', 'Prioritize highest-match applications', 'Create gap analysis notes'],
+      4: ['Research company culture for top 3 targets', 'Learn what technologies they use', 'Read employee reviews (Kununu, Glassdoor)', 'Learn company structure and team size', 'Organize research notes'],
+      5: ['Customize motivation letter for 3 companies', 'Adjust CV emphasis for each role', 'Match technical keywords from job postings', 'Review professionalism of each document', 'Grammar-check everything'],
+      6: ['Create application tracking spreadsheet', 'Add: company, date sent, status, follow-up date', 'Set up follow-up reminders', 'Prepare follow-up email templates', 'Organize complete workflow'],
+      7: ['BUILD: Complete company target list', 'Prepare 10 customized applications ready to send', 'Finalize tracking system', 'Review application strategy', 'Begin sending tomorrow']
+    },
+    2: {
+      1: ['Send first batch of 5 applications', 'Verify all attachments before sending', 'Grammar-check every email', 'Track in spreadsheet immediately', 'Follow up mentally in 1 week'],
+      2: ['Send 5 more applications', 'Improve customization based on first batch', 'Refine motivation letter based on feedback', 'Analyze any patterns in rejections', 'Update tracking spreadsheet'],
+      3: ['Prepare polite follow-up emails (1 week after sending)', 'Practice professional German email communication', 'Improve formal writing tone', 'Organize all response templates', 'Review all sent applications'],
+      4: ['Improve 2 GitHub projects with better documentation', 'Add missing screenshots to READMEs', 'Polish 2 project diagrams', 'Fix any broken links in portfolio', 'Verify all GitHub projects work'],
+      5: ['Review Linux concepts (cheat sheet review)', 'Practice German technical speaking (30 min)', 'Practice explaining 3 projects confidently', 'Review 10 common interview questions', 'Build interview confidence'],
+      6: ['Send 5 more applications today', 'Expand company search to more cities', 'Review any rejection patterns', 'Improve weakest application areas', 'Update tracking spreadsheet'],
+      7: ['Reach 20+ total applications sent', 'Organize all applications in tracker', 'Polish GitHub portfolio based on feedback', 'Prepare complete interview system', 'Review and improve']
+    },
+    3: {
+      1: ['Full technical review: Linux commands cheat sheet', 'Full technical review: Networking concepts', 'Full technical review: Docker workflows', 'Full technical review: Windows Server/AD', 'Organize all review notes'],
+      2: ['Practice explaining your Linux project (3 min max)', 'Practice explaining your Docker project', 'Practice explaining your network lab', 'Record all 3 explanations', 'Review for clarity and confidence'],
+      3: ['Full German mock interview (35 min, recorded)', 'Answer formal interview questions in German', 'Practice technical communication in German', 'Improve fluency and pronunciation', 'Review mistakes carefully'],
+      4: ['Solve 3 troubleshooting scenarios from memory', 'Explain thought process clearly for each', 'Practice calm communication under pressure', 'Improve structured answers', 'Organize notes'],
+      5: ['Practice breathing and staying calm', 'Practice speaking slowly and confidently', 'Review top 3 interview weaknesses', 'Build confidence through preparation', 'Write down your strengths'],
+      6: ['Full interview rehearsal on camera (video on)', 'Review body language and eye contact', 'Improve communication clarity', 'Fix nervous speech patterns', 'Final review before real interviews'],
+      7: ['Complete final mock interview recording', 'Organize all interview answers', 'Finalize all technical explanations', 'Build maximum interview confidence', 'You are ready']
+    },
+    4: {
+      1: ['Send polite follow-up emails to week-2 applications', 'Organize all communication professionally', 'Track any responses received', 'Improve response professionalism', 'Grammar check every follow-up'],
+      2: ['Improve CV based on any feedback received', 'Improve motivation letter', 'Improve one project presentation', 'Fix weakest areas identified', 'Review formatting'],
+      3: ['Review weakest technical skill area', 'Practice networking troubleshooting', 'Practice Linux command scenarios', 'Review Docker workflow questions', 'Organize all review notes'],
+      4: ['Review all technical German vocabulary', 'Practice fluency for 20 minutes', 'Improve pronunciation of IT terms', 'Review interview communication quality', 'Record yourself speaking today'],
+      5: ['Finalize all GitHub repositories', 'Verify all diagrams and screenshots', 'Verify all documentation is complete', 'Clean up any remaining issues', 'Polish final presentation'],
+      6: ['Plan continued learning after Month 8', 'Plan next certification (AZ-900 or LPIC)', 'Plan relocation research', 'Organize your goals for Month 9+', 'Review your full journey progress'],
+      7: ['Review your entire 8-month journey', 'Write down your top 5 strengths now', 'Finalize all applications sent', 'Organize every document', 'Prepare for real interviews', 'You have done the work. Germany is waiting.']
+    }
+  }
 };
+
 
 const GERMAN_PLAN = {
   1: { // MONTH 1: A2 stabilization
