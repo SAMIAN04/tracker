@@ -1,1533 +1,1750 @@
-const GERMAN_PLAN = {
-  1: { // MONTH 1: A2 stabilization
-    1: { // Week 1
+const SYSINT_PLAN = {
+  1: { // Month 1: Linux Operator
+    1: { // Week 1: Linux Foundations
       1: [
-        "SwipeGerman: Review A1 core deck (15 min, 90% retention target)",
-        "DW: Nico's Weg A2 – Folge 1 – watch with German subs",
-        "DW: Nico's Weg A2 – Folge 1 – interactive exercises",
-        "Shadowing: Repeat after Nicos Weg dialogue 'Im Café' (10 lines)",
-        "Speaking: Introduce yourself – name, where you live, your job – 45 sec recording",
-        "Bidirectional translation (5 sentences): Ich lerne jeden Tag Deutsch. | Wo ist der Bahnhof? | Meine Schwester heißt Anna. | Wir gehen heute ins Kino. | Das Wetter ist schön.",
-        "Grammar: Identify all nouns and their articles from your shadowing sentences"
+        "Learn Linux filesystem hierarchy (/, /etc, /var, /usr, /home)",
+        "Explore /etc, /var, /usr, /home, /srv, /tmp directories",
+        "Install and use 'tree' command - map your entire filesystem",
+        "Create filesystem diagram with labels (draw.io or hand-drawn)",
+        "Document: 'The Linux Filesystem - A Complete Guide' (500 words)"
       ],
       2: [
-        "SwipeGerman: Add 10 A2 daily routine verbs (aufstehen, duschen, frühstücken, arbeiten, kochen, essen, fernsehen, schlafen, einkaufen, putzen)",
-        "DW: Nico's Weg A2 – Folge 2 – watch, write 5 new phrases",
-        "DW: Nico's Weg A2 – Folge 2 – do all interactive grammar exercises",
-        "Listening: 'Slow German mit Annik Rubens' – 'Tagesablauf' – note 5 activities",
-        "Writing: Write 5 sentences about your morning routine using 'um', 'von…bis', 'nachdem'",
-        "Bidirectional translation (5 sentences): Kannst du mir bitte helfen? | Wir wohnen seit drei Jahren in Berlin. | Hast du Geschwister? | Ich habe keine Zeit heute. | Der Hund schläft auf dem Sofa.",
-        "Grammar: Separable verbs (aufstehen, anrufen, einkaufen) – conjugate ich, du, er/sie/es"
+        "Learn chmod (755, 644, 700), chown (user:group), sudo (commands and aliases)",
+        "Create 3 test users (alice, bob, charlie) and experiment with permissions",
+        "Understand root vs regular user - document 10 things only root can do",
+        "Write permission cheat sheet with 15 examples (rwx → numbers)",
+        "Practice: 'sudo visudo' - add user to sudoers without password for specific commands"
       ],
       3: [
-        "SwipeGerman: Add 10 A2 food/drink (Apfel, Milch, Brot, Käse, Wurst, Saft, Wasser, Suppe, Salat, Eis)",
-        "DW: Nico's Weg A2 – Folge 3 – listen only (no video), answer 5 W-questions",
-        "DW: Nico's Weg A2 – Folge 3 – grammar focus: Perfekt with 'haben'",
-        "Roleplay: Im Restaurant – order a meal, ask for bill, complain about cold soup",
-        "Reading: DW Top-Thema 'Weihnachten in Deutschland' – underline all verbs",
-        "Bidirectional translation (5 sentences): Gestern war ich im Kino. | Das Buch liegt auf dem Tisch. | Wann kommst du nach Hause? | Meine Eltern sind sehr nett. | Ich möchte einen Tee, bitte.",
-        "Technical: Name 5 computer parts in German (Bildschirm, Tastatur, Maus, Drucker, USB-Stick)"
+        "Learn systemctl (start, stop, status, enable, disable, mask, unmask)",
+        "Learn journalctl ( -xe, -u, -f, --since, --until, -p)",
+        "Inspect all running services (systemctl list-units --type=service)",
+        "Troubleshoot one service failure (intentionally break nginx, fix it)",
+        "Document services workflow with decision tree diagram"
       ],
       4: [
-        "SwipeGerman: Add 10 A2 apartment words (Wohnung, Zimmer, Küche, Bad, Flur, Balkon, Tür, Fenster, Wand, Boden)",
-        "DW: Nico's Weg A2 – Folge 4 – grammar focus: Dativ after 'aus, bei, mit, nach, von, zu'",
-        "DW: Nico's Weg A2 – Folge 4 – roleplay with pause-and-repeat",
-        "Speaking: Describe your apartment using 'es gibt' + Akkusativ and location with Dativ",
-        "Writing: Write 40-word email to landlord: 'Ich interessiere mich für die Wohnung. Gibt es eine Einbauküche?'",
-        "Bidirectional translation (5 sentences): Ich helfe meinem Freund. | Der Schlüssel liegt auf dem Tisch. | Wir fahren mit dem Zug nach München. | Nach der Arbeit gehe ich ins Fitnessstudio. | Von zu Hause aus kann ich arbeiten.",
-        "Grammar: Dativ pronouns (mir, dir, ihm, ihr, uns, euch, ihnen) – 5 original sentences"
+        "Install openssh-server, configure (Port 22, PermitRootLogin no, PasswordAuthentication no)",
+        "SSH into localhost, generate SSH keys (ed25519, 4096-bit RSA)",
+        "Learn SCP basics (scp file user@host:/path, recursive with -r)",
+        "Learn rsync basics (rsync -avz --delete source/ destination/)",
+        "Document complete SSH/SCP/rsync workflow with troubleshooting tips"
       ],
       5: [
-        "SwipeGerman: Review week's 40 words (daily routine + food + apartment) – mastery test",
-        "DW: Nico's Weg A2 – Folge 5 – watch with German subs, shadow dialogue",
-        "DW: Nico's Weg A2 – Folge 5 – complete all exercises",
-        "Immersion: 'Extr@ auf Deutsch' Episode 1 – 5 min without subs, write 3 new words",
-        "Speaking: Call a friend to make weekend plans – leave a 60-sec voicemail",
-        "Bidirectional translation (5 sentences): Danke für deine Hilfe. | Es regnet heute, aber trotzdem gehe ich spazieren. | Kannst du mir dein Handy leihen? | Ich bin müde, weil ich wenig geschlafen habe. | Wir treffen uns um 18 Uhr vor dem Kino.",
-        "Self-recording: Read your day4 email aloud, check 'ch' and 'sch' pronunciation"
+        "Learn ip command (ip a, ip r, ip neigh, ip link set, ip addr add)",
+        "Learn ping, ss (ss -tlnp, ss -tulpn), curl ( -I, -v, -X POST), dig ( +trace, ANY)",
+        "Inspect all open local ports (ss -tulpn, netstat -tulpn, lsof -i)",
+        "Write networking commands cheat sheet with 20+ commands and examples",
+        "Practice: Trace route to google.com, analyze each hop with whois"
       ],
       6: [
-        "BUILD DAY: Create personal phrasebook of 10 useful sentences from this week. Record each twice.",
-        "SwipeGerman: Add 10 A2 clothing (Hemd, Hose, Kleid, Jacke, Schuh, Socke, Gürtel, Mütze, Schal, Handschuhe)",
-        "DW: Nico's Weg A2 – Folge 6 – grammar focus: Komparativ (größer, kleiner, teurer)",
-        "Listening: YT 'Easy German A2' – street interview 'Was trägst du gerne?' – write 3 answers",
-        "Writing: Write 5 sentences comparing two clothing items (billiger, schöner, bequemer)",
-        "Bidirectional translation (5 sentences): Ich ziehe mich schnell an. | Das rote Hemd gefällt mir besser. | Wie viel kostet diese Jacke? | Kann ich die Hose anprobieren? | Haben Sie das auch in blau?",
-        "Technical: Write 3 Linux commands in German (ls – 'zeige Verzeichnis', cd – 'wechsle nach', mkdir – 'erstelle Ordner')"
+        "Create GitHub account, set up SSH key for GitHub",
+        "Learn git init, add, commit, push, pull, fetch, merge",
+        "Create professional README with badges, table of contents, screenshots",
+        "Upload screenshots of your Linux work (permissions, services, networking)",
+        "Organize all notes in 'Linux-Foundations' folder with subfolders"
       ],
       7: [
-        "REST/REVIEW: Listen to all your week's recordings. Note top 3 pronunciation errors.",
-        "SwipeGerman: Review all mistakes from week 1",
-        "DW: Nico's Weg A2 – Folge 7 – watch once, summarize in 3 German sentences",
-        "Speaking: Summarize your week in German (what you did, what you learned) – 90 sec",
-        "Grammar: Create cheat sheet for 'kein' vs 'nicht' with 5 examples each",
-        "Bidirectional translation (5 sentences): Letzte Woche war ich krank. | Morgen fahre ich nach Hamburg. | Darf ich hier parken? | Ich muss noch einkaufen gehen. | Wollen wir zusammen kochen?",
-        "Immersion: 10 min 'Sendung mit der Maus' (slowed to 0.75x) – explain one concept in English"
+        "BUILD: Complete Linux admin environment",
+        "Configure SSH (keys only, password disabled, custom port 2222)",
+        "Configure UFW firewall (allow SSH/HTTP/HTTPS, deny everything else)",
+        "Create system services overview doc (10 services with status check commands)",
+        "Upload full project to GitHub with comprehensive README and diagrams"
       ]
     },
-    2: { // Week 2
+    2: { // Week 2: Networking Foundations
       1: [
-        "SwipeGerman: Add 10 A2 health/body (Kopf, Arm, Bein, Rücken, Magen, krank, müde, Arzt, Apotheke, Rezept)",
-        "DW: Nico's Weg A2 – Folge 8 – 'Beim Arzt' – focus on 'sollte' and 'tut weh'",
-        "DW: Nico's Weg A2 – Folge 8 – interactive exercises",
-        "Roleplay: Patient and doctor – describe symptoms, get advice – record both sides",
-        "Listening: 'Deutsch lernen mit Dialogen' – Arztbesuch – write 5 phrases",
-        "Bidirectional translation (5 sentences): Mir tut der Kopf weh. | Seit wann hast du Fieber? | Sie sollten mehr Wasser trinken. | Ich brauche ein Rezept für die Schmerzmittel. | Die Apotheke ist um die Ecke.",
-        "Grammar: 'sollte' (should) vs 'muss' (must) – 5 sentences showing difference"
+        "Learn IPv4 structure (32 bits, 4 octets, classes A/B/C/D/E)",
+        "Understand public vs private IP addresses (RFC 1918 ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)",
+        "Learn loopback/localhost (127.0.0.0/8, ::1), APIPA (169.254.0.0/16)",
+        "Practice identifying IP classes from 20 examples",
+        "Document IP basics with network/host portion examples"
       ],
       2: [
-        "SwipeGerman: Add 10 A2 transport (Auto, Bus, Bahn, Zug, Flugzeug, Fahrrad, Taxi, Haltestelle, Bahnhof, Flughafen)",
-        "DW: Nico's Weg A2 – Folge 9 – 'Am Bahnhof' – temporal 'bevor' and 'nachdem'",
-        "DW: Nico's Weg A2 – Folge 9 – listening comprehension quiz",
-        "Speaking: Buy a train ticket – roleplay with ticket seller (Einfach oder hin und zurück?)",
-        "Shadowing: Repeat train announcement from YT 'Durchsage Bahnhof'",
-        "Bidirectional translation (5 sentences): Ich steige in den Bus ein. | Der Zug nach Köln hat fünf Minuten Verspätung. | Wo ist der Fahrkartenautomat? | Ich möchte einen Sitzplatz reservieren. | Mit dem Fahrrad bin ich in 20 Minuten da.",
-        "Grammar: Two-way prepositions (in, an, auf, unter, über, vor, hinter, neben, zwischen) – Dativ vs Akkusativ"
+        "Learn subnet masks (/24 = 255.255.255.0, /16, /8, /25, /26, /27, /28)",
+        "Learn CIDR notation and VLSM (Variable Length Subnet Masking)",
+        "Practice subnet calculations (network address, broadcast, first/last host)",
+        "Calculate usable hosts per subnet (2^n - 2 where n = host bits)",
+        "Write 10 subnet exercises with complete solutions and explanations"
       ],
       3: [
-        "SwipeGerman: Add 10 A2 feelings (glücklich, traurig, müde, wütend, nervös, entspannt, aufgeregt, gelangweilt, überrascht, verliebt)",
-        "DW: Nico's Weg A2 – Folge 10 – 'Gefühle' – 'sich fühlen' vs 'sein'",
-        "DW: Nico's Weg A2 – Folge 10 – shadow entire dialogue",
-        "Speaking: Describe how you feel today and why (3 sentences with 'weil')",
-        "Writing: Write 5 sentences about what makes you angry, sad, or happy",
-        "Bidirectional translation (5 sentences): Ich fühle mich heute glücklich, weil die Sonne scheint. | Bist du nervös wegen der Prüfung? | Meine Mutter war sehr stolz auf mich. | Warum bist du so wütend? | Nach dem Urlaub fühle ich mich total entspannt.",
-        "Grammar: 'sich fühlen' vs 'sein' – 5 example pairs"
+        "Learn DNS workflow (recursive query, iterative query, caching)",
+        "Understand record types (A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV)",
+        "Use dig (dig google.com, dig -x 8.8.8.8, dig +trace), nslookup",
+        "Trace a domain resolution from browser to IP using Wireshark",
+        "Document complete DNS flow with diagram and 10 example queries"
       ],
       4: [
-        "SwipeGerman: Add 10 A2 conjunctions (weil, dass, wenn, als, obwohl, trotzdem, deshalb, denn, aber, oder)",
-        "DW: Nico's Weg A2 – Folge 11 – 'weil' with verb at end",
-        "DW: Nico's Weg A2 – Folge 11 – subordinate clause exercises",
-        "Speaking: Explain why you learn German: 'Ich lerne Deutsch, weil ich in Deutschland arbeiten will.'",
-        "Writing: Write 5 'weil' sentences about your daily habits",
-        "Bidirectional translation (5 sentences): Ich bleibe zu Hause, weil es regnet. | Ich glaube, dass du Recht hast. | Wenn ich Zeit habe, lese ich ein Buch. | Obwohl ich müde bin, lerne ich weiter. | Es schneit, trotzdem gehe ich spazieren.",
-        "Grammar: Subordinate clause word order (verb at end) – practice 10 times"
+        "Learn DHCP handshake (DORA: Discover, Offer, Request, ACK)",
+        "Understand IP lease assignment, renewal (T1=50%, T2=87.5%), rebinding",
+        "Inspect router DHCP settings, configure static DHCP reservation",
+        "Configure one static local IP on your Linux machine (/etc/netplan or /etc/network/interfaces)",
+        "Write DHCP workflow notes with packet capture analysis"
       ],
       5: [
-        "SwipeGerman: Review week's 40 words (health + transport + feelings + conjunctions)",
-        "DW: Nico's Weg A2 – Folge 12 – review A2 grammar compilation",
-        "DW: Nico's Weg A2 – Folge 12 – take A2 checkpoint quiz",
-        "Listening: 'Langsam gesprochene Nachrichten' – identify 5 subordinate clauses",
-        "Speaking: Tell a short story (2 min) using 'als', 'wenn', 'weil', 'obwohl'",
-        "Bidirectional translation (5 sentences): Ich bin früher nach Hause gegangen, weil ich Kopfschmerzen hatte. | Als ich klein war, hatte ich einen Hund. | Wenn ich nach Deutschland fliege, besuche ich meine Freunde. | Obwohl es teuer war, habe ich das Kleid gekauft. | Ich lerne Deutsch, damit ich eine Ausbildung machen kann.",
-        "Self-recording: Read your story aloud, check 'weil' and 'dass' word order"
+        "Learn TCP vs UDP differences (connection-oriented vs connectionless, reliability, ordering, overhead)",
+        "Memorize 20 common ports (20/21-FTP, 22-SSH, 23-Telnet, 25-SMTP, 53-DNS, 80-HTTP, 110-POP3, 143-IMAP, 443-HTTPS, 3306-MySQL, 3389-RDP, 5432-PostgreSQL, 27017-MongoDB)",
+        "Use ss and netstat to inspect ports (ss -tlnp, netstat -tulpn, lsof -i :80)",
+        "Identify all open ports on your machine and justify why they're open",
+        "Document port usage notes with common services and security implications"
       ],
       6: [
-        "BUILD DAY: Create a 2-min audio diary 'Meine Woche' using Perfekt + 'weil' + 'obwohl'",
-        "SwipeGerman: Add 10 A2 work/profession (Arzt, Lehrer, Ingenieur, Verkäufer, Koch, Fahrer, Sekretärin, Anwalt, Architekt, Programmierer)",
-        "DW: Nico's Weg A2 – Folge 13 – 'Der neue Job' – simple job interview phrases",
-        "Roleplay: Short job interview – 'Warum möchten Sie diesen Job?' 'Was sind Ihre Stärken?'",
-        "Writing: Write a 50-word 'Bewerbung' (application) – 3 sentences",
-        "Bidirectional translation (5 sentences): Ich arbeite als Programmierer in einer Firma. | Mein Traumberuf ist Arzt, weil ich Menschen helfen möchte. | Sie hat eine Ausbildung zur Industriekauffrau gemacht. | Der Chef sagt, dass ich gute Arbeit leiste. | Welche Berufe sind in Deutschland gefragt?",
-        "Technical: Explain in German what a Fachinformatiker für Systemintegration does"
+        "Learn traceroute/tracepath (traceroute google.com, mtr google.com)",
+        "Diagnose a connectivity issue (high latency, packet loss, routing loop)",
+        "Simulate a DNS failure (/etc/hosts modification, block port 53 with iptables)",
+        "Create a troubleshooting flowchart (Layer 1: cabling → Layer 2: ARP → Layer 3: IP → Layer 4: Port → Layer 7: App)",
+        "Practice: Describe a network problem and solution in your notes"
       ],
       7: [
-        "REST/REVIEW: Listen to your day6 audio diary. Write corrected transcript.",
-        "SwipeGerman: Review all mistakes from week 2",
-        "DW: Nico's Weg A2 – Folge 14 – watch, write a 3-sentence summary",
-        "Speaking: Answer without script: 'Was hast du gestern gegessen? Wann bist du aufgestanden?'",
-        "Grammar: Cheat sheet for 'als' (single past) vs 'wenn' (repeated/future) – 5 examples",
-        "Bidirectional translation (5 sentences): Als ich in Berlin war, habe ich den Fernsehturm besucht. | Jedes Jahr, wenn Weihnachten ist, fahre ich zu meiner Familie. | Wenn du morgen Zeit hast, können wir ins Kino gehen. | Als Kind war ich sehr schüchtern. | Immer wenn ich diesen Song höre, denke ich an dich.",
-        "Listening: 15 min 'Coffee Break German' Season 2 Episode 2"
+        "BUILD: Complete mini local network lab",
+        "Configure 2 VMs with static IPs in same subnet (192.168.100.10 and 192.168.100.11)",
+        "Test full connectivity between VMs (ping, ssh, scp, rsync)",
+        "Inspect and document open ports on both VMs (ss -tulpn)",
+        "Create professional network diagram with IPs, subnets, routing, upload to GitHub"
       ]
     },
-    3: { // Week 3
+    3: { // Week 3: Web Server & System Administration
       1: [
-        "SwipeGerman: Add 10 A2 accusative prepositions (durch, für, gegen, ohne, um)",
-        "DW: Nico's Weg A2 – Folge 15 – Akkusativ special",
-        "DW: Nico's Weg A2 – Folge 15 – grammar drills",
-        "Shadowing: Repeat 'Ich gehe durch den Park. Das Geschenk ist für dich.' (10x)",
-        "Speaking: Say 5 things you do daily using 'durch' and 'für'",
-        "Bidirectional translation (5 sentences): Wir gehen durch den Wald. | Das Geschenk ist für meine Mutter. | Der Zug fährt gegen 10 Uhr. | Ich trinke Kaffee ohne Zucker. | Es geht um deine Zukunft.",
-        "Technical: Translate: 'The data flows through the network.' 'This command is for advanced users.'"
+        "Install nginx web server (sudo apt install nginx or sudo dnf install nginx)",
+        "Learn virtual hosts configuration (sites-available, sites-enabled, server_name, root, index)",
+        "Serve a simple static HTML page (custom index.html with CSS)",
+        "Inspect nginx access and error logs (/var/log/nginx/access.log, error.log)",
+        "Document full nginx setup with configuration file breakdown"
       ],
       2: [
-        "SwipeGerman: Add 10 A2 Dativ verbs (helfen, gefallen, gehören, passen, schmecken, antworten, danken, glauben, fehlen, folgen)",
-        "DW: Nico's Weg A2 – Folge 16 – 'Das schmeckt mir' – Dativ objects",
-        "DW: Nico's Weg A2 – Folge 16 – roleplay 'Im Kaufhaus'",
-        "Speaking: Compliment food: 'Die Pizza schmeckt mir sehr gut. Der Wein schmeckt mir nicht.'",
-        "Writing: Write 5 sentences with Dativ objects: 'Meinem Bruder gefällt das Auto.'",
-        "Bidirectional translation (5 sentences): Kannst du mir bitte helfen? | Das Kleid gefällt mir sehr gut. | Die Schuhe passen mir perfekt. | Das gehört mir, nicht dir! | Wie schmeckt dir die Suppe?",
-        "Grammar: Dativ personal pronouns (mir, dir, ihm, ihr, uns, euch, ihnen) – full conjugation"
+        "Install and configure UFW firewall (sudo apt install ufw)",
+        "Open port 80 (HTTP) and 443 (HTTPS), allow SSH from specific IP",
+        "Configure default policies (ufw default deny incoming, ufw default allow outgoing)",
+        "Test firewall behavior from another VM (allow/deny rules)",
+        "Write detailed firewall rules notes with 15 example rules and use cases"
       ],
       3: [
-        "SwipeGerman: Add 10 Perfekt irregulars (gehen→gegangen, sehen→gesehen, essen→gegessen, trinken→getrunken, sprechen→gesprochen, schreiben→geschrieben, fahren→gefahren, fliegen→geflogen, nehmen→genommen, finden→gefunden)",
-        "DW: Nico's Weg A2 – Folge 17 – 'Perfekt mit sein' (Bewegungsverben)",
-        "DW: Nico's Weg A2 – Folge 17 – interactive timeline exercise",
-        "Immersion: YT 'Easy German' – 'Was hast du gestern gemacht?' – write 5 answers",
-        "Speaking: Describe your weekend using Perfekt: 'Am Samstag bin ich ins Kino gegangen.'",
-        "Bidirectional translation (5 sentences): Gestern bin ich nach Berlin gefahren. | Hast du den neuen Film gesehen? | Ich habe drei Stücke Pizza gegessen. | Wir sind um 20 Uhr ins Restaurant gegangen. | Was hast du am Wochenende gemacht?",
-        "Grammar: 'haben' vs 'sein' in Perfekt – list of 20 'sein' verbs"
+        "Learn ps (ps aux, ps -ef, ps -e --forest), top, htop (F6 sort, F5 tree view)",
+        "Kill a process using kill (SIGTERM, SIGKILL), killall, pkill",
+        "Monitor CPU and RAM usage live (htop, glances, vmstat 1)",
+        "Understand process states (R=running, S=sleeping, Z=zombie, D=uninterruptible sleep, T=stopped)",
+        "Create monitoring notes with process troubleshooting examples"
       ],
       4: [
-        "SwipeGerman: Add 10 A2 time words (gestern, heute, morgen, vorgestern, übermorgen, letzte Woche, nächste Woche, letzten Monat, nächstes Jahr, früher)",
-        "DW: Nico's Weg A2 – Folge 18 – temporal prepositions (um, von, bis, seit, vor, nach)",
-        "DW: Nico's Weg A2 – Folge 18 – listening and fill blanks",
-        "Roleplay: Make an appointment: 'Kann ich einen Termin für nächsten Montag haben?'",
-        "Writing: Write 5 sentences about your schedule using 'um', 'von…bis', 'seit', 'vor'",
-        "Bidirectional translation (5 sentences): Seit drei Jahren lerne ich Deutsch. | Vor einer Woche hatte ich Geburtstag. | Der Kurs dauert von 9 bis 12 Uhr. | Nach der Arbeit gehe ich einkaufen. | Letztes Jahr war ich in Österreich.",
-        "Grammar: 'seit' (duration) vs 'vor' (point in past) – 5 comparison sentences"
+        "Learn lsblk (tree view), df -h (disk free), du -sh (disk usage)",
+        "Mount a virtual drive (dd if=/dev/zero of=disk.img bs=1M count=100, mkfs.ext4, mount)",
+        "Understand disk partitions (MBR vs GPT, primary vs extended vs logical)",
+        "Check filesystem usage per directory (ncdu, du -sh /* --exclude=/proc)",
+        "Document storage administration with partitioning examples"
       ],
       5: [
-        "SwipeGerman: Review week's 40 words (accusative preps + Dativ verbs + Perfekt irregulars + time words)",
-        "DW: Nico's Weg A2 – Folge 19 – review all A2 grammar",
-        "DW: Nico's Weg A2 – Folge 19 – A2 practice test",
-        "Reading: 'Nicos Weg' transcript pages 1-15 – find 10 Dativ and 10 Akkusativ examples",
-        "Speaking: Answer 10 simple A2 interview questions (Tell me about yourself, Your hobbies, Your family)",
-        "Bidirectional translation (5 sentences): Vor drei Jahren bin ich nach Deutschland gekommen. | Seit letztem Monat habe ich einen neuen Job. | Kannst du mir bitte bis morgen antworten? | Heute muss ich noch einkaufen, denn der Kühlschrank ist leer. | Morgen werde ich früher aufstehen, weil ich einen Termin habe.",
-        "Self-recording: Your answers to the A2 interview questions – listen and improve"
+        "Learn cron job syntax (min hour day month weekday, */5 = every 5 minutes, @daily, @reboot)",
+        "Schedule an automatic backup task (backup important files to /backup)",
+        "Automate log cleanup every hour (find /var/log -name '*.log' -mtime +7 -delete)",
+        "Test and verify scheduled job runs (check syslog, journalctl, /var/log/cron)",
+        "Write cron automation notes with 15 practical examples"
       ],
       6: [
-        "BUILD DAY: Create 'Month 1 Portfolio' – 1 recording (introduction), 1 written text (my week), 1 grammar cheat sheet (Dativ vs Akkusativ)",
-        "SwipeGerman: Mastery test on ALL Month 1 words (target 90%+)",
-        "DW: Nico's Weg A2 – Folge 20 – final A2 assessment",
-        "Listening: DW 'Alltagsdeutsch' – 'Wohnungen in Deutschland' – write 5 facts",
-        "Technical: Explain in simple German how to restart a router: 'Zuerst ziehst du den Stecker. Dann wartest du 10 Sekunden.'",
-        "Bidirectional translation (5 sentences): Ich habe diesen Monat 300 neue Vokabeln gelernt. | Nächste Woche fange ich mit B1 an. | Mein Ziel ist es, fließend Deutsch zu sprechen. | Kannst du mir sagen, wo die nächste U-Bahn ist? | Wie komme ich am besten zum Hauptbahnhof?",
-        "Grammar: Create 'My A2 Mistakes' list (top 10 errors from this month)"
+        "Monitor system logs with journalctl -f (follow mode), dmesg -w",
+        "Check uptime and load average (uptime, w, top load average 1/5/15 minutes)",
+        "Inspect all resource usage at once (htop, glances, btop)",
+        "Identify any failing or stopped services (systemctl --failed)",
+        "Create system troubleshooting checklist (30 items covering all subsystems)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your Month 1 recordings. Write a 100-word 'Mein erster Monat' summary.",
-        "SwipeGerman: Review all mistakes from Month 1",
-        "DW: Nico's Weg B1 – preview episode – watch with German subs",
-        "Speaking: Tell your study plan for Month 2 aloud (2 min)",
-        "Grammar: Self-test: Conjugate 10 regular and 10 irregular verbs in Perfekt",
-        "Bidirectional translation (5 sentences): Ich bin stolz auf meine Fortschritte. | Nächsten Monat werde ich mehr Grammatik üben. | Wenn ich Zeit habe, schaue ich deutsche Serien. | Ich möchte nächstes Jahr eine Ausbildung in Deutschland machen. | Der erste Monat war schwer, aber ich habe durchgehalten.",
-        "Technical: Write a one-sentence German status update: 'I configured SSH on my Linux server.'"
+        "BUILD: Personal Linux server with automation",
+        "Deploy nginx with custom HTML page (portfolio page)",
+        "Configure firewall (SSH from specific IP only, HTTP/HTTPS open)",
+        "Add cron automation (daily backup of /var/www, weekly log cleanup)",
+        "Full documentation with diagrams, upload to GitHub"
       ]
     },
-    4: { // Week 4 – A2 consolidation week (varied)
+    4: { // Week 4: Git, Documentation & Portfolio
       1: [
-        "SwipeGerman: Add 10 A2 weather (Sonne, Regen, Schnee, Wind, Wolke, Temperatur, Grad, warm, kalt, nass)",
-        "DW: Nico's Weg A2 – Wiederholung – 'Das Wetter'",
-        "DW: Nico's Weg A2 – Wiederholung – all A2 exercises",
-        "Shadowing: Repeat a 30-sec weather forecast from 'Deutschlandfunk'",
-        "Speaking: Describe today's weather and what you will do because of it",
-        "Bidirectional translation (5 sentences): Heute scheint die Sonne, also gehe ich in den Park. | Morgen soll es regnen, deshalb nehme ich meinen Schirm mit. | Im Winter ist es in Deutschland oft kalt und schneit. | Bei diesem Wetter bleibe ich lieber zu Hause. | Wie ist das Wetter bei dir gerade?",
-        "Grammar: 'weil' and 'deshalb' – rewrite 5 sentences switching the connector"
+        "Learn complete markdown syntax (headings, lists, code blocks, tables, links, images, blockquotes, footnotes, task lists)",
+        "Create clean structured notes using markdown (folder structure, consistent naming)",
+        "Format code blocks with syntax highlighting, tables with alignment",
+        "Reformat all your existing notes into professional markdown",
+        "Practice: write a markdown README from scratch for a new project"
       ],
       2: [
-        "SwipeGerman: Add 10 A2 personality adjectives (freundlich, nett, lustig, ernst, geduldig, ungeduldig, intelligent, faul, fleißig, ehrlich)",
-        "DW: Nico's Weg A2 – Wiederholung – adjective endings",
-        "DW: Nico's Weg A2 – Wiederholung – describe people",
-        "Writing: Write 5 sentences describing your best friend using 5 different adjectives",
-        "Speaking: Describe your own personality – 3 strengths, 2 weaknesses",
-        "Bidirectional translation (5 sentences): Mein bester Freund ist sehr lustig und hilfsbereit. | Ich bin manchmal ungeduldig, aber ich arbeite daran. | Sie ist eine sehr ehrliche Person, das gefällt mir. | Mein Kollege ist fleißig und immer pünktlich. | Findest du dich selbst eher ruhig oder kontaktfreudig?",
-        "Grammar: Adjective endings after 'der', 'ein', and no article – cheat sheet"
+        "Learn git branching (git branch, git checkout -b, git switch)",
+        "Learn git clone, pull, fetch, merge, rebase basics",
+        "Resolve a merge conflict intentionally (create two branches with conflicting changes)",
+        "Practice commits with meaningful messages (conventional commits: feat:, fix:, docs:, chore:, refactor:)",
+        "Organize all GitHub repositories (archive old, rename, add descriptions, add topics)"
       ],
       3: [
-        "SwipeGerman: Add 10 A2 household chores (putzen, staubsaugen, abwaschen, kochen, waschen, bügeln, einkaufen, aufräumen, Müll wegbringen, lüften)",
-        "DW: Nico's Weg A2 – Wiederholung – separable verbs in Perfekt",
-        "DW: Nico's Weg A2 – Wiederholung – household vocabulary",
-        "Roleplay: Call a friend to ask for help with moving apartments",
-        "Speaking: Describe who does what chores in your home using 'muss' and 'darf'",
-        "Bidirectional translation (5 sentences): Ich muss heute noch staubsaugen und die Wäsche waschen. | Meine Schwester räumt ihr Zimmer nie auf, das ist nervig. | Nach dem Kochen spüle ich immer sofort ab. | Kannst du mir bitte beim Umzug helfen? | Wir lüften jeden Morgen für zehn Minuten.",
-        "Technical: 'I need to clean the server room' – translate and expand to 3 German sentences"
+        "Create architecture diagrams on draw.io (use layers, custom shapes, export as PNG/SVG)",
+        "Take clean labeled screenshots of your lab (use Flameshot or Shutter)",
+        "Label all components and IPs clearly on diagrams (font size, colors, legend)",
+        "Learn basic draw.io shapes and flows (server, firewall, router, switch, cloud)",
+        "Organize all diagram assets in a /diagrams folder with source files (.drawio)"
       ],
       4: [
-        "SwipeGerman: Add 10 A2 school/education (Schule, Universität, Lehrer, Schüler, Prüfung, Note, Hausaufgabe, Unterricht, Pause, Abschluss)",
-        "DW: Nico's Weg A2 – Wiederholung – 'Schulsystem in Deutschland'",
-        "DW: Nico's Weg A2 – Wiederholung – listening 'Im Unterricht'",
-        "Reading: 'Deutsch perfekt' A2 article – 'Schulsystem' – summarize in 3 sentences",
-        "Writing: Write 50 words about your ideal school or learning environment",
-        "Bidirectional translation (5 sentences): In Deutschland gehen Kinder mit sechs Jahren zur Schule. | Meine beste Note war eine Eins in Mathematik. | Nach der Schule möchte ich eine Ausbildung machen. | Der Lehrer sagt, dass ich mehr lernen muss. | Die Pause ist die beste Zeit des Tages.",
-        "Grammar: Vergleich: 'als' (than) with Komparativ – 'Mein Deutsch ist besser als letztes Jahr.'"
+        "Write a professional README for Month 1 project",
+        "Add sections: What it does, Architecture, Installation, Configuration, Usage, Troubleshooting, Contributing, License",
+        "Add screenshots and architecture diagram with alt text",
+        "Add troubleshooting section with 5 common problems and solutions",
+        "Get feedback by reading it like a recruiter (check spelling, grammar, clarity)"
       ],
       5: [
-        "SwipeGerman: Review ALL Month 1 words (120 words) – full mastery test",
-        "DW: A2 to B1 Bridge – 'Wege ins B1' – introductory video",
-        "DW: A2 to B1 Bridge – self-assessment checklist",
-        "Speaking: Give a 3-min monologue 'Mein erstes Monatsupdate' – what you learned, what's still hard",
-        "Listening: 'Slow German' – Folge 'Erfolg und Misserfolg' – write 5 key phrases",
-        "Bidirectional translation (5 sentences): Nach einem Monat kann ich schon viel mehr verstehen. | Früher hatte ich Angst zu sprechen, aber jetzt übe ich jeden Tag. | Die schwierigste Grammatik für mich ist immer noch der Dativ. | Ich bin bereit für B1, obwohl noch nicht alles perfekt ist. | Mit jedem Tag wird Deutsch ein bisschen einfacher.",
-        "Technical: German IT vocabulary roundup – write 15 words you know now"
+        "Organize all GitHub repositories cleanly (consistent naming, descriptions, topics)",
+        "Rename files to professional naming convention (kebab-case or snake_case)",
+        "Remove any test/junk files (.tmp, .swp, ~, .DS_Store, node_modules)",
+        "Improve folder structure of all projects (src/, docs/, tests/, scripts/, config/)",
+        "Polish every README (badges, table of contents, consistent formatting)"
       ],
       6: [
-        "BUILD DAY: Create a 'Month 1 Completion Certificate' for yourself – write your achievements in German (at least 5 bullet points)",
-        "SwipeGerman: Export your Month 1 error list – study it for 15 min",
-        "DW: A2 Abschlusstest – official placement test – score and record",
-        "Immersion: Watch 15 min of 'Nicos Weg' B1 preview without subtitles",
-        "Speaking: Record a 'looking forward to Month 2' message (2 min)",
-        "Bidirectional translation (5 sentences): In Month 2 werde ich Modalverben und den Dativ perfektionieren. | Mein nächstes Ziel ist es, zehn Minuten frei auf Deutsch zu sprechen. | Ich freue mich auf neue Vokabeln und längere Sätze. | B1 bedeutet, über komplexere Themen zu diskutieren. | Ich weiß, dass der nächste Monat anstrengend wird, aber ich bleibe dran.",
-        "Technical: 'I can now understand basic Linux commands in German' – write 3 sentences"
+        "Review Month 1: All Linux commands (filesystem, permissions, services, SSH, networking, firewalls, processes, storage, cron)",
+        "Practice: Explain Linux filesystem, systemctl, permissions, SSH in writing",
+        "Create German IT vocabulary notes (20 words: Datei, Verzeichnis, Benutzer, Netzwerk, System, Berechtigung, Dienst, Protokoll, Firewall, Backup, Automatisierung, Skript, Überwachung, Wiederherstellung, Sicherung, Verschlüsselung, Authentifizierung, Virtualisierung, Container, Orchestrierung)",
+        "Record a 10-minute technical explanation of your Linux setup",
+        "Listen to German IT YouTube video (20 min) - write down 10 new phrases"
       ],
       7: [
-        "REST/REVIEW: Listen to all your week 4 recordings. Write 'Month 1 Lessons Learned' (100 words in German+English mix)",
-        "SwipeGerman: Review all A2 words one final time",
-        "DW: Rest day – choose any A2 video and enjoy (no tasks)",
-        "Grammar: Create a one-page 'A2 Survivor Guide' – Dativ, Akkusativ, Perfekt, Modalverben, 'weil'",
-        "Speaking: Call a German learning partner (or imaginary) and say goodbye to A2",
-        "Bidirectional translation (5 sentences): Das Ende von Month 1 ist nicht das Ende meiner Reise. | Im nächsten Monat werde ich noch besser. | Ich bin stolz darauf, jeden Tag gelernt zu haben. | Danke, dass ich diese Erfahrung machen durfte. | Auf geht's in den zweiten Monat!",
-        "Technical: 'I'm ready to learn networking vocabulary in German next month.'"
+        "BUILD: Professional Linux portfolio repository",
+        "Combine all 4 weeks into one clean project structure",
+        "Create project index with links to week1, week2, week3, week4",
+        "Add all diagrams, screenshots, docs, scripts to the repository",
+        "Final cleanup, verify all links work, push to GitHub"
       ]
     }
   },
-  2: { // MONTH 2: Finish A2 → Strong A2
-    1: { // Week 1
+  2: { // Month 2: Network Apprentice
+    1: { // Week 1: Advanced IP & Subnetting
       1: [
-        "SwipeGerman: Add 10 A2+ Modalverb-focused phrases (darf, muss, soll, kann, will, möchte, könnte, sollte, müsste, würde)",
-        "DW: B1 Start – 'Dialoge B1' Folge 1: 'Im Büro' – Modalverben in workplace context",
-        "DW: B1 Start – Folge 1 – grammar breakdown",
-        "Shadowing: Repeat 10 workplace sentences with 'muss', 'kann', 'darf' from dialogue",
-        "Speaking: Say 5 things you must do today for work/study",
-        "Bidirectional translation (5 sentences): Ich muss heute noch drei E-Mails schreiben. | Du darfst hier nicht parken, das ist ein Feuerwehreingang. | Kannst du mir bitte helfen? | Wir sollen pünktlich zum Meeting erscheinen. | Möchten Sie etwas trinken?",
-        "Grammar: Modalverben im Präteritum (konnte, musste, durfte, sollte, wollte) – full conjugation"
+        "Deep dive IPv4 ranges: Private (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16), Reserved (0.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 224.0.0.0/4, 240.0.0.0/4), Multicast (224.0.0.0/4)",
+        "Understand broadcast addresses (network broadcast 255.255.255.255, subnet broadcast)",
+        "Understand default gateways and routing (default route 0.0.0.0/0)",
+        "Analyze your home network IP structure (ip route, route -n, netstat -rn)",
+        "Create IP address cheat sheet with all special ranges and their purposes"
       ],
       2: [
-        "SwipeGerman: Add 10 verbs with inseparable prefixes (verstehen, erzählen, bezahlen, besuchen, bestellen, bekommen, gehören, verlieren, vergessen, verbessern)",
-        "DW: B1 Start – Folge 2 – inseparable verbs in Perfekt (no 'ge-' prefix)",
-        "DW: B1 Start – Folge 2 – listening 'Ein Tag im Büro'",
-        "Speaking: Tell a short story using 5 inseparable verbs in Perfekt",
-        "Writing: Write 5 sentences with 'vergessen', 'verstehen', 'bezahlen', 'bekommen', 'besuchen'",
-        "Bidirectional translation (5 sentences): Ich habe gestern meinen Freund besucht. | Hast du die Rechnung schon bezahlt? | Ich habe total vergessen, Brot zu kaufen. | Wir haben die Anleitung nicht verstanden. | Die Mitarbeiter bekommen jeden Monat ihr Gehalt.",
-        "Technical: 'The server lost the connection' – 'Der Server hat die Verbindung verloren.' – expand to 3 sentences"
+        "Learn binary to decimal conversion (128,64,32,16,8,4,2,1 method)",
+        "Practice subnet calculations in binary (AND operation, bitwise)",
+        "Understand host ranges in subnets (network address +1 to broadcast -1)",
+        "Calculate /25 (128 hosts), /26 (64), /27 (32), /28 (16), /29 (8), /30 (4), /31 (2 - RFC 3021), /32 (1)",
+        "Write 10 subnet exercises with complete solutions (binary and decimal)"
       ],
       3: [
-        "SwipeGerman: Add 10 Dative prepositions (aus, bei, mit, nach, von, zu, gegenüber, seit, außer, entgegen)",
-        "DW: B1 Start – Folge 3 – Dative prepositions deep dive",
-        "DW: B1 Start – Folge 3 – interactive fill-in-blanks",
-        "Speaking: Say where you live using 'bei', 'in der Nähe von', 'gegenüber'",
-        "Writing: Write 5 sentences with 'nach', 'von', 'zu', 'aus', 'mit'",
-        "Bidirectional translation (5 sentences): Ich komme aus der Türkei. | Wir fahren mit dem Auto nach Hause. | Nach dem Essen gehe ich schlafen. | Von Montag bis Freitag arbeite ich. | Zum Geburtstag wünsche ich mir ein neues Handy.",
-        "Grammar: 'von…zu' and 'aus…nach' – directional differences"
+        "Design 3 small networks with different /CIDR (/24, /25, /26)",
+        "Calculate usable hosts per design (/24: 254, /25: 126, /26: 62)",
+        "Understand broadcast address per network (network address + (2^n - 1))",
+        "Create subnet diagrams on draw.io with network, broadcast, first/last host",
+        "Practice CIDR notation verbally: 'slash 24 means 255.255.255.0'"
       ],
       4: [
-        "SwipeGerman: Add 10 Genitiv introduction (des, der, wegen, trotz, während, statt, aufgrund, innerhalb, außerhalb, anstatt)",
-        "DW: B1 Start – Folge 4 – Genitiv statt Dativ (and when to avoid)",
-        "DW: B1 Start – Folge 4 – reading exercise with Genitiv",
-        "Speaking: Say 3 things belonging to others using Genitiv: 'Das ist das Auto meines Vaters.'",
-        "Writing: Rewrite 5 Dativ sentences into Genitiv (dem Vater → des Vaters)",
-        "Bidirectional translation (5 sentences): Das ist das Haus meiner Eltern. | Wegen des Staus bin ich zu spät gekommen. | Während des Unterrichts darf man nicht essen. | Trotz des Regens gingen wir spazieren. | Die Zukunft unseres Unternehmens ist vielversprechend.",
-        "Grammar: Genitiv bei Eigennamen + 'wegen' + Genitiv – cheat sheet"
+        "Understand NAT concepts deeply (SNAT vs DNAT, PAT/NAPT, static NAT, dynamic NAT)",
+        "Learn how local routing works (routing table, longest prefix match)",
+        "Inspect your router settings and NAT table (iptables -t nat -L -n -v)",
+        "Analyze home LAN traffic with Wireshark (filter 'ip.src==192.168.1.0/24')",
+        "Document NAT workflow with packet flow diagram (inside→outside→inside)"
       ],
       5: [
-        "SwipeGerman: Review week's 50 words – mastery test",
-        "DW: B1 Start – Folge 5 – review all week's grammar (Modalverben Präteritum + inseparable + Dative preps + Genitiv)",
-        "DW: B1 Start – Folge 5 – quiz",
-        "Speaking: Combine all grammar into a 3-min story about a workday",
-        "Listening: 'Deutschlandfunk – Alltagsdeutsch' – find 5 Genitiv constructions",
-        "Bidirectional translation (5 sentences): Wegen des schlechten Wetters bin ich mit dem Bus zur Arbeit gefahren. | Während des Meetings durfte ich mein Handy nicht benutzen. | Trotz der Verspätung habe ich den Zug noch bekommen. | Die Entscheidung unseres Chefs war nicht populär. | Außerhalb der Arbeitszeit antworte ich nicht auf E-Mails.",
-        "Self-recording: Your workday story – focus on Genitiv and Modalverben Präteritum"
+        "Learn network interface commands (ip link show, ip link set up/down, ethtool)",
+        "Configure a network interface manually (ip addr add 192.168.1.10/24 dev eth0, ip route add default via 192.168.1.1)",
+        "Restart networking services (systemctl restart networking, nmcli connection reload)",
+        "Use nmcli basics (nmcli device status, nmcli connection show, nmcli con mod)",
+        "Document all network commands with examples and use cases"
       ],
       6: [
-        "BUILD DAY: Create a 'Modalverb & Genitiv & Dativprep' poster with conjugations + 10 example sentences",
-        "SwipeGerman: Add 10 reflexive verbs (sich freuen, sich erinnern, sich fühlen, sich interessieren, sich kümmern, sich beschweren, sich verabschieden, sich treffen, sich entscheiden, sich konzentrieren)",
-        "DW: B1 Start – Folge 6 – reflexive verbs 'Tägliche Routine'",
-        "Roleplay: Get ready for work: 'Ich dusche mich, dann ziehe ich mich an, dann treffe ich mich mit Kollegen.'",
-        "Speaking: Say 5 things you look forward to: 'Ich freue mich auf das Wochenende.'",
-        "Bidirectional translation (5 sentences): Ich freue mich auf meinen Urlaub. | Kannst du dich an unseren ersten Kuss erinnern? | Wir haben uns um 18 Uhr vor dem Kino getroffen. | Sie hat sich für den Job entschieden. | Ich muss mich jetzt konzentrieren, die Prüfung ist morgen.",
-        "Grammar: Reflexive pronouns (mich, dich, sich, uns, euch, sich) + which verbs are always reflexive"
+        "Build local VM network (3 VMs: ubuntu1, ubuntu2, ubuntu3)",
+        "Assign static IPs to all VMs (192.168.100.10/24, .11, .12)",
+        "Test full VM-to-VM communication (ping, ssh, iperf3 for bandwidth)",
+        "Diagnose intentional failures (block with iptables, misconfigure gateway)",
+        "Write troubleshooting steps for each failure scenario"
       ],
       7: [
-              "REST/REVIEW: Listen to all your week's recordings. Write 'Week 1 Month 2 Summary' (80 words in German)",
-        "SwipeGerman: Review all mistakes from week",
-        "DW: B1 Start – Folge 7 – rest day (watch without exercises)",
-        "Grammar: Create a cheat sheet for 'sich' – accusative vs dative reflexive (mich vs mir, dich vs dir)",
-        "Speaking: Answer without script: 'Worauf freust du dich diese Woche? Woran erinnerst du dich gerne?'",
-        "Bidirectional translation (5 sentences): Ich kann mich nicht mehr an seinen Namen erinnern. | Wir haben uns gestern Abend getroffen und uns lange unterhalten. | Sie freut sich schon auf ihre neue Stelle. | Ich wasche mir die Hände, bevor ich esse. | Er putzt sich jeden Morgen die Zähne.",
-        "Technical: 'I need to remember the root password' – translate and add two more German sentences about IT security"
+        "BUILD: Subnetted VM environment",
+        "Configure 2 separate subnets (192.168.1.0/24 and 192.168.2.0/24 with a router VM)",
+        "Test routing between subnets (add static routes, enable IP forwarding)",
+        "Create professional network topology map with all IPs and routing",
+        "Upload to GitHub with complete documentation and packet captures"
       ]
     },
-    2: { // Week 2
+    2: { // Week 2: DNS & DHCP Advanced
       1: [
-        "SwipeGerman: Add 10 B1 transition words (trotzdem, deshalb, außerdem, zwar…aber, allerdings, deswegen, ansonsten, schließlich, nämlich, einerseits…andererseits)",
-        "DW: B1 Start – Folge 8 – 'Satzverbindungen' – deshalb, trotzdem, außerdem",
-        "DW: B1 Start – Folge 8 – conjunction substitution exercises",
-        "Shadowing: Repeat 'Es regnet, trotzdem gehe ich spazieren. Ich bin müde, deshalb trinke ich Kaffee.' (10x)",
-        "Speaking: Give an excuse and a solution: 'Ich bin müde, trotzdem muss ich lernen, denn morgen ist ein Test.'",
-        "Bidirectional translation (5 sentences): Ich habe wenig geschlafen, trotzdem bin ich gut gelaunt. | Sie hat viel gelernt, deshalb hat sie die Prüfung bestanden. | Ich spreche Deutsch; außerdem lerne ich gerade Spanisch. | Zwar ist der Film lang, aber er ist sehr spannend. | Einerseits möchte ich reisen, andererseits habe ich wenig Geld.",
-        "Grammar: 'zwar…aber' concession – 5 original sentences with contrasting ideas"
+        "Learn recursive vs iterative DNS (stub resolver → recursive resolver → authoritative nameserver)",
+        "Understand DNS caching and TTL (Time To Live, negative caching, cache poisoning)",
+        "Learn authoritative vs recursive servers (primary, secondary, forwarding, caching-only)",
+        "Trace a full DNS query with Wireshark (filter 'dns', follow UDP stream)",
+        "Document complete DNS flow diagram with all 8 steps (client→resolver→root→TLD→authoritative→back)"
       ],
       2: [
-        "SwipeGerman: Add 10 B1 adjectives with prepositions (interessiert an, stolz auf, müde von, begeistert von, verliebt in, neidisch auf, böse auf, froh über, besorgt um, traurig über)",
-        "DW: B1 Start – Folge 9 – 'Adjektive mit Präpositionen'",
-        "DW: B1 Start – Folge 9 – fill-in-the-correct-preposition drill",
-        "Speaking: Say 3 things you're proud of: 'Ich bin stolz auf meine Deutschkenntnisse.'",
-        "Writing: Write 5 questions with prepositions: 'Worüber freust du dich? Wovon bist du müde?'",
-        "Bidirectional translation (5 sentences): Ich bin sehr stolz auf meinen Sohn. | Bist du an Politik interessiert? | Wir sind begeistert von der neuen Wohnung. | Sie ist total verliebt in ihren Freund. | Ich bin froh darüber, dass du gekommen bist.",
-        "Grammar: Fixed preposition list (20 common adj+prep combos) – memorize 10 today"
+        "Configure /etc/hosts for local DNS (192.168.1.10 myserver.local)",
+        "Simulate local domain resolution (ping myserver.local, nslookup)",
+        "Test hostname resolution with dig (dig myserver.local, dig -x 192.168.1.10)",
+        "Add custom local domains (myapp.local, database.local, api.local)",
+        "Create DNS configuration notes with /etc/nsswitch.conf order (files, dns, mdns)"
       ],
       3: [
-        "SwipeGerman: Add 10 B1 N-Deklination weak nouns (der Junge, der Mensch, der Herr, der Student, der Kunde, der Kollege, der Nachbar, der Journalist, der Tourist, der Präsident)",
-        "DW: B1 Start – Folge 10 – 'N-Deklination – maskuline schwache Nomen'",
-        "DW: B1 Start – Folge 10 – decline-the-noun exercise",
-        "Listening: 'Easy German' – 'Was ist typisch deutsch?' – note N-Deklination examples",
-        "Speaking: Talk about a colleague: 'Der Kollege heißt Herr Bauer. Ich helfe dem Kollegen. Ich sehe den Kollegen jeden Tag.'",
-        "Bidirectional translation (5 sentences): Ich helfe dem Studenten bei seinen Hausaufgaben. | Kennst du den Herrn da drüben? | Der Präsident dankte seinen Beratern. | Wir haben dem Nachbarn beim Umzug geholfen. | Der Tourist fragte den Polizisten nach dem Weg.",
-        "Grammar: List of weak nouns + declension table (Nominativ, Akkusativ, Dativ, Genitiv)"
+        "Understand DHCP DORA packets in detail (Discover: client broadcast, Offer: server unicast, Request: client broadcast, ACK: server unicast)",
+        "Analyze lease assignment timing (T1=50% renewal, T2=87.5% rebinding)",
+        "Configure static IP reservations in DHCP (match by MAC address)",
+        "Inspect DHCP server logs (journalctl -u isc-dhcp-server, /var/log/syslog | grep DHCP)",
+        "Document DHCP process fully with packet capture analysis (tcpdump -i eth0 port 67 or 68 -vv)"
       ],
       4: [
-        "SwipeGerman: Add 10 B1 comparative adjectives + 'als' and 'je…desto' (besser, mehr, weniger, lieber, interessanter, schwieriger, einfacher, schneller, langsamer, gefährlicher)",
-        "DW: B1 Start – Folge 11 – 'Komparativ und Superlativ – B1 Übungen'",
-        "DW: B1 Start – Folge 11 – 'je…desto' explanation",
-        "Shadowing: Repeat 'Je mehr ich lerne, desto besser werde ich. Je schneller du läufst, desto eher kommst du an.'",
-        "Speaking: Compare 3 cities/products/people: 'Berlin ist größer als Hamburg, aber München ist am schönsten.'",
-        "Bidirectional translation (5 sentences): Mein Deutsch ist besser als letztes Jahr. | Je mehr ich übe, desto sicherer werde ich. | Dieser Kaffee ist viel bitterer als der von gestern. | Sie ist die intelligenteste Person in der Firma. | Je früher du anfängst, desto früher bist du fertig.",
-        "Technical: 'Linux is more secure than Windows, but Windows is easier for beginners' – write in German"
+        "Learn routing logic and routing tables (route -n, ip route show table all)",
+        "Understand default gateway behavior (0.0.0.0/0 via gateway_ip)",
+        "Inspect routing tables with 'ip route' (show, add, del, replace, append)",
+        "Add a static route between VMs (ip route add 192.168.2.0/24 via 192.168.1.1)",
+        "Create routing concept notes (direct vs indirect routing, metrics, administrative distance)"
       ],
       5: [
-        "SwipeGerman: Review week's 40 words (transition + adj+prep + N-Dekl + comparatives)",
-        "DW: B1 Start – Folge 12 – review and quiz",
-        "DW: B1 Start – Folge 12 – listening 'Vergleiche im Alltag'",
-        "Speaking: Record a 2-min comparison 'Mein Leben vor und nach dem Deutschlernen' using Komparativ, 'je…desto', 'trotzdem', 'deshalb'",
-        "Writing: Write 80 words comparing two jobs (Fachinformatiker vs Softwareentwickler)",
-        "Bidirectional translation (5 sentences): Früher war ich unsicher, jetzt bin ich selbstbewusster. | Je länger ich in Deutschland lebe, desto besser verstehe ich die Kultur. | Einerseits ist die Arbeit als Fachinformatiker technisch anspruchsvoll, andererseits sehr abwechslungsreich. | Deshalb habe ich mich für diese Ausbildung entschieden. | Trotz der schwierigen Grammatik mache ich Fortschritte.",
-        "Self-recording: Listen to your comparison, correct 3 grammar errors"
+        "Learn NAT and port forwarding in depth (DNAT: iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.1.10:80)",
+        "Configure port forwarding in VirtualBox (VBoxManage modifyvm 'VMname' --natpf1 'rulename,tcp,,8080,,80)",
+        "Test external access to a service (curl localhost:8080 from host)",
+        "Analyze packet flow through NAT (conntrack -L, /proc/net/nf_conntrack)",
+        "Document NAT configuration with iptables rules and diagrams"
       ],
       6: [
-        "BUILD DAY: Create a 'B1 Connectors & Comparative' cheat sheet with 10 example sentences using deshalb, trotzdem, zwar…aber, je…desto, als",
-        "SwipeGerman: Add 10 B1 phrases with 'es' (es gibt, es geht, es handelt sich um, es kommt darauf an, es ist wichtig, es ist möglich, es scheint, es fehlt, es wundert mich, es lohnt sich)",
-        "DW: B1 Start – Folge 13 – 'Es gibt und Es geht' – impersonal 'es'",
-        "Immersion: YT 'Deutsch mit Marija' – 'Es gibt vs Es ist' – take notes",
-        "Speaking: Describe your city: 'In meiner Stadt gibt es einen Park, ein Kino und drei Supermärkte. Es kommt darauf an, wo man wohnt.'",
-        "Bidirectional translation (5 sentences): In meiner Stadt gibt es viele Parks. | Es geht um deine Zukunft, also entscheide weise. | Es handelt sich um eine einmalige Gelegenheit. | Es lohnt sich, jeden Tag Deutsch zu üben. | Es fehlt mir an Geduld, aber ich arbeite daran.",
-        "Grammar: 'es' as impersonal subject – 10 common patterns"
+        "Install Wireshark (sudo apt install wireshark, add user to wireshark group)",
+        "Capture packets on your network (tcpdump -i eth0 -w capture.pcap)",
+        "Analyze DNS traffic in captures (dns.qry.name contains 'google')",
+        "Analyze DHCP traffic in captures (dhcp.option.dhcp_server, bootp.option.hostname)",
+        "Write packet analysis report with 10 findings and screenshots"
       ],
       7: [
-        "REST/REVIEW: Listen to your day5 recording. Write improved version + record again.",
-        "SwipeGerman: Review all mistakes from week",
-        "DW: B1 Start – Folge 14 – rest/watch cultural video 'Arbeitsleben in Deutschland'",
-        "Grammar: Fill-in exercise (online) for 'weil, dass, wenn, als, trotzdem, deshalb' – score 90%+",
-        "Speaking: Tell a friend about a problem and solution using 'deshalb' and 'trotzdem'",
-        "Bidirectional translation (5 sentences): Ich hatte gestern ein Problem mit meinem Computer, deshalb habe ich einen Techniker angerufen. | Trotz des Fehlers hat mein Chef mich nicht kritisiert. | Es kommt darauf an, wie du mit Kritik umgehst. | Je öfter du sprichst, desto besser wirst du. | Es lohnt sich nicht, wegen kleiner Rückschläge aufzugeben.",
-        "Technical: 'It depends on the network configuration' – 'Es kommt auf die Netzwerkkonfiguration an.' – expand to 3 IT sentences"
+        "BUILD: Routed VM network with full services",
+        "Configure custom DNS behavior (dnsmasq or bind9 on router VM)",
+        "Configure DHCP (isc-dhcp-server with static reservations)",
+        "Capture and analyze packets from all services",
+        "Create professional network report with diagrams, captures, and analysis"
       ]
     },
-    3: { // Week 3
+    3: { // Week 3: Firewall & Security
       1: [
-        "SwipeGerman: Add 10 Perfekt with 'sein' for movement (laufen, springen, fallen, steigen, reisen, rennen, schwimmen, fliegen, fahren, gehen)",
-        "DW: B1 Start – Folge 15 – 'Perfekt mit sein – Wiederholung und Vertiefung'",
-        "DW: B1 Start – Folge 15 – movement verb sorting exercise",
-        "Immersion: YT 'Deutsch mit Emma' – Perfekt with sein examples – write 10",
-        "Speaking: Tell a short story about a journey: 'Gestern bin ich gelaufen. Dann bin ich gestürzt. Zum Glück bin ich nicht gefallen.'",
-        "Bidirectional translation (5 sentences): Ich bin gestern nach Berlin geflogen. | Wir sind durch den Park gelaufen. | Das Kind ist vom Stuhl gefallen. | Sie ist ins kalte Wasser gesprungen. | Bist du schon einmal in die USA gereist?",
-        "Grammar: List of 30 verbs that use 'sein' in Perfekt – memorize 15 today"
+        "Understand firewall logic (stateful vs stateless, connection tracking)",
+        "Learn inbound vs outbound traffic rules (INPUT, OUTPUT, FORWARD chains)",
+        "Understand packet filtering concepts (match by IP, port, protocol, interface, state)",
+        "Analyze 5 common firewall rules (allow SSH, allow HTTP, allow DNS, block ping, rate limit)",
+        "Create security mindmap notes with defense in depth layers"
       ],
       2: [
-        "SwipeGerman: Add 10 B1 Genitiv prepositions (während, trotz, wegen, innerhalb, außerhalb, oberhalb, unterhalb, diesseits, jenseits, anlässlich)",
-        "DW: B1 Start – Folge 16 – 'Genitivpräpositionen' deep dive",
-        "DW: B1 Start – Folge 16 – rewrite Dativ sentences into Genitiv",
-        "Shadowing: Repeat 'Während des Unterrichts darf man nicht essen. Wegen des Staus bin ich zu spät gekommen.'",
-        "Speaking: Apologize for being late: 'Wegen des Staus bin ich zu spät gekommen. Trotz der Verspätung möchte ich den Termin noch wahrnehmen.'",
-        "Bidirectional translation (5 sentences): Während des Meetings war mein Handy ausgeschaltet. | Trotz des Regens haben wir gegrillt. | Wegen des Sturms fielen viele Bäume um. | Innerhalb einer Woche muss ich die Entscheidung treffen. | Außerhalb der Öffnungszeiten ist der Laden geschlossen.",
-        "Technical: 'During the server update, no user can log in' – 'Während des Server-Updates darf sich kein Benutzer anmelden.' – add 2 more Genitiv IT sentences"
+        "Configure UFW rules in detail (ufw allow from 192.168.1.0/24 to any port 22, ufw deny 80, ufw limit 22)",
+        "Allow/block specific ports and IPs (ufw allow proto tcp from 10.0.0.0/8 to any port 3306)",
+        "Learn basic iptables concepts (iptables -L -n -v, iptables -A INPUT -p tcp --dport 22 -j ACCEPT)",
+        "Test firewall behavior intentionally (attempt connections from blocked IPs, ports)",
+        "Document all configurations with before/after comparison"
       ],
       3: [
-        "SwipeGerman: Add 10 B1 Konjunktiv II introduction (würde, hätte, wäre, könnte, müsste, dürfte, sollte, wollte, bräuchte, wüsste)",
-        "DW: B1 Start – Folge 17 – 'Konjunktiv II – Höflichkeit und Wünsche'",
-        "DW: B1 Start – Folge 17 – polite request transformation",
-        "Roleplay: Customer service – polite requests: 'Ich würde gerne den Manager sprechen. Könnten Sie mir helfen?'",
-        "Speaking: Say 3 wishes: 'Ich würde gerne nach Australien reisen. Wenn ich reich wäre, würde ich ein Haus kaufen.'",
-        "Bidirectional translation (5 sentences): Ich würde gerne einen Kaffee bestellen. | Wenn ich Zeit hätte, würde ich dir helfen. | Er wäre gern Arzt geworden. | Wir könnten früher kommen, wenn du das möchtest. | Du solltest mehr schlafen, das wäre besser für dich.",
-        "Grammar: 'würde' + infinitive for most verbs, 'hätte'/'wäre' for haben/sein/modal verbs – 10 examples"
+        "Install nmap (sudo apt install nmap)",
+        "Scan local network devices (nmap -sn 192.168.1.0/24 - ping sweep)",
+        "Identify all open ports on your VMs (nmap -sS -sV -O 192.168.1.10)",
+        "Detect running services from scan (nmap -sV --version-intensity 5 target)",
+        "Create nmap scan reports with recommendations for each open port"
       ],
       4: [
-        "SwipeGerman: Add 10 B1 temporale Nebensätze (bevor, nachdem, während, als, wenn, seitdem, sobald, bis, solange, indem)",
-        "DW: B1 Start – Folge 18 – 'Temporale Nebensätze – Zeitfolgen'",
-        "DW: B1 Start – Folge 18 – combine sentences exercise",
-        "Listening: 'DW Langsam gesprochen' – identify temporal clauses – write 5",
-        "Speaking: Tell your morning routine: 'Bevor ich frühstücke, dusche ich. Nachdem ich dusche, ziehe ich mich an. Während ich Kaffee trinke, lese ich Nachrichten.'",
-        "Bidirectional translation (5 sentences): Bevor ich ins Bett gehe, putze ich mir die Zähne. | Nachdem ich die Prüfung bestanden hatte, feierte ich mit Freunden. | Während ich arbeite, höre ich Musik. | Sobald du ankommst, ruf mich an. | Ich werde warten, bis du fertig bist.",
-        "Grammar: 'als' (single past event) vs 'wenn' (repeated/future) vs 'wann' (indirect question) – comparison table"
+        "Harden SSH: disable password login (PasswordAuthentication no)",
+        "Configure SSH key-only authentication (PubkeyAuthentication yes)",
+        "Change SSH default port (Port 2222 in /etc/ssh/sshd_config)",
+        "Test secure access thoroughly (ssh -p 2222 user@host -i ~/.ssh/id_ed25519)",
+        "Document SSH hardening steps with security checklist"
       ],
       5: [
-        "SwipeGerman: Review week's 40 words (sein-Perfekt + Genitivpreps + KonjunktivII + temporal)",
-        "DW: B1 Start – Folge 19 – mixed grammar review",
-        "DW: B1 Start – Folge 19 – B1 checkpoint test (online)",
-        "Speaking: Record a 3-min story 'Mein perfekter Urlaub' using Konjunktiv II + temporale Nebensätze",
-        "Writing: Write 100 words 'Was ich anders machen würde, wenn ich nochmal 20 wäre'",
-        "Bidirectional translation (5 sentences): Wenn ich mehr Geld hätte, würde ich eine Weltreise machen. | Nachdem ich mit der Arbeit fertig war, bin ich ins Kino gegangen. | Bevor du gehst, solltest du dich verabschieden. | Ich warte, bis der Regen aufhört. | Seitdem ich Deutsch lerne, schaue ich deutsche Serien.",
-        "Self-recording: Listen to your 'perfect vacation', correct Konjunktiv II errors"
+        "Learn brute force concepts (hydra, medusa, John the Ripper)",
+        "Understand MITM attacks conceptually (ARP spoofing, DNS spoofing, SSL stripping)",
+        "Learn about phishing + network risks (spear phishing, whaling, clone phishing)",
+        "Understand why firewall rules matter (defense in depth, least privilege)",
+        "Create defense strategy notes with detection and prevention methods"
       ],
       6: [
-        "BUILD DAY: Create a 'Konjunktiv II + Temporal Clauses' poster with 10 example sentences. Record yourself reading them.",
-        "SwipeGerman: Add 10 B1 passive voice introduction (Präsens Passiv: wird + Partizip II)",
-        "DW: B1 Start – Folge 20 – 'Passiv – was passiert?'",
-        "DW: B1 Start – Folge 20 – transform Aktiv to Passiv",
-        "Speaking: Describe manufacturing: 'Das Auto wird in Deutschland produziert. Die Reifen werden in einer anderen Fabrik hergestellt.'",
-        "Bidirectional translation (5 sentences): Der Brief wird jeden Tag um 10 Uhr geöffnet. | In dieser Fabrik werden Autos produziert. | Das Essen wird von meiner Mutter gekocht. | Die Prüfung wird zweimal im Jahr angeboten. | Wie wird dieses Gerät bedient?",
-        "Technical: 'The log file is written automatically. The server is restarted every night.' – translate to German passive"
+        "Inspect /var/log/auth.log for failed logins (grep 'Failed password' /var/log/auth.log)",
+        "Detect and note any suspicious IPs (grep 'Invalid user' /var/log/auth.log | awk '{print $10}' | sort | uniq -c | sort -nr)",
+        "Analyze firewall logs from UFW (grep 'UFW' /var/log/syslog)",
+        "Create incident response notes (detection, containment, eradication, recovery, lessons learned)",
+        "Practice: Describe a security incident in your notes"
       ],
       7: [
-        "REST/REVIEW: Listen to all week's recordings. Transcribe one and correct errors.",
-        "SwipeGerman: Review all mistakes from week",
-        "DW: B1 Start – Folge 21 – cultural video 'Deutsche Erfindungen' – passive voice listening",
-        "Grammar: Create a 'Passiv ohne Agent' vs 'Passiv mit von/durch' cheat sheet",
-        "Speaking: Answer without preparation: 'Was wird in deinem Beruf besonders geschätzt?'",
-        "Bidirectional translation (5 sentences): Der Brief wurde von meiner Sekretärin geschrieben. | Das Haus wird gerade renoviert. | Die Entscheidung wurde ohne Diskussion getroffen. | Wie wird dieses Problem normalerweise gelöst? | Die Rechnung muss bis morgen bezahlt werden.",
-        "Technical: 'The error is logged automatically. The update will be installed tonight.' – German passive with modal verbs"
+        "BUILD: Secured Linux server",
+        "Configure UFW firewall rules (default deny, allow only necessary ports)",
+        "Harden SSH completely (keys only, port 2222, root disabled, allow specific users)",
+        "Scan system with nmap (verify only expected ports open)",
+        "Analyze logs for suspicious activity",
+        "Upload complete security documentation to GitHub"
       ]
     },
-    4: { // Week 4
+    4: { // Week 4: Troubleshooting & Portfolio
       1: [
-        "SwipeGerman: Add 10 B1 Präteritum (written past) for common verbs (gab, war, hatte, wurde, sagte, ging, kam, ließ, fand, stand)",
-        "DW: B1 Start – Folge 22 – 'Präteritum – für geschriebene Texte'",
-        "DW: B1 Start – Folge 22 – news article reading with Präteritum",
-        "Reading: DW Top-Thema (normal speed) – underline all Präteritum verbs",
-        "Speaking: Retell a news story using Präteritum: 'Gestern gab es einen Unfall. Ein Auto fuhr zu schnell. Der Fahrer wurde verletzt.'",
-        "Bidirectional translation (5 sentences): Es gab einmal einen König, der sehr reich war. | Ich hatte keine Ahnung, was passieren würde. | Der Film war langweilig, also gingen wir früher nach Hause. | Er sagte, dass er mich liebt. | Sie stand auf, öffnete das Fenster und atmete tief ein.",
-        "Grammar: Präteritum vs Perfekt – when to use which (spoken vs written, North vs South)"
+        "Build layered troubleshooting mindset (Physical→Data Link→Network→Transport→Session→Presentation→Application)",
+        "Learn OSI model for troubleshooting context (7 layers, which tools for each layer)",
+        "Create troubleshooting checklist (Physical: cables, lights; Data Link: MAC, ARP; Network: IP, routing; Transport: ports, firewall; Application: service status, logs)",
+        "Practice issue isolation methodology (divide and conquer, follow the traffic)",
+        "Document your diagnostic workflow with decision tree"
       ],
       2: [
-        "SwipeGerman: Add 10 B1 relative clauses (der, die, das, welcher, wo, was) – Nominativ and Akkusativ",
-        "DW: B1 Start – Folge 23 – 'Relativsätze – Sätze verbinden'",
-        "DW: B1 Start – Folge 23 – relative pronoun declension drill",
-        "Writing: Write 5 complex sentences combining two ideas with relative clauses: 'Das ist der Mann, den ich gestern gesehen habe.'",
-        "Speaking: Describe a person: 'Das ist meine Freundin, die aus Spanien kommt. Sie ist die Frau, mit der ich reise.'",
-        "Bidirectional translation (5 sentences): Das ist der Mann, der mir geholfen hat. | Die Frau, die dort steht, ist meine Chefin. | Das Buch, das ich lese, ist sehr spannend. | Der Kuchen, den du gebacken hast, schmeckt wunderbar. | Kennst du den Ort, wo wir uns zum ersten Mal trafen?",
-        "Grammar: Relative clauses with prepositions: 'der, mit dem', 'die, mit der', 'das, mit dem', 'die, mit denen'"
+        "Simulate DNS failure → diagnose and fix (/etc/hosts misconfiguration, block port 53)",
+        "Simulate gateway failure → diagnose and fix (delete default route, add wrong gateway)",
+        "Diagnose packet loss scenarios (tc qdisc add dev eth0 root netem loss 10%)",
+        "Restore connectivity each time (document each fix)",
+        "Write solution notes for each scenario with root cause analysis"
       ],
       3: [
-        "SwipeGerman: Add 10 B1 relative clauses Dativ/Genitiv (dessen, deren, dem, der, denen)",
-        "DW: B1 Start – Folge 24 – 'Relativsätze im Dativ und Genitiv'",
-        "DW: B1 Start – Folge 24 – advanced combine-sentences",
-        "Shadowing: Repeat 'Das ist der Freund, dessen Auto ich fahre. Die Frau, deren Kinder krank sind, bleibt zu Hause.'",
-        "Speaking: Describe ownership: 'Das ist der Kollege, dessen Computer kaputt ist. Die Studentin, deren Noten sehr gut sind, bekommt ein Stipendium.'",
-        "Bidirectional translation (5 sentences): Das ist der Mann, dessen Tochter Ärztin ist. | Die Frau, deren Tasche gestohlen wurde, ist verzweifelt. | Die Leute, mit denen ich arbeite, sind sehr nett. | Das ist der Professor, dem ich vertraue. | Das Haus, in dem wir wohnen, ist alt.",
-        "Grammar: 'dessen' and 'deren' – possession in relative clauses – 10 drill sentences"
+        "Troubleshoot nginx not serving content (config error, port conflict, permission denied)",
+        "Test intentional SSH failures (wrong port, key permissions, wrong user, host key changed)",
+        "Diagnose blocked port scenarios (firewall rules, SELinux/apparmor)",
+        "Analyze service states and fix them (systemctl status, journalctl -xe)",
+        "Create service troubleshooting guide with 10 common problems"
       ],
       4: [
-        "SwipeGerman: Add 10 B1 infinitive constructions (um…zu, ohne…zu, statt…zu, haben zu, brauchen nicht zu, scheinen zu, glauben zu, vergessen zu, versuchen zu, vermeiden zu)",
-        "DW: B1 Start – Folge 25 – 'Infinitiv mit zu'",
-        "DW: B1 Start – Folge 25 – 'um…zu' vs 'damit'",
-        "Speaking: Explain purpose: 'Ich lerne Deutsch, um eine Ausbildung zu machen. Er ging nach draußen, ohne etwas zu sagen.'",
-        "Writing: Write 5 sentences with 'ohne…zu' and 'statt…zu'",
-        "Bidirectional translation (5 sentences): Ich bin gekommen, um dir zu helfen. | Er ging weg, ohne sich zu verabschieden. | Statt zu arbeiten, schlief er den ganzen Tag. | Ich habe vergessen, die Tür abzuschließen. | Versuche, jeden Tag ein bisschen Deutsch zu sprechen.",
-        "Grammar: 'um…zu' (purpose) vs 'damit' (different subjects) – 5 comparison pairs"
+        "Break VM network interface intentionally (ip link set eth0 down, delete config)",
+        "Restore interfaces step by step (ip link set up, reconfigure IP, restart networking)",
+        "Reconfigure static routing from scratch (delete all routes, add back)",
+        "Diagnose and fix DNS issues in VM (wrong /etc/resolv.conf, systemd-resolved issues)",
+        "Document every fix clearly with commands and explanations"
       ],
       5: [
-        "SwipeGerman: Review ALL Month 2 words (approx 180 words) – cumulative test",
-        "DW: B1 Start – Folge 26 – 'B1 Checkpoint – grammar review week'",
-        "DW: B1 Start – take official B1 placement test online",
-        "Speaking: Record a 4-min monologue 'Meine Reise von A2 zu B1' – use Passive, Konjunktiv II, Relativsätze, Infinitiv mit zu",
-        "Listening: 'Slow German' – Folge 'Lernen lernen' – write 5 new phrases",
-        "Bidirectional translation (5 sentences): Nachdem ich A2 abgeschlossen hatte, habe ich mit B1 angefangen. | Wenn ich früher gewusst hätte, dass Deutsch so nützlich ist, wäre ich ernsthafter gewesen. | Das Buch, das ich gerade lese, heißt 'Der Vorleser'. | Ich lerne jeden Tag, um mein Ziel zu erreichen, ohne aufzugeben. | Was würde ich tun, wenn ich heute perfekt Deutsch sprechen könnte?",
-        "Technical: 'The server, whose logs I checked yesterday, has a memory leak. I need to restart it without losing data.' – translate to German with relative clause and 'ohne…zu'"
+        "Capture live Wireshark traffic (tcpdump -i eth0 -w capture.pcap)",
+        "Analyze TCP 3-way handshake (SYN, SYN-ACK, ACK - filter 'tcp.flags.syn==1')",
+        "Analyze DNS query and response (filter 'dns', follow stream)",
+        "Inspect HTTP GET requests (filter 'http.request.method == GET')",
+        "Create packet analysis report with 5 examples and explanations"
       ],
       6: [
-        "BUILD DAY: Create 'Month 2 Portfolio' – 1 recording (4-min monologue), 1 written text (100-word story with Passive+Relativsätze+KonjunktivII), 2 grammar cheat sheets (Relativsätze + Infinitiv mit zu)",
-        "SwipeGerman: Export all Month 2 errors – create custom deck",
-        "DW: B1 Start – Folge 27 – 'B1 Prüfungsvorbereitung – Hören und Lesen'",
-        "Immersion: Watch 20 min of 'Nicos Weg' B1 episodes without subtitles",
-        "Speaking: Mock B1 speaking exam – introduce yourself, describe a photo, make a plan",
-        "Bidirectional translation (5 sentences): In Month 2 habe ich gelernt, wie man passive Sätze bildet und Relativsätze verwendet. | Das Schwierigste war, den Konjunktiv II zu verstehen. | Wenn ich diese Prüfung bestehe, werde ich sehr glücklich sein. | Das Ziel, das ich nächsten Monat erreichen möchte, ist, flüssiger zu sprechen. | Ich kann jetzt Artikel über Technik lesen, ohne jedes Wort nachschlagen zu müssen.",
-        "Technical: 'I can now write a German email about a server outage using passive and relative clauses.' – write that email (50 words)"
+        "Full review of all networking concepts (OSI, IP, subnetting, DNS, DHCP, routing, NAT, firewall, TCP/UDP, troubleshooting)",
+        "Identify your 3 weakest areas (subnetting, routing, DNS) - repeat exercises",
+        "Repeat subnet exercises until comfortable (20 practice problems)",
+        "Repeat 3 troubleshooting scenarios (DNS, gateway, packet loss)",
+        "Organize all notes cleanly (create master index with links)"
       ],
       7: [
-        "REST/REVIEW: Listen to your day5 and day6 recordings. Write 'Month 2 Lessons Learned' (150 words German+English mix)",
-        "SwipeGerman: Review all Month 1+2 words one final time",
-        "DW: Rest day – watch any B1 video for enjoyment (no tasks)",
-        "Grammar: Create a one-page 'B1 Starter Kit' – Passive, Konjunktiv II, Relativsätze, Infinitiv mit zu, Genitivpräpositionen",
-        "Speaking: Call a German learning partner (or imaginary) and say 'Ich bin jetzt bereit für B1+'",
-        "Bidirectional translation (5 sentences): Der zweite Monat war härter als der erste, aber ich habe viel gelernt. | Ohne tägliches Üben wäre ich nicht so weit gekommen. | Die Grammatik, die mir am meisten Schwierigkeiten gemacht hat, war der Konjunktiv II. | Ich freue mich auf Month 3, wo ich anfangen werde, über komplexere Themen zu diskutieren. | Danke, dass ich diese Reise fortsetzen darf. Nächster Halt: B1!",
-        "Technical: 'I'm ready to learn networking vocabulary and helpdesk German next month.' – write 3 German sentences"
+        "BUILD: Mini company network",
+        "Configure static IPs for all devices (router, server, 2 clients)",
+        "Configure DNS resolution (local DNS server with dnsmasq)",
+        "Configure firewall and SSH security (UFW with rate limiting, SSH keys only)",
+        "Capture and analyze packets (10 captures with analysis)",
+        "Upload professional project documentation to GitHub"
       ]
     }
   },
-  3: { // MONTH 3: Start B1 (weil, dass, wenn, storytelling)
-    1: { // Week 1
+  3: { // Month 3: Infrastructure Builder
+    1: { // Week 1: Virtualization
       1: [
-        "SwipeGerman: Add 20 B1 'weil' and 'da' (because) – complex sentences",
-        "DW: B1 – 'Nicos Weg' Folge 31 – 'Weil und da' – causal clauses",
-        "DW: B1 – Folge 31 – grammar exercises",
-        "Shadowing: Repeat 10 'weil' sentences from the episode",
-        "Speaking: Explain 5 things you do daily: 'Ich stehe früh auf, weil ich morgens produktiver bin.'",
-        "Bidirectional translation (5 sentences): Ich lerne Deutsch, weil ich in Deutschland arbeiten möchte. | Da es geregnet hat, blieben wir zu Hause. | Er ist nicht gekommen, weil er krank war. | Da du schon da bist, kannst du mir helfen. | Ich bin müde, weil ich letzte Nacht nicht gut geschlafen habe.",
-        "Grammar: 'weil' vs 'da' – formal/informal and verb-at-end rule"
+        "Learn hypervisor concepts (Type 1: bare-metal - VMware ESXi, KVM, Hyper-V; Type 2: hosted - VirtualBox, VMware Workstation)",
+        "Understand VM benefits over physical machines (isolation, snapshot, portability, resource efficiency, testing)",
+        "Learn what snapshots are and why they matter (state capture, rollback, branching)",
+        "Document virtualization concepts clearly with comparison table",
+        "German IT vocab: Virtualisierung, Snapshot, Abbild, Hypervisor, Gast, Host"
       ],
       2: [
-        "SwipeGerman: Add 20 B1 'dass' (that) – noun clauses",
-        "DW: B1 – 'Nicos Weg' Folge 32 – 'Dass-Sätze'",
-        "DW: B1 – Folge 32 – transform direct speech to 'dass' clauses",
-        "Listening: Identify 5 'dass' sentences from DW audio",
-        "Writing: Write 5 sentences with 'Ich glaube, dass…', 'Ich weiß, dass…', 'Es ist wichtig, dass…'",
-        "Bidirectional translation (5 sentences): Ich glaube, dass er recht hat. | Es ist schade, dass du nicht kommen kannst. | Weißt du, dass Maria umzieht? | Ich bin sicher, dass wir gewinnen werden. | Die Tatsache, dass er gelogen hat, macht mich wütend.",
-        "Grammar: 'dass' after bestimmte Adjektive (wichtig, sicher, schade, möglich, nötig)"
+        "Install VirtualBox (download from virtualbox.org, install on Linux/Windows/Mac)",
+        "Create a new Linux (Ubuntu 22.04 or 24.04) VM (2048MB RAM, 20GB disk, bridged network)",
+        "Configure RAM/CPU/storage resources (adjust based on host hardware)",
+        "Install Guest Additions (Devices → Insert Guest Additions CD, run VBoxLinuxAdditions.run)",
+        "Create VirtualBox setup notes with screenshots"
       ],
       3: [
-        "SwipeGerman: Add 20 B1 'wenn' (if/when) – conditional and temporal",
-        "DW: B1 – 'Nicos Weg' Folge 33 – 'Wenn-Sätze'",
-        "DW: B1 – Folge 33 – differentiate 'wenn' (condition) vs 'wenn' (time)",
-        "Roleplay: 'Wenn ich Chef wäre, würde ich…' – 5 wishes",
-        "Speaking: Tell a friend: 'Wenn du Zeit hast, können wir ins Kino gehen. Wenn es regnet, bleiben wir zu Hause.'",
-        "Bidirectional translation (5 sentences): Wenn ich groß bin, werde ich Pilot. | Wenn es morgen schneit, bleiben wir zu Hause. | Komm vorbei, wenn du Zeit hast. | Wenn ich die Wahl hätte, würde ich umziehen. | Wenn du nicht aufpasst, verlierst du dein Passwort.",
-        "Grammar: 'wenn' (condition, real/unreal) vs 'als' (past single event) – 10 comparison sentences"
+        "Learn NAT networking mode in VirtualBox (VMs share host IP, isolated from LAN)",
+        "Learn Bridged networking mode (VM gets IP from physical router, appears as separate device)",
+        "Learn Host-Only networking mode (isolated network between host and VMs, no outside access)",
+        "Test internet access in each mode (ping 8.8.8.8, curl google.com)",
+        "Document all differences with use cases and diagrams"
       ],
       4: [
-        "SwipeGerman: Add 20 B1 storytelling connectors (plötzlich, dann, danach, später, am nächsten Tag, in der Zwischenzeit, zuerst, endlich, schließlich, auf einmal)",
-        "DW: B1 – 'Nicos Weg' Folge 34 – 'Geschichten erzählen'",
-        "DW: B1 – Folge 34 – story ordering exercise",
-        "Writing: Write a 100-word story starting: 'Gestern Abend war ich allein zu Hause. Plötzlich hörte ich ein Geräusch…'",
-        "Speaking: Tell the same story aloud, focusing on connectors and Perfekt",
-        "Bidirectional translation (5 sentences): Zuerst habe ich gekocht, danach habe ich ferngesehen. | Plötzlich ging das Licht aus. | Endlich kam der Bus nach 20 Minuten. | Am nächsten Tag erfuhr ich die Wahrheit. | Schließlich haben wir uns entschuldigt und alles war wieder gut.",
-        "Grammar: Temporal adverbs – position in sentence (time, manner, place – TeKaMoLo)"
+        "Create your first VM snapshot (VM → Take Snapshot, name: 'Clean Install')",
+        "Clone an existing VM (Right-click VM → Clone, full clone vs linked clone)",
+        "Restore a snapshot after breaking something (break network config, restore snapshot)",
+        "Simulate a failure and recover (delete critical file, restore from snapshot)",
+        "Write snapshot recovery workflow with best practices"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – cumulative review",
-        "DW: B1 – Folge 35 – storytelling comprehension (hearing a story)",
-        "DW: B1 – Folge 35 – retell the story in your own words (recorded)",
-        "Speaking: Tell a 3-min story from your childhood using 'als', 'wenn', 'weil', 'dass', and connectors",
-        "Listening: 'Slow German' – Folge 'Meine Schulzeit' – write a summary in German",
-        "Bidirectional translation (5 sentences): Als ich fünf Jahre alt war, fiel ich vom Fahrrad. | Ich habe geweint, weil es sehr weh tat. | Meine Mutter sagte, dass ich wieder aufstehen soll. | Wenn ich heute darüber nachdenke, war es gar nicht so schlimm. | Plötzlich lachte ich, und danach hatte ich keine Angst mehr.",
-        "Self-recording: Your childhood story – check 'als' vs 'wenn' usage"
+        "Monitor VM performance (CPU/RAM/disk from VirtualBox UI and inside VM with htop, free -h, df -h)",
+        "Adjust RAM and CPU allocation (Settings → System → Motherboard/Processor)",
+        "Optimize disk usage (dynamic vs fixed disk, compact VDI with VBoxManage modifymedium compact)",
+        "Stress test VM resources (stress --cpu 4 --vm 2 --vm-bytes 512M)",
+        "Create VM performance notes with optimization tips"
       ],
       6: [
-        "BUILD DAY: Create an audio story 'Mein bester Urlaub' (4 min) using weil, dass, wenn, als, and connectors",
-        "SwipeGerman: Add 20 B1 emotions in storytelling (aufgeregt, erleichtert, enttäuscht, begeistert, verängstigt, verwirrt, neugierig, hoffnungsvoll, pessimistisch, optimistisch)",
-        "DW: B1 – Folge 36 – 'Gefühle ausdrücken'",
-        "Roleplay: Tell a friend about a job rejection, then about a surprise acceptance",
-        "Writing: Write 80 words about a time you felt extremely nervous or excited",
-        "Bidirectional translation (5 sentences): Ich war total aufgeregt, bevor ich die Prüfung geschrieben habe. | Nachdem ich die Nachricht gehört hatte, war ich sehr erleichtert. | Er war enttäuscht, dass sein Team verloren hat. | Wir sind begeistert von der neuen Wohnung. | Sie war verwirrt, weil die Anleitung unklar war.",
-        "Grammar: 'vor' + Dativ for emotions: vor Aufregung, vor Freude, vor Angst"
+        "Create a second Linux VM (Ubuntu 22.04 client with 1024MB RAM, 10GB disk)",
+        "Configure Host-Only network between VMs (VirtualBox Host-Only Ethernet Adapter)",
+        "Test SSH between both VMs (ssh user@192.168.56.101)",
+        "Share a file via SCP (scp file.txt user@192.168.56.101:/home/user/)",
+        "Document dual-VM architecture with network diagram"
       ],
       7: [
-        "REST/REVIEW: Listen to your day6 audio story. Transcribe and improve.",
-        "SwipeGerman: Review all mistakes from week",
-        "DW: B1 – Folge 37 – watch a full episode without tasks (enjoyment)",
-        "Grammar: Create a 'Storytelling Tense Cheat Sheet' – Perfekt (spoken) vs Präteritum (written) vs Plusquamperfekt (before past)",
-        "Speaking: Answer: 'Erzähle mir von einem Moment, in dem du sehr stolz auf dich warst.' (3 min)",
-        "Bidirectional translation (5 sentences): Ich war so stolz, als ich meine erste Programmzeile geschrieben habe. | Bevor ich Deutsch gelernt habe, dachte ich, dass es unmöglich ist. | Nachdem ich den Kurs beendet hatte, feierte ich mit Freunden. | Wenn ich Geschichten höre, lerne ich neue Wörter. | Es macht mich glücklich, dass ich Fortschritte sehe.",
-        "Technical: 'Tell a short story about a time you fixed a difficult computer problem' – in German, 5 sentences"
+        "BUILD: Small VM lab (2 VMs in isolated network)",
+        "Configure isolated Host-Only network (192.168.56.0/24, disable DHCP, assign static IPs)",
+        "Enable SSH between both VMs (install openssh-server, allow in firewall)",
+        "Create snapshots of clean state (before and after configuration)",
+        "Create infrastructure diagram with VM specifications, upload to GitHub"
       ]
     },
-    2: { // Week 2
+    2: { // Week 2: Multi-VM Environment
       1: [
-        "SwipeGerman: Add 20 B1 indirect questions (ob, wo, wann, wie, warum, wohin, woher, womit, worüber, woran)",
-        "DW: B1 – Folge 38 – 'Indirekte Fragen – höflich nachfragen'",
-        "DW: B1 – Folge 38 – transform direct to indirect",
-        "Shadowing: Repeat polite indirect questions: 'Können Sie mir sagen, wo der Bahnhof ist?'",
-        "Speaking: Ask a stranger politely: 'Wissen Sie, ob der Zug pünktlich kommt? Könnten Sie mir verraten, wie spät es ist?'",
-        "Bidirectional translation (5 sentences): Weißt du, ob Maria morgen kommt? | Kannst du mir sagen, wie spät es ist? | Ich frage mich, warum er nicht angerufen hat. | Er möchte wissen, wo das nächste Hotel ist. | Könnten Sie mir erklären, womit ich rechnen muss?",
-        "Grammar: Word order in indirect questions (verb at end) – vs direct questions"
+        "Build 3-VM environment (Router: Ubuntu, Server: Ubuntu, Client: Ubuntu or Windows)",
+        "Configure unique static IPs on all 3 (192.168.1.1 router, .10 server, .20 client)",
+        "Test full internal communication (ping from each to others, SSH from client to server)",
+        "Create network topology notes (3 subnets if router has 3 interfaces, or single subnet)",
+        "Diagram the entire setup with IP addressing and routing"
       ],
       2: [
-        "SwipeGerman: Add 20 B1 umgangssprachliche Ausdrücke for storytelling (also, na ja, auf jeden Fall, sozusagen, quasi, irgendwie, jedenfalls, übrigens, allerdings, trotz alledem)",
-        "DW: B1 – Folge 39 – 'Gesprochenes Deutsch – Füllwörter und Floskeln'",
-        "DW: B1 – Folge 39 – natural dialogue listening",
-        "Listening: YT 'Easy German' – street interview – write 5 filler words you hear",
-        "Speaking: Retell a story using 'also', 'na ja', 'auf jeden Fall', 'jedenfalls'",
-        "Bidirectional translation (5 sentences): Also, ich war gestern im Kino. Na ja, der Film war nicht so gut. | Auf jeden Fall habe ich meine Freundin getroffen. | Jedenfalls war es ein interessanter Abend. | Übrigens, hast du schon von dem neuen Restaurant gehört?",
-        "Grammar: Modal particles (ja, doch, mal, halt, eben, schon, wohl, aber) – 10 examples"
+        "Configure nginx on one VM (server VM: install nginx, create test page)",
+        "Access it from the other two VMs (curl http://192.168.1.10 from router and client)",
+        "Diagnose why access might fail (firewall, nginx not running, bind address 127.0.0.1 only)",
+        "Monitor connectivity (ping, telnet, curl -v)",
+        "Document shared service architecture with access control"
       ],
       3: [
-        "SwipeGerman: Add 20 B1 Präteritum for storytelling (war, hatte, ging, kam, sah, hörte, wusste, dachte, fand, rief, lief, stand, saß, lag, aß, trank, schrieb, las, sprach, half)",
-        "DW: B1 – Folge 40 – 'Präteritum der starken Verben – Geschichten schreiben'",
-               "DW: B1 – Folge 40 – read a short story and underline all Präteritum verbs",
-        "Writing: Write a 120-word fairy tale beginning: 'Es war einmal eine kleine Maus...' using Präteritum",
-        "Speaking: Tell your fairy tale aloud (3 min), focus on strong verb conjugation",
-        "Bidirectional translation (5 sentences): Ich ging langsam die Straße entlang und sah einen alten Freund. | Er hatte große Angst, aber er wusste, dass er stark sein musste. | Sie dachte lange nach und rief schließlich ihre Mutter an. | Der Hund lief mir hinterher und bellte laut. | Wir aßen zusammen zu Abend und dann lasen wir ein Buch.",
-        "Grammar: Strong verb Präteritum patterns (ei → ie → ie, i → a → u, etc.) – memorize 30"
+        "Install Samba for file sharing (sudo apt install samba, configure /etc/samba/smb.conf)",
+        "Share a folder between Linux VMs (create share [shared], path=/srv/share, valid users=username)",
+        "Set permissions correctly (chmod 755 /srv/share, smbpasswd -a username)",
+        "Transfer files and verify integrity (smbclient //server/shared -U username, get/put)",
+        "Write Samba configuration notes with security recommendations"
       ],
       4: [
-        "SwipeGerman: Add 20 B1 adverbs of time for narrative flow (früher, damals, heutzutage, inzwischen, mittlerweile, vor Kurzem, kürzlich, neulich, seinerzeit, seinerzeit, einst, jemals, nie, stets, immer wieder, manchmal, gelegentlich, selten, häufiger, üblicherweise)",
-        "DW: B1 – Folge 41 – 'Zeitadverbien – wann etwas passiert'",
-        "DW: B1 – Folge 41 – sort adverbs by time reference",
-        "Speaking: Compare past and present: 'Früher hatte ich kein Handy, heutzutage kann ich mir ein Leben ohne nicht vorstellen.'",
-        "Writing: Write 80 words about how your city/town has changed using 'früher', 'damals', 'heutzutage', 'inzwischen'",
-        "Bidirectional translation (5 sentences): Früher bin ich jeden Tag mit dem Fahrrad zur Schule gefahren. | Damals gab es noch keine Smartphones. | Heutzutage kommunizieren alle über WhatsApp. | Inzwischen habe ich mich an das neue System gewöhnt. | Vor Kurzem habe ich einen alten Schulfreund getroffen.",
-        "Grammar: Adverb position in sentence (often after verb or at beginning for emphasis)"
+        "Configure SSH aliases in ~/.ssh/config (Host server, HostName 192.168.1.10, User ubuntu, IdentityFile ~/.ssh/id_rsa)",
+        "SSH between all VMs using aliases (ssh server, ssh client, ssh router)",
+        "Automate file sync with rsync (rsync -avz -e ssh /local/path server:/remote/path)",
+        "Use SCP to copy configs between VMs (scp /etc/nginx/nginx.conf server:/tmp/)",
+        "Document remote admin workflow with scripts and aliases"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – cumulative test",
-        "DW: B1 – Folge 42 – 'Eine Geschichte schreiben – Werkstatt'",
-        "DW: B1 – Folge 42 – write a 150-word story with given prompt (photo or first sentence)",
-        "Speaking: Record your story (4 min), then write a second version improving flow",
-        "Listening: 'Deutschlandfunk – Kakadu' – children's story – write a 5-sentence summary",
-        "Bidirectional translation (5 sentences): Es war einmal ein kleiner Junge, der Angst vor der Dunkelheit hatte. | Eines Nachts hörte er ein seltsames Geräusch unter seinem Bett. | Damals wusste er noch nicht, dass es nur die Katze war. | Heutzutage lacht er über seine frühere Angst. | Inzwischen hat er sogar Spaß an Gruselgeschichten.",
-        "Self-recording: Compare your two story versions – note 3 improvements"
+        "Design a mini office network layout (1 server: file+web, 2 client VMs: workstations)",
+        "Define IP ranges and roles (server: 192.168.1.10, clients: .20 and .21, router: .1)",
+        "Assign services to correct VMs (web and file on server, apps on clients)",
+        "Create complete infrastructure map with services, ports, dependencies",
+        "Document design decisions and alternatives considered"
       ],
       6: [
-        "BUILD DAY: Create a 'Storytelling Toolbox' cheat sheet – 30 Präteritum strong verbs, 20 adverbs, 10 connectors, 5 filler words. Record a 5-min story using at least 15 from the toolbox.",
-        "SwipeGerman: Add 20 B1 Konjunktiv II for polite requests and wishes (ich würde gern, ich hätte gern, ich bräuchte, ich könnte, ich dürfte, ich möchte, es wäre schön, wenn, wenn ich doch nur, an deiner Stelle würde ich, ich wünschte, ich wäre, ich hätte, es täte mir leid, wenn, könnte ich bitte, dürfte ich vielleicht, wäre es möglich, wäre nett, wenn, ich würde vorschlagen, lassen Sie mich)",
-        "DW: B1 – Folge 43 – 'Konjunktiv II – Höflichkeit im Beruf'",
-        "DW: B1 – Folge 43 – roleplay 'Im Büro' with polite requests",
-        "Roleplay: Customer call – 'Ich würde gern einen Termin verschieben. Könnten Sie mir helfen?'",
-        "Speaking: Make 5 polite requests to a colleague/boss/customer",
-        "Bidirectional translation (5 sentences): Ich würde gerne den Chef sprechen. | Könnten Sie mir bitte sagen, wie spät es ist? | An deiner Stelle würde ich die Stelle annehmen. | Es wäre schön, wenn du früher kommen könntest. | Dürfte ich Sie etwas fragen?",
-        "Technical: Helpdesk roleplay – 'Could you please restart your router? I would need your IP address.' – translate and practice"
+        "Simulate a VM crash (force shutdown: VBoxManage controlvm 'VMname' poweroff)",
+        "Restore from snapshot (VBoxManage snapshot 'VMname' restore 'SnapshotName')",
+        "Recover a broken configuration (restore config files from backup)",
+        "Restore all services (verify nginx, samba, ssh are running)",
+        "Create service recovery checklist with step-by-step procedures"
       ],
       7: [
-        "REST/REVIEW: Listen to your day6 story. Write improved version.",
-        "SwipeGerman: Review all mistakes from week 2",
-        "DW: B1 – Folge 44 – cultural video 'Märchen in Deutschland' – listen for Präteritum",
-        "Grammar: Cheat sheet for 'würde' + infinitive (90% of verbs) vs 'hätte/wäre' (haben/sein/modals)",
-        "Speaking: Record 5 polite requests you would use in a job interview",
-        "Bidirectional translation (5 sentences): Wenn ich mehr Zeit hätte, würde ich dir öfter helfen. | Ich wünschte, ich wäre schon in Deutschland. | Es wäre nett, wenn du mich morgen anrufen könntest. | Dürfte ich Sie um einen Gefallen bitten? | Ich würde vorschlagen, dass wir das Meeting verschieben.",
-        "Technical: 'Could you please send me the error log? I would need admin access to fix this.' – German with Konjunktiv II"
+        "BUILD: Mini office environment",
+        "Configure server and client VMs (Ubuntu server + 2 Ubuntu clients)",
+        "Enable file sharing with Samba (shared drive accessible from clients)",
+        "Enable remote admin via SSH (key-based authentication)",
+        "Create professional documentation (network diagram, service list, recovery procedures)",
+        "Upload complete project to GitHub"
       ]
     },
-    3: { // Week 3 – B1 opinions, explanations, reading articles
+    3: { // Week 3: Automation & Remote Management
       1: [
-        "SwipeGerman: Add 20 B1 opinion phrases (meiner Meinung nach, ich finde, ich denke, ich glaube, ich bin der Ansicht, aus meiner Sicht, meiner Erfahrung nach, meines Erachtens, ich bin überzeugt, dass, ich zweifle nicht daran, dass, es scheint mir, dass, ich nehme an, dass, ich vermute, dass, ich befürchte, dass, ich hoffe, dass, ich bin mir sicher, dass, ich bin mir nicht sicher, ob, es ist fraglich, ob, es steht außer Frage, dass, ohne Zweifel)",
-        "DW: B1 – Folge 45 – 'Meinung äußern – Diskussionen führen'",
-        "DW: B1 – Folge 45 – debate listening and comprehension",
-        "Shadowing: Repeat opinion phrases with different intonations (confident, hesitant, excited)",
-        "Speaking: Give your opinion on: 'Sollten Kinder ein eigenes Smartphone haben?' (3 min)",
-        "Bidirectional translation (5 sentences): Meiner Meinung nach ist Deutsch eine schwere Sprache. | Ich finde, dass man jeden Tag üben sollte. | Ich bin überzeugt, dass du die Prüfung bestehst. | Aus meiner Sicht ist das keine gute Idee. | Es scheint mir, dass er recht hat.",
-        "Grammar: 'dass' after opinion verbs – consistent verb-at-end rule"
+        "Configure SSH using ~/.ssh/config file (Host, HostName, User, Port, IdentityFile, ForwardAgent)",
+        "Create SSH aliases for all VMs (web, db, client1, client2, backup)",
+        "Learn verbose SSH debugging (ssh -vvv user@host for connection issues)",
+        "Test all aliases work correctly (ssh web, ssh db, etc.)",
+        "Document advanced SSH config with 10+ configuration options"
       ],
       2: [
-        "SwipeGerman: Add 20 B1 explaining phrases (der Grund dafür ist, dass, das liegt daran, dass, das führt dazu, dass, deshalb, deswegen, aus diesem Grund, aufgrund, infolgedessen, das hat zur Folge, dass, die Ursache ist, dass, das Problem ist, dass, eine mögliche Lösung wäre, man könnte, ich schlage vor, dass, ein Beispiel dafür ist, das bedeutet, dass, mit anderen Worten, anders gesagt, um es zu erklären, vereinfacht gesagt, technisch gesehen)",
-        "DW: B1 – Folge 46 – 'Erklärungen geben – komplexe Zusammenhänge'",
-        "DW: B1 – Folge 46 – explain a process (e.g., how a car works)",
-        "Writing: Write 100 words explaining why you want to become a Fachinformatiker",
-        "Speaking: Record an explanation: 'Warum ist Deutsch wichtig für meine Karriere?' (4 min)",
-        "Bidirectional translation (5 sentences): Der Grund dafür ist, dass ich mehr Verantwortung möchte. | Das liegt daran, dass die Wirtschaft wächst. | Aus diesem Grund habe ich mich für diesen Beruf entschieden. | Ein Beispiel dafür ist mein letztes Projekt. | Mit anderen Worten, wir müssen schneller handeln.",
-        "Technical: Explain in German why a server might be slow (100 words with 'der Grund ist', 'das liegt daran', 'das führt dazu')"
+        "Disable root SSH login on all VMs (PermitRootLogin no in /etc/ssh/sshd_config)",
+        "Configure key-only authentication (PasswordAuthentication no)",
+        "Configure fail2ban basics (sudo apt install fail2ban, copy jail.conf to jail.local, enable sshd jail)",
+        "Inspect auth.log for blocked attempts (grep 'Ban' /var/log/fail2ban.log)",
+        "Create SSH security checklist with 15 hardening items"
       ],
       3: [
-        "SwipeGerman: Add 20 B1 reading article vocabulary (die Schlagzeile, der Artikel, die Quelle, der Autor, die Überschrift, der Leser, die Meinung, der Kommentar, die Analyse, die Zusammenfassung, das Fazit, die Schlagzeile, der Redakteur, die Auflage, die Schlagzeile, der Leitartikel, die Kolumne, die Reportage, das Interview, die Rezension)",
-        "DW: B1 – Folge 47 – 'Zeitungsartikel verstehen – Lesestrategien'",
-        "DW: B1 – Folge 47 – read a short DW article (B1 level)",
-        "Reading: DW Top-Thema (normal speed) – write a 5-sentence summary in German",
-        "Speaking: Discuss the article with yourself: 'Was ist die Hauptaussage? Bin ich einverstanden?'",
-        "Bidirectional translation (5 sentences): Hast du den Artikel in der Zeitung gesehen? | Die Überschrift ist sehr provokant. | Der Autor argumentiert, dass wir mehr erneuerbare Energien brauchen. | Meiner Meinung nach fehlen in der Analyse wichtige Fakten. | Die Zusammenfassung am Ende war sehr hilfreich.",
-        "Grammar: Indirekte Rede (Konjunktiv I) – formal vs informal reporting (introduction only)"
+        "Use rsync to sync directories (rsync -avz --delete /source/ user@host:/dest/)",
+        "Automate backup with rsync + cron (*/30 * * * * rsync -avz /important/ backup@server:/backups/)",
+        "Compress backup archives with tar (tar -czf backup-$(date +%Y%m%d).tar.gz /important/)",
+        "Verify backup file integrity (tar -tzf backup.tar.gz, md5sum comparison)",
+        "Create automated backup workflow notes with restore testing"
       ],
+      // CONTINUATION OF SYSINT_PLAN - Month 3 Week 3 Day 4 through Month 8
+
       4: [
-        "SwipeGerman: Add 20 B1 discussion phrases (ich stimme zu, ich stimme nicht zu, da hast du recht, da liegst du falsch, einverstanden, das sehe ich anders, das ist ein guter Punkt, das ist kein Argument, lassen Sie mich ausreden, wenn ich etwas sagen darf, entschuldigung, dass ich unterbreche, du hast mich falsch verstanden, was ich meine ist, darauf möchte ich eingehen, kurz gesagt, um auf den Punkt zu kommen, fassen wir zusammen, kommen wir zum Schluss, wir sind uns einig, dass)",
-        "DW: B1 – Folge 48 – 'Diskutieren – pro und contra'",
-        "DW: B1 – Folge 48 – listen to a debate, note pro/con arguments",
-        "Roleplay: Debate with yourself: 'Sollte Homeoffice Pflicht sein?' – 5 min, both sides",
-        "Speaking: Record a discussion where you disagree politely 3 times",
-        "Bidirectional translation (5 sentences): Ich stimme dir völlig zu. | Da liegst du leider falsch. | Das ist ein guter Punkt, aber ich sehe das anders. | Lassen Sie mich kurz ausreden. | Kurz gesagt, wir sind uns einig, dass etwas getan werden muss.",
-        "Grammar: 'zwar…aber' and 'nicht nur…sondern auch' in discussions"
+        "Restart services remotely via SSH (ssh server 'sudo systemctl restart nginx')",
+        "Monitor remote logs in real time (ssh server 'journalctl -u nginx -f')",
+        "Transfer config files via SCP (scp /etc/nginx/nginx.conf server:/etc/nginx/)",
+        "Troubleshoot a broken service remotely (ssh server, check logs, check config, restart)",
+        "Write remote administration guide with 20 common commands"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – all opinion+explanation+article+discussion",
-        "DW: B1 – Folge 49 – 'B1 Diskussion – Thema: Technologie'",
-        "DW: B1 – Folge 49 – write your own 150-word opinion on a tech topic",
-        "Speaking: Record a 5-minute solo discussion 'Vor- und Nachteile von Künstlicher Intelligenz' using opinion and discussion phrases",
-        "Listening: 'Easy German' – discussion episode – write down 5 phrases you want to adopt",
-        "Bidirectional translation (5 sentences): Einerseits sparen wir Zeit durch KI, andererseits verlieren manche Menschen ihren Job. | Meiner Meinung nach überwiegen die Vorteile. | Da stimme ich nicht zu, denn neue Jobs entstehen auch. | Das ist ein gutes Argument, aber was ist mit der Privatsphäre? | Kurz gesagt, wir müssen die Technologie regulieren, aber nicht verbieten.",
-        "Self-recording: Listen to your discussion, identify areas where you hesitated, write improved sentences"
+        "Manage all 3 VMs from one terminal (use tmux or screen with split windows)",
+        "Create SSH workflow for each VM (bash aliases, functions, or scripts)",
+        "Configure SSH key trust between VMs (ssh-copy-id user@host, ssh-agent, ssh-add)",
+        "Organize all connection methods (config file, aliases, scripts, tmux sessions)",
+        "Create multi-server notes with management strategies"
       ],
       6: [
-        "BUILD DAY: Create 'B1 Discussion Toolkit' – 30 phrases for opinions, agreement, disagreement, interruption, conclusion. Record a debate with yourself (8 min) on 'Fachinformatiker: Ist eine Ausbildung besser als ein Studium?'",
-        "SwipeGerman: Add 20 B1 conjunctive adverbs (folglich, somit, demnach, infolgedessen, andernfalls, ansonsten, trotz alledem, nichtsdestotrotz, gleichwohl, dennoch, allerdings, freilich, zwar, jedoch, indes, dessen ungeachtet, demgemäß, dementsprechend, vorausgesetzt, dass, sofern)",
-        "DW: B1 – Folge 50 – 'Fortgeschrittene Satzverbindungen – formell schreiben'",
-        "DW: B1 – Folge 50 – rewrite simple sentences using conjunctive adverbs",
-        "Writing: Write a 120-word formal email to a potential employer using 5 conjunctive adverbs",
-        "Bidirectional translation (5 sentences): Die Bewerbung ist vollständig; folglich werden wir sie bearbeiten. | Du musst dich beeilen, andernfalls verpasst du den Zug. | Das Wetter war schlecht; nichtsdestotrotz sind wir gewandert. | Er ist reich, dennoch ist er nicht glücklich. | Vorausgesetzt, dass du pünktlich bist, warten wir auf dich.",
-        "Technical: 'The update requires a restart; otherwise, the changes will not take effect.' – translate with 'andernfalls'"
+        "Write bash script to auto-update all VMs (for loop with ssh, apt update && apt upgrade -y)",
+        "Write backup script with timestamps (tar + rsync + date + logging)",
+        "Write monitoring health check script (curl endpoints, check services, disk space, memory)",
+        "Schedule all scripts with cron (update daily at 3am, backup daily at 2am, monitoring hourly)",
+        "Document all scripts with usage examples and troubleshooting"
       ],
       7: [
-        "REST/REVIEW: Listen to your day6 debate. Write a summary of your best arguments.",
-        "SwipeGerman: Review all mistakes from week 3",
-        "DW: B1 – Folge 51 – cultural video 'Diskutieren in Deutschland' – observe how Germans debate",
-        "Grammar: Cheat sheet for 'trotzdem' (conjunction) vs 'trotz' (preposition + Genitiv)",
-        "Speaking: Give a 4-min opinion speech on 'Sollen Schulen Notebooks statt Bücher verwenden?'",
-        "Bidirectional translation (5 sentences): Trotz der schwierigen Lage haben wir gewonnen. | Das Wetter war schlecht, trotzdem sind wir spazieren gegangen. | Seiner Meinung nach ist das System veraltet. | Dementsprechend müssen wir handeln. | Sofern du einverstanden bist, unterschreibe ich den Vertrag.",
-        "Technical: 'Despite the error, the system continued running. Nevertheless, we should check the logs.' – German with 'trotz' and 'trotzdem'"
+        "BUILD: Remotely managed lab environment",
+        "Secure all SSH access fully (keys only, no root, custom port, fail2ban)",
+        "Automate maintenance tasks (updates, backups, log rotation, health checks)",
+        "Create backup system with rotation (daily for 7 days, weekly for 4 weeks, monthly for 6 months)",
+        "Upload full documentation with all scripts to GitHub"
       ]
     },
-    4: { // Week 4 – B1 storytelling and opinions consolidation
+    4: { // Week 4: Complete Infrastructure Project
       1: [
-        "SwipeGerman: Add 20 B1 literary past (Präteritum for storytelling) – strong verbs set 2 (begann, bot, bat, brach, brannte, dachte, durfte, empfahl, erfuhr, erschrak, flog, fraß, fror, gab, gedieh, ging, griff, hielt, hing, half)",
-        "DW: B1 – Folge 52 – 'Literarische Vergangenheit – Märchen und Mythen'",
-        "DW: B1 – Folge 52 – read a Grimm fairy tale excerpt",
-        "Writing: Write a 150-word fairy tale using at least 10 strong Präteritum verbs",
-        "Speaking: Tell your fairy tale dramatically (5 min) – record and listen for verb accuracy",
-        "Bidirectional translation (5 sentences): Der Prinz begann seine Reise bei Sonnenaufgang. | Die Hexe bot ihm einen verzauberten Apfel an. | Das Kind erschrak, als es das Monster sah. | Der Vogel flog über die Berge und fand das Gold. | Er half der alten Frau und wurde dafür belohnt.",
-        "Grammar: Strong verb conjugation tables – group by pattern (ei-ie-ie, i-a-u, e-a-o, etc.)"
+        "Design a 4-VM company infrastructure (Router, Web Server, File Server, Admin Client)",
+        "Plan server roles (Router: NAT/firewall/DHCP, Web: nginx/Apache, File: Samba/NFS, Admin: management tools)",
+        "Plan IP structure (192.168.10.0/24 with .1 router, .10 web, .20 file, .100 admin)",
+        "Plan remote access method (SSH jump host or VPN)",
+        "Create detailed architecture draft with diagrams"
       ],
       2: [
-        "SwipeGerman: Add 20 B1 reported speech introduction (er sagte, dass; sie fragte, ob; er meinte, dass; sie erklärte, dass; er erzählte, dass; sie berichtete, dass; er erwähnte, dass; sie gab an, dass; er behauptete, dass; sie versicherte, dass; er gab zu, dass; sie gab bekannt, dass; er kritisierte, dass; sie lobte, dass; er beschwerte sich, dass; sie schlug vor, dass; er bat darum, dass; sie warnte davor, dass; er erinnerte daran, dass; sie betonte, dass)",
-        "DW: B1 – Folge 53 – 'Indirekte Rede – was hat er gesagt?'",
-        "DW: B1 – Folge 53 – transform direct quotes into reported speech",
-        "Roleplay: Two friends gossip about a third person using reported speech",
-        "Speaking: Report what 3 different people said about the same event (5 min)",
-        "Bidirectional translation (5 sentences): Er sagte, dass er morgen kommt. | Sie fragte, ob ich ihr helfen könnte. | Der Chef erklärte, dass das Projekt verschoben wird. | Meine Mutter erzählte, dass sie früher in Berlin gelebt hat. | Der Zeuge gab an, dass er nichts gesehen habe.",
-        "Grammar: Konjunktiv I for reported speech (formal) vs 'würde' + infinitive (spoken) vs 'dass' + indicative (colloquial)"
+        "Deploy all 4 VMs (Ubuntu Server for router/web/file, Ubuntu Desktop for admin)",
+        "Configure all services per role (router: iptables + dnsmasq, web: nginx, file: samba)",
+        "Configure full networking (static IPs, default routes, DNS)",
+        "Configure storage per server (web: 10GB, file: 20GB with separate partition for shares)",
+        "Test all VM communication (ping, ssh, curl web, smbclient file)"
       ],
       3: [
-        "SwipeGerman: Add 20 B1 combining opinions and facts (ich bin der Ansicht, dass + weil; meiner Erfahrung nach + deshalb; trotz der Tatsache, dass; ungeachtet dessen, dass; vor dem Hintergrund, dass; in Anbetracht der Tatsache, dass; basierend auf meiner Erfahrung; laut der Studie; wie aus der Grafik hervorgeht; wenn man die Zahlen betrachtet; das Beispiel zeigt, dass; dies lässt den Schluss zu, dass; daraus folgt, dass; ein weiterer Aspekt ist, dass; vor allem, weil; insbesondere, da; nicht zuletzt deshalb, weil; dieser These widerspricht, dass; dagegen spricht, dass; ein Gegenargument ist, dass)",
-        "DW: B1 – Folge 54 – 'Argumentation aufbauen – Essay schreiben'",
-        "DW: B1 – Folge 54 – analyze a short argumentative essay",
-        "Writing: Write a 200-word essay: 'Warum sollte jeder programmieren lernen?'",
-        "Speaking: Record your essay as a speech (5 min), add natural pauses and emphasis",
-        "Bidirectional translation (5 sentences): Meiner Erfahrung nach lernt man am besten durch Praxis. | Trotz der Tatsache, dass es schwer ist, lohnt es sich. | Laut einer Studie verbessert Programmieren das logische Denken. | Dies lässt den Schluss zu, dass Informatik in die Schule gehört. | Ein Gegenargument ist, dass nicht jeder Technik interessant findet.",
-        "Grammar: Nominalization (vom Verb zum Nomen) – 'weil es schwierig ist' → 'trotz der Schwierigkeit'"
+        "Configure UFW on all systems (default deny incoming, allow necessary ports)",
+        "Secure SSH on all VMs (keys only, no root, port 2222, allow from admin only)",
+        "Create automated backup on each (rsync from each VM to backup location)",
+        "Restrict permissions appropriately (users, groups, sudo access)",
+        "Verify complete security (nmap scan from outside, test all access rules)"
       ],
       4: [
-        "SwipeGerman: Add 20 B1 hypothetical situations (was wäre, wenn; angenommen, dass; gesetzt den Fall, dass; unter der Annahme, dass; vorausgesetzt, dass; im Falle, dass; falls; sofern; unter der Bedingung, dass; es ist denkbar, dass; es könnte sein, dass; möglicherweise; vielleicht; eventuell; unter Umständen; ich könnte mir vorstellen, dass; es wäre möglich, dass; nichts ist unmöglich; wer weiß, vielleicht; man kann nie wissen; alles ist möglich)",
-        "DW: B1 – Folge 55 – 'Hypothesen und Spekulationen'",
-        "DW: B1 – Folge 55 – listening 'Was wäre, wenn…?'",
-        "Speaking: Speculate: 'Was wäre, wenn du eine Million Euro gewinnen würdest?' (4 min)",
-        "Writing: Write 100 words on 'Wie sähe die Welt in 50 Jahren aus?'",
-        "Bidirectional translation (5 sentences): Was wäre, wenn du nie Deutsch gelernt hättest? | Angenommen, du hättest die Wahl, wohin würdest du reisen? | Falls es morgen schneit, bleiben wir zu Hause. | Es könnte sein, dass er schon angekommen ist. | Unter Umständen müssen wir den Plan ändern.",
-        "Grammar: Konjunktiv II Vergangenheit (hätte/wäre + Partizip II) for unreal past"
+        "Monitor all services remotely (from admin VM: curl web, smbclient file, ssh router)",
+        "Analyze logs from each VM (journalctl, rsyslog centralization, grep for errors)",
+        "Configure uptime checks via scripts (ping monitoring, service health endpoints)",
+        "Diagnose intentional failures (stop nginx, block port, test monitoring)",
+        "Create monitoring documentation with dashboards and alerts"
       ],
       5: [
-        "SwipeGerman: Review ALL Month 3 words (approx 160 words) – full cumulative test",
-        "DW: B1 – Folge 56 – 'B1 Abschluss – Geschichten und Meinungen' – review week",
-        "DW: B1 – B1 sample exam – reading and listening sections",
-        "Speaking: Record a 6-min monologue 'Meine Meinung zu drei aktuellen Themen' (wähle selbst: Technologie, Umwelt, Bildung, Arbeit, Reisen)",
-        "Listening: DW 'B1 Prüfungstraining' – do one full listening test",
-        "Bidirectional translation (5 sentences): Im dritten Monat habe ich gelernt, wie man Geschichten spannend erzählt und seine Meinung klar äußert. | Wenn ich meine Meinung zu Technologie sagen soll, finde ich, dass KI mehr Chancen als Risiken bietet. | Der Autor des Artikels argumentiert, dass wir bewusster leben sollten, und dem stimme ich zu. | Was wäre, wenn ich früher mit Deutsch angefangen hätte? Dann wäre ich jetzt schon flüssiger. | Kurz gesagt, dieser Monat hat mir gezeigt, dass ich komplexe Gedanken auf Deutsch ausdrücken kann.",
-        "Self-recording: Listen to your 6-min monologue – identify 5 places to improve vocabulary or grammar"
+        "Automate daily backups on all VMs (cron + rsync + tar + timestamp)",
+        "Automate weekly security updates (cron + apt update && apt upgrade -y)",
+        "Create maintenance scripts (cleanup old logs, rotate backups, check disk space)",
+        "Verify recovery works end-to-end (restore from backup to a new VM)",
+        "Document automation workflows with disaster recovery procedures"
       ],
       6: [
-        "BUILD DAY: Create 'Month 3 Portfolio' – 1 fairy tale recording (5 min), 1 opinion essay (200 words), 1 argumentative speech (6 min), 1 hypothetical speculation (4 min). Push to GitHub or Notion.",
-        "SwipeGerman: Export all Month 3 errors – create a 'B1 weak spots' deck",
-        "DW: B1 – Folge 57 – 'Kreatives Schreiben – eigene Geschichte erfinden'",
-        "Immersion: Watch 30 min of 'Nicos Weg' B1 episodes (Folgen 31-45) without subtitles",
-        "Speaking: Mock B1 speaking exam – Teil 1: sich vorstellen, Teil 2: ein Thema präsentieren, Teil 3: über ein Problem diskutieren",
-        "Bidirectional translation (5 sentences): Meine größte Errungenschaft in Month 3 ist, dass ich keine Angst mehr vor 'wenn' und 'weil' habe. | Die schwierigste Grammatik war der Konjunktiv II für irreale Vergangenheit. | Trotz der Herausforderungen habe ich jeden Tag gelernt. | Wenn ich mir einen Rat für den nächsten Monat geben würde, wäre es: noch mehr sprechen. | Ich freue mich auf Month 4, wo ich anfangen werde, längere Texte zu schreiben und zu diskutieren.",
-        "Technical: 'I can now explain a technical problem, give my opinion on a solution, and tell a story about how I fixed it.' – write a 100-word technical story in German"
+        "Test ALL services work correctly (web accessible, file share readable/writable, SSH functional, routing works)",
+        "Simulate failures and recover (crash router, restore from snapshot, document recovery time)",
+        "Validate backup and restore (delete critical file, restore from backup, verify integrity)",
+        "Final security review (review all firewall rules, SSH config, sudoers, file permissions)",
+        "Last troubleshooting pass (fix any remaining issues, document solutions)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your Month 3 recordings. Write a 200-word 'Month 3 Lessons Learned' in German.",
-        "SwipeGerman: Review all mistakes from Month 3",
-        "DW: Rest day – watch any B1 documentary (Thema: Technik oder Natur) for enjoyment",
-        "Grammar: Create a one-page 'B1 Storytelling + Opinion Toolkit' – Präteritum strong verbs, connectors, opinion phrases, discussion phrases",
-        "Speaking: Call a German learning partner (or imaginary) and tell them one fairy tale and your opinion on a current event",
-        "Bidirectional translation (5 sentences): Am Ende von Month 3 fühle ich mich sicherer beim Sprechen. | Früher habe ich nur kurze Sätze gebildet, jetzt kann ich komplexe Gedanken ausdrücken. | Wenn ich zurückblicke, bin ich stolz auf meine Fortschritte. | Die nächste Herausforderung wird B2 sein, aber ich bin bereit. | Danke, dass ich diese Reise fortsetzen darf. Nächster Halt: B1+!",
-        "Technical: 'I'm ready for workplace German, customer conversations, and technical interviews next month.' – 5 German sentences"
+        "BUILD: Complete company infrastructure",
+        "Configure all 4 VM services (router, web, file, admin with all roles)",
+        "Secure all systems (firewall, SSH, backups, monitoring, automation)",
+        "Create full architecture documentation (network diagrams, service configs, recovery plans)",
+        "Create network and service diagrams (draw.io with all components and IPs)",
+        "Upload polished portfolio project to GitHub with comprehensive README"
       ]
     }
   },
-  4: { // MONTH 4: Strong B1 (opinions, explanations, reading longer articles, speaking longer)
-    1: { // Week 1 – reading longer articles
+  4: { // Month 4: Enterprise Windows Environment
+    1: { // Week 1: Windows Server Foundations
       1: [
-        "SwipeGerman: Add 20 B1/B2 reading comprehension vocabulary (die Zusammenfassung, die Schlussfolgerung, der Kontext, die Interpretation, die Nuance, die Implikation, die Perspektive, der Standpunkt, die These, das Argument, die Beweisführung, die Quelle, die Glaubwürdigkeit, die Objektivität, die Subjektivität, die Relevanz, die Aktualität, die Vollständigkeit, die Verständlichkeit, die Lesbarkeit)",
-        "DW: B1+ – Folge 58 – 'Längere Artikel verstehen – Strategien'",
-        "DW: B1+ – Folge 58 – read a 500-word DW article (B1+ level)",
-        "Reading: DW Top-Thema (full length) – underline main thesis and 3 supporting arguments",
-        "Writing: Write a 120-word summary of the article in your own words",
-        "Bidirectional translation (5 sentences): Die Zusammenfassung des Artikels war sehr präzise. | Die These des Autors ist, dass soziale Medien unsere Gesellschaft verändern. | Die Quelle ist glaubwürdig, weil sie von einer Universität stammt. | Aus meiner Perspektive fehlt in dem Artikel die Nuance. | Die Schlussfolgerung ist, dass wir bewusster mit Technologie umgehen sollten.",
-        "Grammar: Nominalstil (noun-heavy style) vs Verbalstil (verb-heavy) in academic German"
+        "Install Windows Server 2022 in VirtualBox (eval version from Microsoft, 2GB RAM, 40GB disk)",
+        "Understand Server editions (Standard: 2 VMs + Hyper-V, Datacenter: unlimited VMs)",
+        "Learn Server Manager interface (Dashboard, Local Server, All Servers, File and Storage Services)",
+        "Configure hostname and computer name (Rename PC, restart)",
+        "Create installation notes with screenshots"
       ],
       2: [
-        "SwipeGerman: Add 20 B1/B2 inferential vocabulary (daraus lässt sich schließen, das impliziert, dass, die Implikation ist, dass, folglich, demnach, somit, infolgedessen, daraus ergibt sich, dass, dies führt zu der Annahme, dass, die Konsequenz ist, dass, das bedeutet im Umkehrschluss, dass, man kann daraus ableiten, dass, die logische Schlussfolgerung ist, dass, dies legt nahe, dass, dies deutet darauf hin, dass, es ist wahrscheinlich, dass, es ist unwahrscheinlich, dass, es ist offensichtlich, dass, es ist nicht auszuschließen, dass, es lässt sich vermuten, dass, die Daten zeigen, dass, die Statistik belegt, dass)",
-        "DW: B1+ – Folge 59 – 'Implikationen verstehen – zwischen den Zeilen lesen'",
-        "DW: B1+ – Folge 59 – read an opinion piece, infer the author's unstated assumptions",
-        "Speaking: Explain what an article implies but doesn't say directly (3 min)",
-        "Writing: Write 80 words on 'Was impliziert der Autor?' for a given short text",
-        "Bidirectional translation (5 sentences): Daraus lässt sich schließen, dass die Firma in Schwierigkeiten steckt. | Die Implikation ist, dass wir unser Verhalten ändern müssen. | Dies deutet darauf hin, dass es einen Zusammenhang gibt. | Es ist wahrscheinlich, dass die Preise weiter steigen werden. | Die Daten zeigen, dass die Maßnahmen wirken.",
-        "Grammar: Nominalized adjectives (das Gute, das Schlechte, das Wichtige, das Wesentliche)"
+        "Configure static IP on Windows Server (Control Panel → Network → IPv4 → 192.168.1.10, subnet 255.255.255.0, gateway 192.168.1.1, DNS 8.8.8.8)",
+        "Configure DNS settings manually (Primary 8.8.8.8, Secondary 8.8.4.4)",
+        "Test connectivity to internet + VMs (ping 8.8.8.8, ping linux-vm, tracert)",
+        "Learn Windows networking tools (ipconfig, netstat -an, route print, nslookup, tracert, pathping, netsh)",
+        "Document all network configs with screenshots and command outputs"
       ],
       3: [
-        "SwipeGerman: Add 20 B1/B2 critical reading phrases (der Autor übertreibt, das Argument ist nicht schlüssig, die Beweise sind unzureichend, die Quelle ist voreingenommen, die Logik ist fehlerhaft, die Schlussfolgerung ist nicht haltbar, der Autor ignoriert, dass, ein wichtiger Aspekt fehlt, die Beispiele sind nicht repräsentativ, die Statistik ist veraltet, die Studie ist nicht reproduzierbar, der Vergleich hinkt, die Terminologie ist ungenau, der Autor widerspricht sich selbst, die Argumentation ist zirkulär, die These ist zu allgemein, die Lösung ist unrealistisch, die Prognose ist spekulativ, der Ton ist zu emotional, die Quelle ist nicht aktuell)",
-        "DW: B1+ – Folge 60 – 'Kritisches Lesen – Fehler in Argumenten erkennen'",
-        "DW: B1+ – Folge 60 – find 5 logical flaws in a provided text",
-        "Speaking: Record a critique of an article (4 min) – point out 3 weaknesses",
-        "Writing: Write 150 words criticizing a short opinion piece constructively",
-        "Bidirectional translation (5 sentences): Der Autor übertreibt, wenn er sagt, dass alle Jugendlichen faul sind. | Die Beweise sind unzureichend, um diese Behauptung zu stützen. | Ein wichtiger Aspekt fehlt: die Kosten des Vorschlags. | Die Statistik ist veraltet, sie stammt aus dem Jahr 2010. | Der Autor widerspricht sich selbst: zuerst sagt er X, dann sagt er das Gegenteil.",
-        "Grammar: Konjunktiv II for polite critique (ich würde anmerken, dass; man könnte einwenden, dass)"
+        "Create 5 local user accounts (net user user1 password /add, CompMgmt → Local Users and Groups)",
+        "Create 3 groups with different permissions (Admins, ITStaff, Users)",
+        "Assign users to correct groups (net localgroup ITStaff user1 /add)",
+        "Understand administrator vs standard roles (Admin can install software, change system settings)",
+        "Create user/group permission notes with security best practices"
       ],
       4: [
-        "SwipeGerman: Add 20 B1/B2 synthesis vocabulary (zusammenfassend lässt sich sagen, die Quintessenz ist, das Fazit lautet, zusammenfassend, abschließend, im Großen und Ganzen, alles in allem, im Wesentlichen, kurz und bündig, um es auf den Punkt zu bringen, was bleibt, ist, dass, die gemeinsame Schnittmenge ist, dass, die Autoren sind sich einig, dass, die Diskrepanz liegt darin, dass, der Konsens ist, dass, die Kontroverse dreht sich um, die Debatte zeigt, dass, die Lösung liegt in, die Herausforderung besteht darin, dass, der nächste Schritt ist)",
-        "DW: B1+ – Folge 61 – 'Texte synthetisieren – mehrere Quellen zusammenfassen'",
-        "DW: B1+ – Folge 61 – read 2 short articles on same topic, write a synthesis",
-        "Reading: Find 2 news articles on the same topic, highlight common points and differences",
-        "Writing: Write a 200-word synthesis comparing the two articles",
-        "Bidirectional translation (5 sentences): Zusammenfassend lässt sich sagen, dass beide Artikel die gleiche Krise beschreiben. | Die Quintessenz ist, dass wir handeln müssen, bevor es zu spät ist. | Im Großen und Ganzen sind sich die Autoren einig. | Die Diskrepanz liegt darin, dass einer mehr Optimismus zeigt. | Der nächste Schritt ist, die vorgeschlagenen Maßnahmen umzusetzen.",
-        "Grammar: 'zusammenfassend', 'abschließend', 'im Wesentlichen' – participle phrases as sentence openers"
+        "Enable Remote Desktop Protocol (RDP) (System Properties → Remote → Allow remote connections)",
+        "Configure remote access settings (Network Level Authentication, select users)",
+        "Connect from Linux VM via xRDP (sudo apt install xrdp, then connect from Linux to Windows IP)",
+        "Learn PowerShell basics (Get-Command, Get-Help, Get-Process, Get-Service, Get-EventLog, Set-ExecutionPolicy)",
+        "Document RDP workflow with troubleshooting tips"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – reading + inferential + critical + synthesis",
-        "DW: B1+ – Folge 62 – 'B1+ Leseverstehen – Prüfungsvorbereitung'",
-        "DW: B1+ – do a full B1 reading exam (Goethe/Telc sample)",
-        "Speaking: Present a 5-min summary and critique of an article you read this week",
-        "Listening: DW 'Alltagsdeutsch' – listen and take notes, then write a 100-word summary",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, Artikel schneller zu lesen und zu verstehen. | Die schwierigste Fähigkeit war, implizite Annahmen zu erkennen. | Zusammenfassend lässt sich sagen, dass kritisches Lesen eine wichtige Kompetenz ist. | Der Autor eines Artikels übertrieb meiner Meinung nach die Gefahren von KI. | Alles in allem hat mir diese Woche geholfen, selbstbewusster mit längeren Texten umzugehen.",
-        "Self-recording: Listen to your article presentation – note 3 areas to improve clarity"
+        "Learn Windows Services (services.msc, Get-Service, sc query, sc config)",
+        "Start, stop, disable services (Stop-Service wuauserv, Set-Service wuauserv -StartupType Disabled)",
+        "Inspect Event Viewer for errors (eventvwr.msc, System log, Application log, Security log, filter by Error/Warning)",
+        "Analyze system and security logs (Get-EventLog -LogName System -EntryType Error | Select-Object -First 20)",
+        "Create troubleshooting notes with common service issues"
       ],
       6: [
-        "BUILD DAY: Create a 'Critical Reading Toolkit' – 30 phrases for inference, critique, synthesis. Write a 300-word critique of a short article (provide the article). Record a 7-min explanation of your critique.",
-        "SwipeGerman: Add 20 B1/B2 longer speaking phrases (um auf den Punkt zu kommen, was ich damit sagen will, ist, lassen Sie mich das erklären, ein Beispiel aus meinem Leben, ich möchte folgendes Beispiel nennen, um es konkret zu machen, konkret bedeutet das, mit anderen Worten, anders ausgedrückt, um es zu präzisieren, um Missverständnisse zu vermeiden, ich möchte einen Schritt zurücktreten, kommen wir zum Kern des Problems, die eigentliche Frage ist, lassen Sie mich zusammenfassen, bevor wir weitergehen, sind wir uns einig, dass, setzen wir den Fall, nehmen wir an, ich möchte eine Lanze brechen für, ich möchte nicht zu nahe treten, aber, verzeihen Sie meine Direktheit, aber)",
-        "DW: B1+ – Folge 63 – 'Längere Redebeiträge – Struktur und Fluss'",
-        "DW: B1+ – Folge 63 – listen to a 10-min monologue, note the speaker's structure",
-        "Speaking: Record an 8-min monologue 'Warum ich Fachinformatiker werden möchte' – use longer speaking phrases to structure",
-        "Technical: 'Let me explain how a network works concretely: first, there is IP addressing. With other words, every device needs a unique identifier.' – translate and expand to 150 words"
+        "Create a shared folder with permissions (New-Item -Path C:\Shares\Public -ItemType Directory, New-SmbShare -Name Public -Path C:\Shares\Public)",
+        "Configure NTFS permissions (icacls C:\Shares\Public /grant 'ITStaff:(OI)(CI)F' /grant 'Users:(OI)(CI)R')",
+        "Test access from another VM (\\192.168.1.10\Public from Windows client)",
+        "Map shared drive from client (net use Z: \\192.168.1.10\Public, persistent: yes)",
+        "Document sharing process with permission matrix"
       ],
       7: [
-        "REST/REVIEW: Listen to your day6 monologue. Write a transcript and improve 5 sentences.",
-        "SwipeGerman: Review all mistakes from week 1",
-        "DW: B1+ – Folge 64 – cultural video 'Deutsche Medienlandschaft' – newspaper and TV",
-        "Grammar: Cheat sheet for 'damit' (purpose, same subject) vs 'um…zu' (different subjects)",
-        "Speaking: Answer without preparation: 'Was war der letzte Artikel, den du gelesen hast? Was war deine Meinung dazu?' (4 min)",
-        "Bidirectional translation (5 sentences): Um meinen Punkt zu verdeutlichen, gebe ich ein Beispiel. | Lassen Sie mich das erklären: Die Software muss regelmäßig aktualisiert werden. | Was ich damit sagen will, ist, dass Übung den Meister macht. | Konkret bedeutet das, dass du jeden Tag 30 Minuten sprechen solltest. | Bevor wir weitergehen, sind wir uns einig, dass Deutsch wichtig für die Karriere ist.",
-                "Technical: 'Let me summarize the troubleshooting steps: first, check the cables; second, restart the router; third, call support if nothing works.' – translate and add two more steps"
+        "BUILD: Windows Server base environment",
+        "Configure users (5 users), groups (3 groups), permissions (NTFS + share)",
+        "Configure networking and static IP (192.168.1.10/24)",
+        "Enable RDP and remote access (from Linux VM via xRDP)",
+        "Configure shared folders (Public and Department shares with proper permissions)",
+        "Upload documentation to GitHub (screenshots, configs, commands)"
       ]
     },
-    2: { // Week 2 – speaking longer and more fluently
+    2: { // Week 2: Active Directory Domain Services
       1: [
-        "SwipeGerman: Add 20 B1/B2 fluency fillers (also, na ja, tja, nun, eben, halt, quasi, sozusagen, eigentlich, irgendwie, jedenfalls, auf jeden Fall, auf alle Fälle, unter uns gesagt, ehrlich gesagt, streng genommen, im Grunde genommen, genau genommen, so gesehen, von mir aus, meinetwegen)",
-        "DW: B1+ – Folge 65 – 'Flüssig sprechen – Füllwörter und Pausen'",
-        "DW: B1+ – Folge 65 – listen to a natural conversation, count filler words",
-        "Shadowing: Repeat a 2-min dialogue, copying the speaker's filler word placement",
-        "Speaking: Record a 5-min story using at least 10 different filler words naturally",
-        "Bidirectional translation (5 sentences): Also, ich war gestern im Supermarkt. | Na ja, der Film war nicht so gut, wie ich dachte. | Ehrlich gesagt, habe ich keine Lust auf die Party. | Streng genommen ist das nicht erlaubt. | Auf jeden Fall rufe ich dich morgen an.",
-        "Grammar: Modal particles (ja, doch, mal, eben, halt, schon, wohl, aber, denn) – 20 examples with explanations"
+        "Understand domain vs workgroup concept (centralized vs decentralized authentication)",
+        "Learn domain controller role (AD DS, DNS, authentication, authorization, policies)",
+        "Understand LDAP basics (Lightweight Directory Access Protocol, port 389/636, hierarchical structure)",
+        "Learn Organizational Units (OUs) - containers for organizing users/computers/policies",
+        "Document Active Directory concepts with diagrams (forest → domain → OU → objects)"
       ],
       2: [
-        "SwipeGerman: Add 20 B1/B2 spontaneous speech strategies (wie heißt es noch, auf der Zunge liegt es mir, mir fällt das Wort nicht ein, ich komme gerade nicht auf das Wort, wie sagt man das noch, im Deutschen sagt man, ein Moment bitte, lassen Sie mich überlegen, ich muss kurz nachdenken, wie kann ich das ausdrücken, um es einfach zu sagen, um es technisch auszudrücken, im Alltag sagt man, fachsprachlich heißt es, das ist ein guter Punkt, da muss ich kurz überlegen, das habe ich mir nicht überlegt, lassen Sie mich das umformulieren, was ich sagen wollte, ist, um auf deine Frage zurückzukommen)",
-        "DW: B1+ – Folge 66 – 'Spontan sprechen – Überbrückungstechniken'",
-        "DW: B1+ – Folge 66 – roleplay: answer unexpected questions with pauses and fillers",
-        "Roleplay: Mock interview – answer 10 unexpected questions, use strategies when stuck",
-        "Speaking: Record yourself answering: 'Was ist deine größte Schwäche?' (use fillers and thinking strategies)",
-        "Bidirectional translation (5 sentences): Wie heißt es noch, das Gerät, mit dem man Fotos macht? | Mir fällt das Wort nicht ein – du weißt schon, das runde Ding in der Küche. | Lassen Sie mich überlegen, das ist eine gute Frage. | Wie kann ich das ausdrücken, ohne zu technisch zu werden? | Um auf deine Frage zurückzukommen, ich denke, dass es machbar ist.",
-        "Grammar: 'denn' as a filler and as a conjunction – differentiation"
+        "Install AD DS role via Server Manager (Add Roles and Features → Active Directory Domain Services)",
+        "Promote server to domain controller (Post-deployment Configuration → Add new forest → samian.local)",
+        "Configure domain name (e.g., samian.local, or companyname.local)",
+        "Verify DNS and AD services (Check SRV records in DNS, dcdiag, repadmin)",
+        "Create AD setup notes with screenshots of each step"
       ],
       3: [
-        "SwipeGerman: Add 20 B1/B2 monologue structuring phrases (ich möchte heute über X sprechen, mein Vortrag besteht aus drei Teilen, zuerst möchte ich auf Y eingehen, dann werde ich Z erklären, abschließend werde ich W diskutieren, kommen wir zum ersten Punkt, das führt mich zu meinem zweiten Punkt, ein weiterer wichtiger Aspekt ist, ich möchte nun einen anderen Blickwinkel einnehmen, betrachten wir die Sache aus der Perspektive von, lassen Sie mich einen Schritt zurückgehen, bevor ich fortfahre, möchte ich noch etwas erwähnen, wie eingangs erwähnt, wie bereits gesagt, dies erinnert an, das bringt mich zu, zusammenfassend lässt sich sagen, zum Abschluss möchte ich betonen, ich komme zum Ende, vielen Dank für Ihre Aufmerksamkeit)",
-        "DW: B1+ – Folge 67 – 'Längere Redebeiträge strukturieren'",
-        "DW: B1+ – Folge 67 – analyze the structure of a 10-min TED-style talk",
-        "Writing: Write a 250-word script for a 5-min monologue with clear structure markers",
-        "Speaking: Record the monologue (5 min) following your script, focus on structure",
-        "Bidirectional translation (5 sentences): Ich möchte heute über die Zukunft der Arbeit sprechen. | Mein Vortrag besteht aus drei Teilen: Chancen, Risiken und Lösungen. | Kommen wir zum ersten Punkt: künstliche Intelligenz. | Das führt mich zu meinem zweiten Punkt: neue Berufe. | Zusammenfassend lässt sich sagen, dass lebenslanges Lernen entscheidend ist.",
-        "Technical: Structure a 5-min monologue about 'The importance of network security' using all the phrases above"
+        "Create 10 domain users (New-ADUser -Name 'John Smith' -GivenName John -Surname Smith -SamAccountName jsmith -UserPrincipalName jsmith@samian.local -AccountPassword (ConvertTo-SecureString 'Passw0rd!' -AsPlainText -Force) -Enabled $true)",
+        "Create 5 domain groups by department (New-ADGroup -Name 'Sales' -GroupScope Global, groups: HR, IT, Finance, Marketing, Exec)",
+        "Configure group permissions (Add-ADGroupMember -Identity 'Sales' -Members 'jsmith','bjones')",
+        "Organize users into OUs (OU=Sales, OU=HR, OU=IT, OU=Finance, OU=Exec)",
+        "Document the hierarchy (Forest: samian.local → Domain: samian.local → OUs → Groups → Users)"
       ],
       4: [
-        "SwipeGerman: Add 20 B1/B2 reacting to unexpected questions (das ist eine interessante Frage, da muss ich kurz nachdenken, das habe ich mir noch nicht überlegt, das ist schwer zu sagen, pauschal kann man das nicht beantworten, es kommt darauf an, unter bestimmten Umständen, normalerweise würde ich sagen, tendenziell, im Allgemeinen, in den meisten Fällen, es gibt keine einfache Antwort, die Sache ist vielschichtig, das ist eine gute Frage, um ehrlich zu sein, wenn ich mich entscheiden müsste, ich bin hin- und hergerissen, einerseits…andererseits, meine spontane Reaktion ist, nach reiflicher Überlegung würde ich sagen, lassen Sie mich so antworten)",
-        "DW: B1+ – Folge 68 – 'Auf unerwartete Fragen reagieren – souverän bleiben'",
-        "DW: B1+ – Folge 68 – spontaneous Q&A simulation",
-        "Roleplay: Job interview – answer 10 unexpected behavioral questions using these phrases",
-        "Speaking: Record yourself answering: 'Wie würden Sie mit einem schwierigen Kunden umgehen?' (3 min)",
-        "Bidirectional translation (5 sentences): Das ist eine interessante Frage, da muss ich kurz nachdenken. | Pauschal kann man das nicht beantworten, es kommt auf den Kontext an. | Normalerweise würde ich sagen, ja, aber es gibt Ausnahmen. | Ehrlich gesagt, habe ich mich das noch nie gefragt. | Einerseits verstehe ich das Argument, andererseits sehe ich die Risiken.",
-        "Grammar: 'tendenziell', 'normalerweise', 'im Allgemeinen' – adverbs of frequency and probability"
+        "Create Windows 10 client VM (2GB RAM, 40GB disk, join to samian.local)",
+        "Join client to your domain (Settings → Accounts → Access work or school → Connect → Domain: samian.local)",
+        "Login with a domain user account (SAMIAN\jsmith or jsmith@samian.local)",
+        "Verify domain authentication works (whoami, gpresult /r, echo %USERDOMAIN%)",
+        "Document domain join process with troubleshooting common issues (time sync, DNS, network)"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – fluency fillers + spontaneous strategies + monologue structure + reacting to questions",
-        "DW: B1+ – Folge 69 – 'Sprechen B1+ – Prüfungssimulation' (Teil 1: Präsentation, Teil 2: Diskussion, Teil 3: Problemlösung)",
-        "DW: B1+ – do a full B1 speaking mock exam (record yourself)",
-        "Speaking: Record a 10-min 'B1 speaking exam' including all 3 parts",
-        "Listening: Listen to your recording and self-evaluate using B1 rubric (fluency, vocabulary, grammar, pronunciation)",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich meine Sprechflüssigkeit enorm verbessert. | Die Strategie mit den Füllwörtern hat mir geholfen, natürlicher zu klingen. | Wenn ich bei einem Wort nicht weiterweiß, sage ich einfach 'wie heißt es noch'. | Das Schwierigste ist, spontan auf unerwartete Fragen zu reagieren. | Nach reiflicher Überlegung denke ich, dass ich bereit für die B1 Prüfung bin.",
-        "Self-recording: Compare your first day1 speaking from Month 1 with today's recording – write a paragraph about your progress"
+        "Learn Group Policy Object (GPO) basics (gpmc.msc, Group Policy Management Console)",
+        "Configure password policy GPO (Computer Configuration → Policies → Windows Settings → Security Settings → Account Policies → Password Policy: Minimum length 8, complexity enabled, expiration 90 days)",
+        "Configure desktop wallpaper policy (User Configuration → Policies → Administrative Templates → Desktop → Desktop Wallpaper: \\\\server\\share\\wallpaper.jpg)",
+        "Apply and test policy enforcement (gpupdate /force, gpresult /r from client)",
+        "Create GPO notes with 10 common policies and their effects"
       ],
       6: [
-        "BUILD DAY: Create 'B1+ Speaking Survival Kit' – 50 phrases for fillers, thinking strategies, structure, and reactions. Record a 12-min 'fake B1 exam' – Präsentation (4 min), Diskussion mit dir selbst (4 min), Problemlösung (4 min).",
-        "SwipeGerman: Add 20 B1/B2 telephone phrases (ich bin dran, einen Moment bitte, ich verbinde Sie weiter, die Leitung ist besetzt, können Sie bitte halten, ich rufe zurück, leider falsch verbunden, können Sie mich bitte durchstellen, wer spricht da, was kann ich für Sie tun, ich möchte mit Herrn X sprechen, er ist im Moment nicht da, kann ich etwas ausrichten, rufen Sie bitte später an, ich schicke Ihnen eine E-Mail, lesen Sie mir bitte die Nummer vor, es ist eine Bandansage, drücken Sie die 1 für, wir sind im Moment nicht erreichbar, hinterlassen Sie bitte eine Nachricht nach dem Signalton)",
-        "DW: B1+ – Folge 70 – 'Telefonieren auf Deutsch – professionell'",
-        "DW: B1+ – Folge 70 – listen to 5 authentic phone call scenarios",
-        "Roleplay: 5 different phone call roleplays (appointment, complaint, tech support, sales, internal call)",
-        "Speaking: Record 3 different phone call roleplays (each 3 min) – partner with yourself",
-        "Bidirectional translation (5 sentences): Guten Tag, mein Name ist Samian, ich möchte mit Frau Müller sprechen. | Einen Moment bitte, ich verbinde Sie weiter. | Es tut mir leid, die Leitung ist besetzt. Können Sie bitte halten? | Er ist im Moment nicht da. Kann ich etwas ausrichten? | Hinterlassen Sie bitte eine Nachricht nach dem Signalton.",
-        "Technical: Phone support roleplay – 'My computer won't start. Can you help me?' – German dialogue (5 exchanges)"
+        "Reset a domain user password (Active Directory Users and Computers → Right-click user → Reset Password)",
+        "Disable a user account (Right-click user → Disable Account)",
+        "Move users between OUs (Drag and drop in ADUC or Move-ADObject)",
+        "Inspect AD logs in Event Viewer (Event Viewer → Windows Logs → Security, filter by Task Category: User Account Management)",
+        "Create administration workflow notes (standard procedures for common tasks)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your phone roleplays. Write a transcript of one and improve.",
-        "SwipeGerman: Review all mistakes from week 2",
-        "DW: B1+ – Folge 71 – cultural video 'Telefonkultur in Deutschland' – do's and don'ts",
-        "Grammar: Cheat sheet for 'lassen' (let, allow, have something done) – 10 example sentences",
-        "Speaking: Answer without preparation: 'Beschreiben Sie ein Problem am Telefon, das Sie einmal gelöst haben.' (4 min)",
-        "Bidirectional translation (5 sentences): Lassen Sie mich kurz erklären, was passiert ist. | Ich lasse mein Auto in der Werkstatt reparieren. | Lass uns das Telefonat später fortsetzen. | Er ließ sich nicht helfen, das war frustrierend. | Kannst du mich bitte zum Flughafen fahren lassen?",
-        "Technical: 'Let me check the logs. I'll have the server restarted. Let's call the customer back.' – translate with 'lassen'"
+        "BUILD: Complete Active Directory environment",
+        "Configure users (10), groups (5), OUs (6)",
+        "Configure 3 GPOs (Password Policy, Desktop Wallpaper, Drive Mapping)",
+        "Join 2 client systems to domain (Windows 10 and Windows 11)",
+        "Document full AD infrastructure (forest, domain, OUs, GPOs, backup/restore)",
+        "Upload complete documentation to GitHub"
       ]
     },
-    3: { // Week 3 – workplace German, emails, customer language
+    3: { // Week 3: Enterprise Services
       1: [
-        "SwipeGerman: Add 20 B1/B2 business email phrases (Sehr geehrte Damen und Herren, ich bewerbe mich hiermit, ich schreibe Ihnen bezüglich, vielen Dank für Ihre schnelle Antwort, es tut mir leid, aber, leider müssen wir mitteilen, dass, wir bestätigen hiermit, anbei finden Sie, für weitere Fragen stehe ich gerne zur Verfügung, mit freundlichen Grüßen, ich möchte sich erkundigen, ob, wir bitten um Zahlung bis zum, die Rechnung ist fällig am, ich bitte um Rückmeldung bis, vielen Dank im Voraus, bei Rückfragen zögern Sie nicht, wir freuen uns auf Ihre Antwort, mit freundlichen Grüßen, hochachtungsvoll, deine (informell))",
-        "DW: B1+ – Folge 72 – 'Geschäftsmails – formal und informell'",
-        "DW: B1+ – Folge 72 – analyze 3 sample emails (good vs bad)",
-        "Writing: Write a formal email to a company: asking about an Ausbildung position (150 words)",
-        "Writing: Write an informal email to a German colleague: canceling a lunch meeting (100 words)",
-        "Bidirectional translation (5 sentences): Sehr geehrte Damen und Herren, ich bewerbe mich hiermit um die Ausbildung als Fachinformatiker. | Anbei finden Sie meinen Lebenslauf und meine Zeugnisse. | Für weitere Fragen stehe ich Ihnen gerne zur Verfügung. | Ich bitte um Rückmeldung bis zum 15. März. | Mit freundlichen Grüßen, Samian.",
-        "Technical: Write a formal email to your IT manager: 'The server is down. I need access to the backup.' (120 words, professional)"
+        "Configure enterprise file sharing with DFS basics (Install DFS Namespaces and DFS Replication)",
+        "Set NTFS permissions per department (Create department folders: Sales, HR, IT, Finance)",
+        "Create department folder structure (\\\\domain\dfs\Sales, \\\\domain\dfs\HR, etc.)",
+        "Test access control per user group (User from Sales can access Sales but not HR)",
+        "Document file sharing structure with permission matrix and inheritance rules"
       ],
       2: [
-        "SwipeGerman: Add 20 B1/B2 customer service phrases (wie kann ich Ihnen helfen, ich verstehe Ihr Problem, lassen Sie mich das prüfen, ich werde mich sofort darum kümmern, bitte entschuldigen Sie die Unannehmlichkeiten, das sollte nicht passieren, ich verstehe Ihren Frust, ich werde eine Lösung finden, können Sie mir bitte Ihre Kundennummer nennen, ich leite Ihr Anliegen weiter, unser Techniker wird sich melden, es wird etwas länger dauern, haben Sie bitte noch etwas Geduld, ich versichere Ihnen, dass, als Entschädigung bieten wir Ihnen an, möchten Sie mit meinem Vorgesetzten sprechen, ich gebe Ihr Feedback weiter, vielen Dank für Ihre Geduld, wir arbeiten an einer Lösung, ich hoffe, dass wir Ihr Vertrauen zurückgewinnen können)",
-        "DW: B1+ – Folge 73 – 'Kundenservice – schwierige Situationen meistern'",
-        "DW: B1+ – Folge 73 – listen to a difficult customer call, note problem-solving phrases",
-        "Roleplay: Angry customer calls because product is broken – you are support (5 min dialogue)",
-        "Speaking: Record yourself handling 3 different customer complaints (each 3 min)",
-        "Bidirectional translation (5 sentences): Guten Tag, wie kann ich Ihnen helfen? | Bitte entschuldigen Sie die Unannehmlichkeiten. | Ich verstehe Ihren Frust, ich werde eine Lösung finden. | Lassen Sie mich das prüfen, einen Moment bitte. | Als Entschädigung bieten wir Ihnen einen Rabatt auf Ihre nächste Bestellung.",
-        "Technical: Customer says: 'My internet is slow.' – handle the call in German (150 words dialogue)"
+        "Configure Windows DNS server role (Install DNS Server via Server Manager, configure forwarders to 8.8.8.8)",
+        "Configure Windows DHCP server role (Install DHCP Server, create scope 192.168.1.100-200/24, configure options: router, DNS, domain)",
+        "Assign DHCP leases to clients (Verify clients get IPs from DHCP scope)",
+        "Test domain name resolution (nslookup client1.samian.local, ping client1)",
+        "Create DNS/DHCP server notes with failover and high availability options"
       ],
       3: [
-        "SwipeGerman: Add 20 B1/B2 workplace meeting phrases (ich möchte einen Punkt zur Diskussion stellen, können wir das bitte auf die Tagesordnung setzen, darf ich etwas dazu sagen, da möchte ich kurz einhaken, wenn ich unterbrechen darf, sehe ich das anders, lassen Sie mich ausführen, ich stimme Ihnen zu, weil, was halten Sie von, mein Vorschlag ist, wie wäre es mit, wir sollten folgende Optionen prüfen, ich denke, wir sollten priorisieren, wir müssen eine Entscheidung treffen, ich beantrage, dass, ich befürworte diesen Plan, ich lehne ab, weil, ich enthalte mich, haben wir einen Konsens, kommen wir zur Abstimmung, das Meeting ist beendet)",
-        "DW: B1+ – Folge 74 – 'Meetings auf Deutsch – moderieren und diskutieren'",
-        "DW: B1+ – Folge 74 – listen to a 10-min meeting simulation",
-        "Roleplay: Lead a 10-min meeting with yourself (3 roles) about a project deadline issue",
-        "Speaking: Record the meeting roleplay – use at least 15 meeting phrases",
-        "Bidirectional translation (5 sentences): Ich möchte einen Punkt zur Diskussion stellen: das Budget. | Darf ich kurz einhaken? Wir haben noch nicht über die Zeit gesprochen. | Mein Vorschlag ist, das Meeting auf nächste Woche zu verschieben. | Ich befürworte diesen Plan, weil er effizient ist. | Kommen wir zur Abstimmung: Wer ist dafür?",
-        "Technical: Meeting roleplay: 'Server maintenance on Friday night – agree or disagree?' – 8-min dialogue"
+        "Learn basic print services concepts (Print Server role, shared printers, printer drivers)",
+        "Configure remote management tools (RSAT) (Install-WindowsFeature -Name RSAT-AD-Tools, RSAT-DHCP, RSAT-DNS)",
+        "Test remote management from client (Run RSAT tools from Windows 10 to manage server)",
+        "Learn RMM concepts overview (Remote Monitoring and Management: Agent-based, central dashboard, alerting)",
+        "Document remote management workflow with security considerations"
       ],
       4: [
-        "SwipeGerman: Add 20 B1/B2 workplace small talk (schönes Wetter heute, wie war Ihr Wochenende, haben Sie Pläne für das Wochenende, was machen Sie in Ihrer Freizeit, kommen Sie gut mit der Arbeit klar, diese Aufgabe ist herausfordernd, haben Sie den Fußball gestern gesehen, ich bin müde, weil mein Kind krank war, ich freue mich auf den Urlaub, können Sie mir einen Tipp geben, wie läuft Ihr Projekt, ich bin neu hier, können Sie mir helfen, bei uns in der Firma ist es üblich, dass, arbeiten Sie gerne im Team, ich schätze die Zusammenarbeit, die Kantine heute ist gut, fahren Sie mit dem Zug zur Arbeit, ich muss los, mein Bus kommt, schönen Feierabend Ihnen auch)",
-        "DW: B1+ – Folge 75 – 'Small Talk im Büro – Beziehungen aufbauen'",
-        "DW: B1+ – Folge 75 – listen to authentic office small talk",
-        "Roleplay: 5 different small talk scenarios (coffee break, elevator, before meeting, lunch, leaving work)",
-        "Speaking: Record a 5-min small talk conversation with yourself (2 roles)",
-        "Bidirectional translation (5 sentences): Schönes Wetter heute, nicht wahr? | Wie war Ihr Wochenende? Hatten Sie schöne Tage? | Kommen Sie gut mit der neuen Software klar? | Ich bin neu hier, können Sie mir bitte helfen? | Schönen Feierabend, bis morgen!",
-        "Grammar: 'nicht wahr?' and 'oder?' as tag questions – 10 examples"
+        "Analyze System log in Event Viewer (Get-EventLog -LogName System -EntryType Error -After (Get-Date).AddDays(-7))",
+        "Analyze Security log (logon events - Event ID 4624: successful logon, 4625: failed logon)",
+        "Detect failed login attempts (Get-EventLog -LogName Security -InstanceId 4625 -After (Get-Date).AddDays(-1) | Measure-Object | Select-Object -Property Count)",
+        "Inspect application warnings (Get-EventLog -LogName Application -EntryType Warning -Newest 50)",
+        "Create log analysis guide with common Event IDs and meanings"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – emails + customer service + meetings + small talk",
-        "DW: B1+ – Folge 76 – 'B1+ Berufsdeutsch – Prüfungssimulation'",
-        "DW: B1+ – do a full workplace German simulation (email, phone, meeting, small talk)",
-        "Speaking: Record a 15-min simulation: 'Ein Tag im IT-Support' – handle 2 emails, 2 phone calls, 1 small talk, 1 meeting",
-        "Listening: DW 'Alltagsdeutsch – Beruf' – write a 100-word summary",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, wie man professionelle E-Mails schreibt und Kunden beschwichtigt. | Die schwierigste Situation war der wütende Kunde, aber mit den richtigen Phrasen habe ich es gelöst. | Im Meeting musste ich einen Vorschlag ablehnen, aber ich habe es höflich gemacht. | Small Talk fällt mir immer noch schwer, aber ich übe jeden Tag. | Alles in allem fühle ich mich sicherer in Arbeitsumgebungen.",
-        "Self-recording: Listen to your 15-min simulation – identify 5 phrases you wish you had used, write them down for next time"
+        "Configure Windows Firewall rules (New-NetFirewallRule -DisplayName 'Allow HTTP' -Direction Inbound -Protocol TCP -LocalPort 80 -Action Allow)",
+        "Configure account lockout policies (Account Lockout Threshold: 5 invalid attempts, Lockout duration: 30 minutes)",
+        "Learn Windows Defender basics (Get-MpComputerStatus, Update-MpSignature, Start-MpScan -ScanType FullScan)",
+        "Restrict admin access to key accounts (Remove from Administrators group, use Just-In-Time admin)",
+        "Document security practices with compliance checklist (CIS benchmarks, DISA STIGs)"
       ],
       6: [
-        "BUILD DAY: Create a 'Workplace German Toolkit' – 60 phrases for emails, customer service, meetings, small talk. Record a 20-min 'complete workday simulation' (8 scenarios).",
-        "SwipeGerman: Add 20 B1/B2 technical IT support German (das System ist abgestürzt, ich habe einen Bluescreen, die Anwendung reagiert nicht, der Drucker druckt nicht, ich kann mich nicht anmelden, mein Passwort funktioniert nicht, die Internetverbindung ist unterbrochen, ich bekomme eine Fehlermeldung, der Computer ist langsam, ich habe einen Virenverdacht, können Sie bitte den Cache leeren, starten Sie das Gerät neu, überprüfen Sie die Kabel, öffnen Sie den Taskmanager, klicken Sie auf 'Einstellungen', gehen Sie in die Systemsteuerung, führen Sie die Diagnose aus, installieren Sie das Update, setzen Sie das Gerät auf Werkseinstellungen zurück, ich muss das Ticket schließen)",
-        "DW: B1+ – Folge 77 – 'IT-Support auf Deutsch – typische Probleme'",
-        "DW: B1+ – Folge 77 – listen to 5 IT support calls",
-        "Roleplay: 5 IT support calls (password reset, slow computer, printer not working, cannot connect to WiFi, email not sending)",
-        "Speaking: Record each call (3 min each) – you are the support agent",
-        "Bidirectional translation (5 sentences): Mein Computer ist abgestürzt und zeigt einen Bluescreen an. | Können Sie bitte den Cache leeren und das Gerät neu starten? | Ich bekomme die Fehlermeldung 'Zugriff verweigert'. | Starten Sie den Router neu und überprüfen Sie die Kabel. | Ich muss das Ticket jetzt schließen. Rufen Sie an, wenn das Problem weiter besteht.",
-        "Technical: Create a 'Helpdesk Scriptbook' – 10 common problems and how to solve them in German"
+        "Simulate: domain user login failure (Wrong password 5 times, account locks)",
+        "Troubleshoot DNS resolution failure (Point client to wrong DNS, fix, test)",
+        "Diagnose file permission denied issue (Access file without permission, grant permission, retest)",
+        "Restore all services after failures (Document each fix with root cause)",
+        "Write enterprise troubleshooting guide (10 scenarios with step-by-step solutions)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your IT support calls. Write a 'Best of Helpdesk' cheat sheet with 20 most useful phrases.",
-        "SwipeGerman: Review all mistakes from week 3",
-        "DW: B1+ – Folge 78 – cultural video 'IT-Berufe in Deutschland' – interview with a Fachinformatiker",
-        "Grammar: Cheat sheet for 'durch' (by means of) and 'mithilfe' (with the help of) – 10 examples",
-        "Speaking: Answer without preparation: 'Wie würden Sie einem technischen Laien erklären, was eine IP-Adresse ist?' (4 min)",
-        "Bidirectional translation (5 sentences): Mithilfe dieser Anleitung können Sie das Problem selbst lösen. | Durch einen Neustart werden viele Fehler behoben. | Ich erkläre es Ihnen Schritt für Schritt. | Zuerst öffnen Sie die Eingabeaufforderung. | Wenn Sie nicht weiterkommen, rufen Sie mich einfach an.",
-        "Technical: 'Explain what a firewall does in simple German for a non-technical customer' – 200 words"
+        "BUILD: Full enterprise Windows environment",
+        "Configure all server roles (AD DS, DNS, DHCP, File Server, Print Server)",
+        "Configure security policies (Password policy, lockout policy, firewall rules, Windows Defender)",
+        "Configure DNS/DHCP services (Forwarders, scopes, reservations, dynamic updates)",
+        "Create complete infrastructure documentation (diagrams, configs, procedures, backup/restore)",
+        "Upload to GitHub with screenshots and configuration exports"
       ]
     },
-    4: { // Week 4 – Fachinformatiker vocabulary and workplace communication
+    4: { // Week 4: Mixed Environment (Linux + Windows)
       1: [
-        "SwipeGerman: Add 20 Fachinformatiker Systemintegration vocabulary (der Server, der Client, das Rechenzentrum, das Betriebssystem, der Netzwerk-Switch, der Router, die Firewall, der Load Balancer, die Storage, das Backup, die Wiederherstellung, die Virtualisierung, der Hypervisor, die Cloud, der Active Directory, die Group Policy, der DNS-Server, der DHCP-Server, der Druckerserver, der Terminalserver)",
-        "DW: B1+ – Folge 79 – 'Fachinformatiker – Berufsbild und Aufgaben'",
-        "DW: B1+ – Folge 79 – watch a German job description video",
-        "Reading: Find a German Stellenanzeige for 'Fachinformatiker für Systemintegration' – highlight key requirements",
-        "Writing: Write a 150-word summary of what a Fachinformatiker für Systemintegration does",
-        "Bidirectional translation (5 sentences): Ein Fachinformatiker für Systemintegration kümmert sich um Server, Netzwerke und IT-Sicherheit. | Er installiert Betriebssysteme, konfiguriert Router und überwacht Firewalls. | Tägliche Aufgaben sind Backups, Benutzerverwaltung im Active Directory und Troubleshooting. | Er arbeitet oft im Rechenzentrum oder im Kunden-Support. | Die Ausbildung dauert drei Jahre und ist sehr praxisorientiert.",
-        "Technical: Write 5 German sentences describing your ideal job as a Fachinformatiker"
+        "Connect Linux VM to Windows Server VM (Configure both on same subnet: 192.168.1.0/24)",
+        "Configure networking between both systems (Static IPs: Linux .50, Windows .10, router .1)",
+        "Test ping and connectivity (ping from Linux to Windows, from Windows to Linux)",
+        "Transfer files via shared network (Use SCP from Linux to Windows, or shared folder via Samba)",
+        "Document Linux-Windows integration with network diagram"
       ],
       2: [
-        "SwipeGerman: Add 20 German networking troubleshooting phrases (die Verbindung wird abgelehnt, das Timeout ist überschritten, der Ping schlägt fehl, die Latenz ist zu hoch, der Paketverlust ist bei X%, der Port ist geschlossen, die IP-Adresse ist ungültig, das Subnetz ist falsch konfiguriert, die DNS-Auflösung funktioniert nicht, die Firewall blockiert den Traffic, der Switch hat einen Loop, das Kabel ist defekt, das Signal-Rausch-Verhältnis ist schlecht, der DHCP-Server antwortet nicht, die Routing-Tabelle ist korrupt, der ARP-Cache muss gelöscht werden, die MTU ist falsch eingestellt, der Proxy ist nicht erreichbar, das Zertifikat ist abgelaufen, die Verschlüsselung ist nicht kompatibel)",
-        "DW: B1+ – Folge 80 – 'Netzwerkprobleme lösen – Sprache des Admins'",
-        "DW: B1+ – Folge 80 – listen to a network engineer explaining a problem",
-        "Roleplay: Junior admin reports a network issue to senior admin – 5 min dialogue",
-        "Writing: Write a 120-word troubleshooting report in German: 'Problem: Benutzer kann keine Webseiten aufrufen'",
-        "Bidirectional translation (5 sentences): Der Ping auf die IP-Adresse schlägt fehl, die Verbindung wird abgelehnt. | Die DNS-Auflösung funktioniert nicht; ich kann google.com nicht auflösen. | Die Firewall blockiert wahrscheinlich den Traffic auf Port 443. | Der Paketverlust liegt bei 15%, die Latenz ist zu hoch. | Bitte überprüfen Sie die Routing-Tabelle, sie könnte korrupt sein.",
-        "Technical: Simulate a German IT ticket: 'Kunde berichtet über langsames Netzwerk. Bitte Diagnose durchführen und Lösung vorschlagen.' (200 words)"
+        "Install Samba on Linux (sudo apt install samba, configure /etc/samba/smb.conf)",
+        "Configure Linux shared folders (Create [shared] section, path=/srv/samba, valid users=yourusername)",
+        "Access Linux shares from Windows (\\\\192.168.1.50\\shared from Windows Explorer)",
+        "Configure permissions correctly (chmod 755 /srv/samba, smbpasswd -a username)",
+        "Create cross-platform sharing notes with comparison of Samba vs Windows sharing"
       ],
       3: [
-        "SwipeGerman: Add 20 German helpdesk escalation phrases (ich kann das Problem nicht lokalisieren, ich brauche Admin-Rechte, bitte eskalieren Sie zu Level 2, ich gebe an den Entwickler weiter, der Fehler liegt außerhalb meiner Zuständigkeit, ich öffne ein Ticket beim Hersteller, benötigen Sie einen Vor-Ort-Termin, ich schalte den Außendienst ein, der RMA-Prozess muss eingeleitet werden, die Garantie ist abgelaufen, der Service Level Agreement (SLA) erfordert eine Reaktionszeit von, dies ist ein bekanntes Problem, ein Hotfix ist verfügbar, das Update behebt das Problem in Version, es gibt eine Umgehungslösung, die Root-Cause-Analyse dauert noch, der Incident ist als kritisch eingestuft, der Major Incident Prozess wurde gestartet, der Business Continuity Plan ist aktiviert)",
-        "DW: B1+ – Folge 81 – 'Eskalation im IT-Support – professionell kommunizieren'",
-        "DW: B1+ – Folge 81 – listen to an escalation call",
-        "Roleplay: Escalate a critical server outage to Level 2 support (5 min dialogue)",
-        "Speaking: Record yourself explaining to a customer: 'I need to escalate your ticket because...' (3 min)",
-        "Bidirectional translation (5 sentences): Leider kann ich das Problem nicht lokalisieren, ich muss es zu Level 2 eskalieren. | Der Fehler liegt außerhalb meiner Zuständigkeit, ich gebe an den Netzwerkteam weiter. | Bitte leiten Sie den RMA-Prozess ein, die Festplatte ist defekt. | Laut SLA muss die Reaktionszeit bei 4 Stunden liegen. | Ein Hotfix ist verfügbar, bitte installieren Sie das Update.",
-        "Technical: Write a German escalation email to your manager: 'Customer XYZ has a critical outage. We need to activate the major incident process.' (150 words)"
+        "Manage Linux VM remotely from Windows using PuTTY (Download putty.exe, connect to Linux IP via SSH)",
+        "Use WinSCP to transfer files (Download WinSCP, connect to Linux via SSH/SFTP, drag-drop files)",
+        "Organize your cross-platform admin workflow (Scripts for common tasks: backup, sync, monitor)",
+        "Test all remote access methods (RDP to Windows, SSH to Linux, WinSCP for files)",
+        "Document procedures with screenshots and keyboard shortcuts"
       ],
       4: [
-        "SwipeGerman: Add 20 German IT documentation phrases (die Konfiguration ist dokumentiert in, bitte konsultieren Sie das Wiki, das Playbook beschreibt die Schritte, die Runbook enthält die Prozedur, die Richtlinie schreibt vor, dass, nach Best Practice sollte man, die Veränderung muss im Change Management eingetragen werden, das Incident Ticket hat die Nummer, die Lösung ist im Knowledge Base Artikel X beschrieben, die Dokumentation ist veraltet und muss aktualisiert werden, ich füge einen Screenshot bei, siehe Anhang, die Netzwerk-Topologie ist im Diagramm dargestellt, der Workflow ist wie folgt, die Abhängigkeiten sind, die Verantwortlichkeiten sind geklärt, die Übergabe an den nächsten Schicht erfolgt um, das Handover-Protokoll enthält, die Archivierung der Logs erfolgt täglich, die Kompatibilitätsmatrix zeigt, welche Versionen unterstützt werden)",
-        "DW: B1+ – Folge 82 – 'IT dokumentieren – verständlich und vollständig'",
-        "DW: B1+ – Folge 82 – read a sample IT document, identify good/bad parts",
-        "Writing: Write a 200-word IT documentation in German: 'How to reset a user password in Active Directory'",
-        "Speaking: Record yourself explaining the password reset process (4 min) as if documenting for a trainee",
-        "Bidirectional translation (5 sentences): Die Konfiguration des Routers ist im Wiki dokumentiert. | Bitte konsultieren Sie die Runbook für den Wiederherstellungsprozess. | Ich füge einen Screenshot der Fehlermeldung bei (siehe Anhang). | Die Verantwortlichkeiten sind geklärt: Team A macht Backup, Team B macht Restore. | Das Handover-Protokoll enthält alle offenen Tickets für die nächste Schicht.",
-        "Technical: Write a complete German 'How-to' guide: 'How to install and configure SSH on Ubuntu' (300 words, with steps and screenshots described)"
+        "Configure centralized file access from both OS (Use Samba share accessible from both Linux and Windows)",
+        "Test authentication from both sides (Login with same credentials, test read/write/create/delete)",
+        "Organize network resources clearly (One shared drive mapping for all users: Z: drive on Windows, /mnt/share on Linux)",
+        "Test all access controls (Verify department folders, NTFS vs Samba permissions)",
+        "Create architecture notes with authentication flow (LDAP/Kerberos for single sign-on)"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – Fachinformatiker roles, networking troubleshooting, escalation, documentation",
-        "DW: B1+ – Folge 83 – 'Fachinformatiker Prüfungsvorbereitung – Fachgespräch simulieren'",
-        "DW: B1+ – do a mock technical interview (watch and pause, answer yourself)",
-        "Speaking: Record a 15-min mock technical interview for a Fachinformatiker position (questions: 'Was ist DHCP?', 'Wie funktioniert DNS?', 'Wie sichern Sie ein Netzwerk?', 'Erklären Sie Ihre Erfahrung mit Linux', 'Wie gehen Sie mit einem wütenden Kunden um?')",
-        "Listening: Listen to your interview, note hesitations, research those topics, re-record improved answers",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, wie man technische Probleme auf Deutsch professionell löst und dokumentiert. | Die schwierigste Situation war die Eskalation zu Level 2, aber ich habe die richtigen Phrasen verwendet. | Meine Fachinformatiker-Vokabeln sind jetzt viel besser. | Im Mock-Interview musste ich DHCP erklären – das habe ich auf Deutsch gut hinbekommen. | Ich fühle mich jetzt bereit für Bewerbungsgespräche.",
-        "Self-recording: Listen to your mock interview – write down 10 technical terms you need to review, make flashcards"
+        "Harden all Linux service configurations (Review nginx, SSH, firewall, Samba, cron, backups)",
+        "Harden Windows firewall and services (Disable unnecessary services, block unnecessary ports, enable logging)",
+        "Review all firewall rules on both systems (UFW on Linux, Windows Firewall with Advanced Security)",
+        "Analyze permissions across all VMs (Check NTFS, share, sudoers, file ownership)",
+        "Document security review findings with remediation plan"
       ],
       6: [
-        "BUILD DAY: Create 'Fachinformatiker Systemintegration Toolkit' – 100 technical phrases, a 'Helpdesk Scriptbook', a 'How-to Documentation Template', and a 'Mock Interview Question Bank'. Record a 25-min 'Technical Interview Simulation' answering 10 common questions.",
-        "SwipeGerman: Add 20 German email templates for IT work (Betreff: Serverausfall – Kritisch, Betreff: Wartungsankündigung, Betreff: Passwort vergessen, Betreff: Bitte um Freigabe, Betreff: Ticket geschlossen, Betreff: Eskalation, Betreff: Update der Software, Betreff: Sicherheitsvorfall, Betreff: Backup-Erfolgsbericht, Betreff: Backup-Fehlerbericht, Betreff: Neues Gerät eingerichtet, Betreff: Umzug des Rechenzentrums, Betreff: Änderungsanfrage (Change Request), Betreff: Rechnungserinnerung, Betreff: Angebot für Dienstleistung, Betreff: Meeting-Einladung – IT-Strategie, Betreff: Protokoll der letzten Besprechung, Betreff: Urlaubsvertretung im IT-Support, Betreff: Freigabe des Patch Tuesdays, Betreff: Notfallkontaktliste)",
-        "DW: B1+ – Folge 84 – 'IT-E-Mails professionell formulieren'",
-        "DW: B1+ – Folge 84 – read and analyze 5 sample IT emails",
-        "Writing: Write 5 complete IT emails in German from the templates above (each 80-120 words)",
-        "Speaking: Record yourself explaining one of the emails (as if you're dictating it to a colleague)",
-        "Bidirectional translation (5 sentences): Betreff: Serverausfall – Kritisch – Bitte um sofortige Eskalation. | Sehr geehrtes Team, der Fileserver ist seit 14:30 nicht erreichbar. | Wir planen eine Wartung am Samstag von 8 bis 10 Uhr. | Das Ticket #4291 wurde geschlossen. Lösung: Neustart des Druckers. | Bitte genehmigen Sie die Änderungsanfrage #112 für die Firewall-Regeln.",
-        "Technical: Write a complete German 'Change Request' email: propose updating the company's firewall rules (200 words, with reason, impact, rollback plan)"
+        "Full test of all Linux services (nginx, SSH, cron, backups, Samba, UFW, systemd services)",
+        "Full test of all Windows services (AD, DNS, DHCP, file shares, RDP, firewall, print server)",
+        "Diagnose 3 intentional failures (Network disconnect, service crash, permission change, fix each)",
+        "Validate backup systems (Test restore from Windows Backup, from Linux rsync/tar backups)",
+        "Review and improve documentation (Update READMEs, add troubleshooting sections, add diagrams)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your technical recordings. Create a 'Month 4 – Strong B1 Completion Report' (250 words in German).",
-        "SwipeGerman: Review ALL mistakes from Month 4 – create a custom 'Workplace German Weak Spots' deck",
-        "DW: B1+ – Folge 85 – cultural video 'Fachinformatiker werden – Interviews mit Azubis'",
-        "Grammar: Cheat sheet for 'nachdem' (temporal, Plusquamperfekt) and 'bevor' (present/future) – 10 comparison sentences",
-        "Speaking: Answer without preparation: 'Warum möchten Sie genau Fachinformatiker für Systemintegration werden und nicht Anwendungsentwicklung?' (5 min)",
-        "Bidirectional translation (5 sentences): Nachdem ich Month 4 abgeschlossen hatte, fühlte ich mich bereit für Bewerbungen. | Bevor ich mit dem Deutschlernen anfing, wusste ich nichts von Fachinformatikern. | Mein Ziel ist es, im Monat 8 echte Bewerbungen zu schreiben. | Ich bin stolz darauf, dass ich jetzt technische Dokumentationen auf Deutsch verstehen kann. | Der nächste Monat ist Month 5 – B1 zu B2 Brücke. Da wird es richtig anspruchsvoll!",
-        "Technical: 'After I finished the network troubleshooting, I documented the solution. Before I close the ticket, I will call the customer to confirm.' – translate with 'nachdem' and 'bevor'"
+        "BUILD: Mixed enterprise lab (Linux + Windows together)",
+        "Configure Linux and Windows VMs together on same network (3 Linux, 2 Windows)",
+        "Configure cross-platform file sharing (Samba shares accessible from both)",
+        "Configure remote access from both sides (RDP to Windows from Linux, SSH to Linux from Windows)",
+        "Configure security on all systems (Firewall, SSH keys, account policies, antivirus)",
+        "Create infrastructure diagrams (Complete network topology with all servers, clients, IPs)",
+        "Upload polished portfolio project to GitHub (Comprehensive documentation, diagrams, configs, tests)"
       ]
     }
   },
-  5: { // MONTH 5: B1 → B2 bridge (workplace German, emails, technical vocabulary, customer language)
-    1: { // Week 1 – advanced workplace communication
+  5: { // Month 5: Modern Infrastructure (Docker & Containers)
+    1: { // Week 1: Docker Foundations
       1: [
-        "SwipeGerman: Add 20 B1/B2 German for meetings (die Tagesordnung, der TOP, das Protokoll, der Beschluss, die Abstimmung, das Votum, die Mehrheit, die Gegenstimme, die Enthaltung, der Antrag, die Empfehlung, die Entscheidungsvorlage, das Umlaufverfahren, die Beschlussfähigkeit, die Vertagung, der Einwand, der Kompromiss, der Konsens, die Pattsituation,die Fristverlängerung, die Dringlichkeit)",
-        "DW: B2 Vorbereitung – Folge 86 – 'Meetings moderieren und Entscheidungen treffen'",
-        "DW: B2 Vorbereitung – Folge 86 – watch a 15-min meeting simulation, take notes on formal language",
-        "Roleplay: Lead a 15-min project meeting with yourself (3 roles: manager, critic, supporter)",
-        "Writing: Write a 200-word meeting protocol (Protokoll) including decisions and action items",
-        "Bidirectional translation (5 sentences): Die erste Tagesordnungspunkt ist das Budget für das nächste Quartal. | Ich beantrage, dass wir die Entscheidung vertagen, bis alle Daten vorliegen. | Wer stimmt dafür? – Die Mehrheit ist dafür, es gibt zwei Gegenstimmen und eine Enthaltung. | Wir brauchen einen Kompromiss zwischen Kosten und Qualität. | Das Protokoll wird morgen per E-Mail an alle Teilnehmer verschickt.",
-        "Technical: Write a German meeting protocol for an IT security review meeting (200 words, include 3 decisions and 5 action items)"
+        "Understand containers vs VMs (Containers share host kernel, VMs have separate kernel; containers start in seconds, VMs in minutes; containers MB, VMs GB)",
+        "Learn Docker images vs running containers (Image: frozen template, Container: running instance of image)",
+        "Understand Docker workflow (build image → push to registry → pull on another host → run container)",
+        "Learn why containers matter in companies (Consistency, portability, scalability, isolation, resource efficiency)",
+        "Create Docker concept notes with comparison table and diagrams"
       ],
       2: [
-        "SwipeGerman: Add 20 B2 project management phrases (der Meilenstein, der Zeitplan, die Ressource, das Budget, der Stakeholder, die Anforderung, die Spezifikation, der Aufwand, die Abhängigkeit, der kritische Pfad, der Puffer, das Risiko, die Risikominimierung, die Qualitätssicherung, die Abnahme, die Übergabe, der Go-Live, der Rollback-Plan, die Lessons Learned, das Post-Mortem)",
-        "DW: B2 Vorbereitung – Folge 87 – 'Projektmanagement auf Deutsch – agile vs Wasserfall'",
-        "DW: B2 Vorbereitung – Folge 87 – read a German project status report",
-        "Writing: Write a 250-word project status report in German (current status, next milestones, risks, budget)",
-        "Speaking: Record a 10-min project update presentation using all 20 phrases",
-        "Bidirectional translation (5 sentences): Der nächste Meilenstein ist die Fertigstellung der Datenbank am 15. März. | Wir müssen das Budget um 10% kürzen, das Risiko ist hoch. | Die Abhängigkeit zwischen Modul A und Modul B ist kritisch. | Der Go-Live ist für den 1. April geplant, mit einem Rollback-Plan für den Notfall. | Die Lessons-Learning-Sitzung findet nach Abschluss des Projekts statt.",
-        "Technical: Write a German project status update for a server migration project (300 words, including timeline, risks, and next steps)"
+        "Install Docker on Linux (curl -fsSL https://get.docker.com | sudo sh, sudo usermod -aG docker $USER)",
+        "Run docker hello-world (docker run hello-world - verifies installation)",
+        "Pull and run nginx image (docker pull nginx, docker run -d -p 8080:80 --name mynginx nginx)",
+        "Inspect running containers with docker ps (docker ps -a for all, docker ps --format 'table {{.Names}}\t{{.Status}}')",
+        "Document all commands used with explanations"
       ],
       3: [
-        "SwipeGerman: Add 20 B2 negotiation phrases (wir gehen aufeinander zu, können Sie uns entgegenkommen, das ist unser letztes Angebot, wir sind am Limit, wenn Sie X bieten, dann können wir Y anbieten, das ist nicht verhandelbar, lassen Sie uns einen Mittelweg finden, welche Spielräume haben Sie, ich muss mit meinem Vorgesetzten sprechen, entscheiden Sie noch heute, dann bekommen Sie einen Rabatt, unter der Bedingung, dass, vorausgesetzt, dass, im Gegenzug bieten wir, wir werden uns einig, auf diese Weise können wir beide profitieren, der Kompromiss ist fair, ich sehe noch Diskussionsbedarf, das akzeptieren wir, unter einer Bedingung, dann haben wir eine Einigung, vielen Dank für die konstruktiven Gespräche)",
-        "DW: B2 Vorbereitung – Folge 88 – 'Verhandlungen auf Deutsch – IT-Verträge'",
-        "DW: B2 Vorbereitung – Folge 88 – listen to a negotiation between a customer and an IT service provider",
-        "Roleplay: Negotiate a contract with yourself (you = provider, you = customer) – 10 min",
-        "Speaking: Record the negotiation, then reflect on what went well and what you'd improve",
-        "Bidirectional translation (5 sentences): Das ist unser letztes Angebot, wir können nicht weiter runtergehen. | Wenn Sie einen Dreijahresvertrag unterschreiben, geben wir 10% Rabatt. | Das ist nicht verhandelbar, der Preis ist fest. | Lassen Sie uns einen Mittelweg finden: 5% Rabatt bei Zahlung innerhalb von 14 Tagen. | Unter der Bedingung, dass die Wartung inklusive ist, akzeptiere ich.",
-        "Technical: Negotiate an IT support contract in German (200 words dialogue, customer wants lower price, provider offers lower SLA)"
+        "Start, stop, remove containers (docker start/stop/rm mynginx, docker container prune)",
+        "Inspect container logs with docker logs (docker logs -f mynginx, docker logs --tail 50 mynginx)",
+        "Monitor container resource usage (docker stats, docker top mynginx, docker inspect mynginx | grep -i memory)",
+        "Learn docker inspect command (docker inspect mynginx, jq for filtering: docker inspect mynginx | jq '.[].NetworkSettings.IPAddress')",
+        "Create container management notes with 20 common commands"
       ],
       4: [
-        "SwipeGerman: Add 20 B2 German for presentations (meine Präsentation besteht aus drei Teilen, zuerst gebe ich einen Überblick, dann gehe ich ins Detail, abschließend fasse ich zusammen, lassen Sie mich mit einem Zitat beginnen, ein Bild sagt mehr als tausend Worte, wie Sie auf Folie 3 sehen können, ich möchte Ihre Aufmerksamkeit auf diesen Graphen lenken, was bedeutet das für uns, die Implikationen sind, die wichtigste Erkenntnis ist, ich möchte betonen, dass, ich möchte Sie um Ihr Feedback bitten, haben Sie Fragen zu diesem Punkt, das war mein erster Teil, kommen wir zu Teil zwei, um es kurz zu machen, lassen Sie mich zusammenfassen, zum Abschluss möchte ich sagen, vielen Dank für Ihre Aufmerksamkeit, ich stehe für Fragen zur Verfügung)",
-        "DW: B2 Vorbereitung – Folge 89 – 'Präsentationen halten – überzeugen auf Deutsch'",
-        "DW: B2 Vorbereitung – Folge 89 – watch a German tech presentation (e.g., from re:publica or Chaos Computer Club)",
-        "Writing: Write a 400-word presentation script on 'Die Zukunft der IT-Infrastruktur'",
-        "Speaking: Record yourself giving the 15-min presentation (use slides or just talk)",
-        "Bidirectional translation (5 sentences): Meine Präsentation besteht aus drei Teilen: Status quo, Herausforderungen und Lösungen. | Wie Sie auf dieser Folie sehen, sind die Serverauslastungen gestiegen. | Die wichtigste Erkenntnis ist, dass wir in Cloud investieren müssen. | Lassen Sie mich zusammenfassen: Automatisierung, Skalierung, Sicherheit. | Vielen Dank für Ihre Aufmerksamkeit – ich stehe für Fragen zur Verfügung.",
-        "Technical: Create 5 slides (in your mind) and present them in German on 'Why we need to upgrade our network to 10 Gigabit' (15 min recording)"
+        "Learn Docker bridge networks (docker network ls, docker network create mynet --driver bridge)",
+        "Connect two containers to same network (docker run -d --network mynet --name container1 nginx, docker run -d --network mynet --name container2 nginx)",
+        "Expose container ports to host (-p flag) (docker run -d -p 80:80 -p 443:443 nginx)",
+        "Test external access to container (curl localhost:80 from host, curl from another container using container name)",
+        "Document Docker networking with bridge, host, none, overlay network types"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – meetings + project management + negotiations + presentations",
-        "DW: B2 Vorbereitung – Folge 90 – 'B1+ Berufsdeutsch Abschluss – Simulation'",
-        "DW: B2 Vorbereitung – do a 30-min workplace simulation (meeting + negotiation + presentation)",
-        "Speaking: Record the complete simulation (30 min) – you play all roles",
-        "Listening: Listen to your simulation, write a 200-word self-assessment (strengths, weaknesses, next steps)",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, wie man Projekte auf Deutsch managt und verhandelt. | Die Präsentation war anstrengend, aber die Strukturierungshilfen haben geholfen. | Die größte Herausforderung war die Verhandlung, weil ich spontan reagieren musste. | Ich bin stolz darauf, dass ich ein Meeting protokollieren und Entscheidungen dokumentieren kann. | Alles in allem bin ich bereit für B2 – die Brücke ist geschafft.",
-        "Self-recording: Write a 300-word 'Workplace German Week Summary' in German, then record yourself reading it"
+        "Learn Docker persistent storage (volumes: docker volume create myvolume, bind mounts: -v /host/path:/container/path)",
+        "Mount a volume to a container (docker run -d -v myvolume:/data --name db postgres)",
+        "Stop container and verify data persists (docker stop db, docker rm db, docker run -d -v myvolume:/data --name db2 postgres, check data still there)",
+        "Back up container data via volume (docker run --rm -v myvolume:/data -v $(pwd):/backup alpine tar czf /backup/volume-backup.tar.gz /data)",
+        "Write Docker storage notes with volume vs bind mount comparison"
       ],
       6: [
-        "BUILD DAY: Create 'B1+ Workplace German Master Toolkit' – 100 phrases for meetings, project management, negotiations, presentations. Record a 40-min 'Workday Simulation' (9-5 workday with 8 scenarios).",
-        "SwipeGerman: Add 20 B2 technical documentation deep dive (die Architektur, die Komponente, die Schnittstelle, das Protokoll, das Framework, die Middleware, die Datenbank, das Schema, die Abfrage, die Transaktion, die Latenz, der Durchsatz, die Skalierbarkeit, die Hochverfügbarkeit, der Failover, die Redundanz, die Lastverteilung, die Containerisierung, die Orchestrierung, die Monitoring-Lösung)",
-        "DW: B2 – Folge 91 – 'Technische Dokumentation auf Deutsch – tief eintauchen'",
-        "DW: B2 – Folge 91 – read a 1000-word German technical documentation excerpt (e.g., from a software manual)",
-        "Writing: Write a 300-word technical documentation in German: 'How our authentication system works'",
-        "Speaking: Record a 12-min explanation of your documentation, as if training a new colleague",
-        "Bidirectional translation (5 sentences): Die Architektur besteht aus drei Komponenten: Client, Server und Datenbank. | Die Schnittstelle verwendet das HTTPS-Protokoll für sichere Kommunikation. | Die Datenbankabfragen haben eine Latenz von unter 50 Millisekunden. | Für Hochverfügbarkeit haben wir einen Failover-Cluster mit Redundanz. | Containerisierung mit Docker und Orchestrierung mit Kubernetes ist unser Standard.",
-        "Technical: Write complete German documentation for a simple REST API (endpoints, request/response examples, error codes) – 500 words"
+        "Learn Dockerfile syntax (FROM, RUN, COPY, ADD, CMD, ENTRYPOINT, ENV, EXPOSE, WORKDIR, USER, HEALTHCHECK, ARG, LABEL)",
+        "Build a custom Docker image (FROM nginx:alpine, COPY ./html /usr/share/nginx/html, EXPOSE 80, CMD ['nginx', '-g', 'daemon off;'])",
+        "Run your custom container (docker build -t mywebapp:1.0 ., docker run -d -p 8080:80 --name webapp mywebapp:1.0)",
+        "Modify and rebuild the image (Change HTML content, rebuild, re-run, verify changes)",
+        "Document Dockerfile workflow with best practices (layer caching, .dockerignore, multi-stage builds)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your technical documentation recordings. Create a 'Technical German Glossary' with 100 terms.",
-        "SwipeGerman: Review all mistakes from week 1",
-        "DW: B2 – Folge 92 – cultural video 'IT-Dokumentation in deutschen Firmen' – interview with a technical writer",
-        "Grammar: Cheat sheet for 'indem' (by means of) and 'wodurch' (by which) – 10 examples",
-        "Speaking: Answer without preparation: 'Beschreiben Sie die Architektur eines typischen Web-Servers in einfachen Worten.' (5 min)",
-        "Bidirectional translation (5 sentences): Indem wir den Cache leeren, wird das Problem behoben. | Wodurch entsteht die Verzögerung? – Durch die langsame Datenbankabfrage. | Die Hochverfügbarkeit wird erreicht, indem wir mehrere Server einsetzen. | Indem du die Logs analysierst, findest du den Fehler. | Wodurch kann ich die Performance verbessern? – Durch Skalierung der Ressourcen.",
-        "Technical: 'By using a load balancer, we distribute traffic. By which mechanism does the system handle failover?' – translate and expand to 150 words"
+        "BUILD: Nginx container with persistent storage",
+        "Configure Docker networking (Custom bridge network with specific subnet 172.20.0.0/16)",
+        "Create volume for nginx data (docker volume create nginx-data, mount to /usr/share/nginx/html)",
+        "Write Docker documentation (Dockerfile, docker-compose.yml, README with commands, troubleshooting)",
+        "Upload to GitHub with complete project structure (Dockerfile, html/, nginx.conf, scripts/)"
       ]
     },
-    2: { // Week 2 – B2 core: discussions, abstract topics, fast speech
+    2: { // Week 2: Docker Compose
       1: [
-        "SwipeGerman: Add 20 B2 abstract topic vocabulary (die Globalisierung, der Klimawandel, die Migration, die Digitalisierung, die Automatisierung, der demografische Wandel, die Nachhaltigkeit, die soziale Ungleichheit, die Chancengleichheit, die Work-Life-Balance, die psychische Gesundheit, der Fachkräftemangel, der Wettbewerb, die Innovation, die Ethik, die Transparenz, die Rechenschaftspflicht, die Menschenrechte, die Freiheit, die Verantwortung)",
-        "DW: B2 – Folge 93 – 'Abstrakte Themen diskutieren – Wortschatz für Debatten'",
-        "DW: B2 – Folge 93 – listen to a German debate on 'Digitalisierung der Schule'",
-        "Speaking: Record a 10-min solo debate: 'Vor- und Nachteile der Globalisierung' – use abstract vocabulary",
-        "Writing: Write a 350-word opinion essay on 'Sollte die Automatisierung reguliert werden?'",
-        "Bidirectional translation (5 sentences): Die Globalisierung hat die Welt vernetzt, aber auch soziale Ungleichheit verstärkt. | Der demografische Wandel führt zu Fachkräftemangel in Deutschland. | Work-Life-Balance ist wichtig für die psychische Gesundheit. | Innovation und Ethik müssen Hand in Hand gehen. | Wir brauchen mehr Transparenz und Rechenschaftspflicht in der Politik.",
-        "Grammar: 'je…desto' with abstract concepts – 'Je globaler die Wirtschaft, desto größer die Ungleichheit' (5 examples)"
+        "Understand multi-container apps concept (App needs web server, database, cache, queue - separate containers)",
+        "Learn docker-compose workflow (Single YAML file defines all services, networks, volumes, dependencies)",
+        "Understand YAML syntax basics (Indentation matters, key: value, lists with - , dictionaries)",
+        "Create your first docker-compose.yml (version: '3.8', services: web: image: nginx, ports: - '80:80')",
+        "Document compose concepts with examples (depends_on, networks, volumes, environment)"
       ],
       2: [
-        "SwipeGerman: Add 20 B2 debating phrases (ich bin der festen Überzeugung, dass, ich argumentiere, dass, ein starkes Argument für X ist, dass, dagegen spricht, dass, dieses Argument ist nicht stichhaltig, weil, das ist ein Trugschluss, denn, ich möchte folgende Gegenposition einnehmen, lassen Sie mich widersprechen, das ist ein berechtigter Einwand, jedoch, ich sehe den Zusammenhang nicht, die Prämisse ist falsch, die Logik ist fehlerhaft, die Beweislage ist dünn, die Quelle ist nicht vertrauenswürdig, das ist ein Strohmann-Argument, das ist ein Zirkelschluss, die Analogie hinkt, das ist ein falscher Vergleich, wir reden aneinander vorbei, kommen wir zum Kern zurück)",
-        "DW: B2 – Folge 94 – 'Debattieren auf B2-Niveau – Argumentationsstrategien'",
-        "DW: B2 – Folge 94 – listen to a formal debate, identify logical fallacies",
-        "Roleplay: Debate with yourself (15 min) on 'Sollte staatliche Überwachung erlaubt sein?' – use debating phrases",
-        "Speaking: Record the debate, then listen and identify where you could have been more persuasive",
-        "Bidirectional translation (5 sentences): Ich bin der festen Überzeugung, dass erneuerbare Energien die einzige Lösung sind. | Ein starkes Argument gegen Kernkraft ist die Endlagerung des Atommülls. | Das ist ein Trugschluss, denn die Zahlen sind nicht vergleichbar. | Lassen Sie mich widersprechen – die Prämisse ist falsch. | Wir reden aneinander vorbei. Kommen wir zum Kern zurück: Was ist das eigentliche Problem?",
-        "Grammar: 'zwar…aber' in complex debates – 5 original sentences on abstract topics"
+        "Build nginx + PostgreSQL stack (docker-compose.yml with web and db services)",
+        "Create docker-compose.yml with both services (web: nginx:alpine, db: postgres:13 with environment variables)",
+        "Start the multi-container environment (docker-compose up -d, docker-compose ps, docker-compose logs)",
+        "Test connectivity between services (docker exec -it web_app_1 ping db, nslookup db)",
+        "Document full setup with health checks and dependency management"
       ],
       3: [
-        "SwipeGerman: Add 20 B2 fast speech recognition vocabulary (reduziert, quasi, sozusagen, praktisch, faktisch, eigentlich, im Grunde, quasi, so gut wie, beinahe, fast, nahezu, annähernd, rund, etwa, ungefähr, circa, schätzungsweise, vermutlich, wahrscheinlich, möglicherweise)",
-        "DW: B2 – Folge 95 – 'Schnelles Deutsch verstehen – Reduzierungen und Füllwörter'",
-        "DW: B2 – Folge 95 – listen to a fast German podcast (e.g., 'Lage der Nation' – 5 min excerpt at normal speed)",
-        "Listening: Transcribe a 2-min fast speech excerpt (play at 0.8x, then 1x, then 1.2x)",
-        "Speaking: Imitate the fast speech rhythm – record yourself speaking at 1.2x speed (it's okay to make mistakes)",
-        "Bidirectional translation (5 sentences): Das ist quasi unmöglich, es sei denn, wir arbeiten zusammen. | Die Kosten liegen bei rund 500 Euro, vielleicht etwas mehr. | Er ist praktisch der Beste in seinem Bereich. | Das ist so gut wie fertig, nur noch ein paar Kleinigkeiten. | Vermutlich wird die Entscheidung morgen fallen, möglicherweise aber auch erst übermorgen.",
-        "Grammar: 'quasi', 'praktisch', 'so gut wie' as softening adverbs – 10 examples"
+        "Learn .env files for secrets (Create .env file with DB_PASSWORD=secret, reference in compose as ${DB_PASSWORD})",
+        "Configure environment variables in compose (environment: or env_file: in service definition)",
+        "Modify compose configs safely (docker-compose down, edit yaml, docker-compose up -d)",
+        "Restart services after changes (docker-compose restart service_name)",
+        "Create .env best practices notes (Never commit .env to git, use .env.example, rotate secrets regularly)"
       ],
       4: [
-        "SwipeGerman: Add 20 B2 idiomatic expressions (einen Zahn zulegen, sich etwas hinter die Ohren schreiben, jemandem einen Strich durch die Rechnung machen, die Nase voll haben, etwas im Schilde führen, etwas auf die lange Bank schieben, jemandem die Daumen drücken, nicht ganz dicht sein, einen Kater haben, einen Vogel haben, das ist nicht mein Bier, das geht mir auf den Keks, das ist mir Wurst, einen dicken Hals haben, sich die Seele aus dem Leib reden, etwas aus dem Stegreif machen, etwas an den Nagel hängen, etwas auf dem Kasten haben, die Kurve kratzen, sich ins Zeug legen)",
-        "DW: B2 – Folge 96 – 'Deutsche Redewendungen für den Alltag und Beruf'",
-        "DW: B2 – Folge 96 – listen to a conversation with idioms, guess meanings from context",
-        "Speaking: Tell a short story using at least 5 idioms (5 min)",
-        "Writing: Write 10 sentences, each with a different idiom, explaining it in simple German",
-        "Bidirectional translation (5 sentences): Du musst einen Zahn zulegen, sonst schaffst du die Prüfung nicht. | Was er im Schilde führt, weiß niemand. | Ich habe die Nase voll von deinen Ausreden! | Drück mir die Daumen für das Vorstellungsgespräch. | Das ist nicht mein Bier, frag jemand anderen.",
-        "Grammar: Idiom syntax – separable vs inseparable, position of reflexive pronouns"
+        "Connect 3 services in one compose file (web: nginx, app: node/python, db: postgres, cache: redis)",
+        "Test internal DNS (service names as hostnames: app can connect to db using 'db' as hostname)",
+        "Analyze container-to-container networking (All services on same network by default, can communicate by service name)",
+        "Diagnose connection issues (docker-compose logs, docker network inspect, docker exec into container for testing)",
+        "Document multi-service workflow with network topology diagram"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – abstract topics + debating + fast speech + idioms",
-        "DW: B2 – Folge 97 – 'B2 Hörverstehen – Nachrichten in normalem Tempo'",
-        "DW: B2 – listen to a 5-min 'Tagesschau' excerpt, write a 150-word summary in German",
-        "Speaking: Record a 10-min discussion with yourself: 'Sollten Großstädte autofrei werden?' – use abstract vocabulary and debating phrases",
-        "Listening: Listen to your recording and check for fast speech comprehension (did you miss anything? re-record improved version)",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, über abstrakte Themen zu diskutieren und schnelles Deutsch zu verstehen. | Die Redewendungen sind anfangs schwer, aber sie machen die Sprache lebendiger. | Ein starkes Argument für autofreie Städte ist die bessere Luftqualität. | Dagegen spricht die eingeschränkte Mobilität für Menschen auf dem Land. | Jetzt verstehe ich die 'Tagesschau' fast komplett – das ist ein Meilenstein!",
-        "Self-recording: Transcribe 1 minute of fast German speech from a podcast you listened to, then record yourself reading it at the same speed"
+        "Update containers to newer versions (docker-compose pull service_name, docker-compose up -d --no-deps service_name)",
+        "Back up entire compose project (Copy project directory with compose.yml and .env, volumes backup)",
+        "Clean unused images/containers (docker system prune -a, docker volume prune, docker image prune)",
+        "Monitor container logs in compose (docker-compose logs -f, docker-compose logs --tail=100 service_name)",
+        "Write container maintenance notes with cleanup schedules"
       ],
       6: [
-        "BUILD DAY: Create 'B2 Discussion Toolkit' – 50 debate phrases, 20 idioms, 100 abstract vocabulary words. Record a 20-min debate on 'Klimawandel: Individuelle Verantwortung vs. politische Maßnahmen'.",
-        "SwipeGerman: Add 20 B2 subtext and nuance (ironie, Sarkasmus, Zynismus, Andeutung, Unterton, Doppeldeutigkeit, Übertreibung, Untertreibung, Euphemismus, Beschönigung, Verharmlosung, Dramatisierung, Polemik, Rhetorik, Manipulation, Emotionale Appelle, Logische Argumente, Fakt vs. Meinung, Objektivität vs. Subjektivität, Framing)",
-        "DW: B2 – Folge 98 – 'Zwischen den Zeilen lesen – Ironie und Sarkasmus verstehen'",
-        "DW: B2 – Folge 98 – listen to a German satire show (e.g., 'Die Anstalt' – 10 min excerpt), identify ironic statements",
-        "Speaking: Tell a story using ironic exaggeration (5 min) – 'Gestern war der schlimmste Tag meines Lebens…'",
-        "Writing: Write a 250-word text that uses three different types of nuance (irony, euphemism, understatement)",
-        "Bidirectional translation (5 sentences): 'Tolle Leistung' sagte er mit einem sarkastischen Unterton. | Das ist eine Beschönigung – er hat nicht 'ein bisschen' gelogen, sondern betrogen. | Die Polemik in dem Artikel ist unnötig, sachliche Argumente wären besser. | Der Euphemismus 'sozial angepasst' klingt besser als 'angepasst'. | Framing beeinflusst, wie wir ein Problem wahrnehmen.",
-        "Grammar: Ironie erkennen – durch Übertreibung, durch Kontrast zwischen Aussage und Situation, durch Tonfall (beschrieben)"
+        "Organize compose project directories (project/ ├── docker-compose.yml ├── .env ├── nginx/ ├── app/ ├── db/ ├── backups/)",
+        "Create reusable service configs (Use YAML anchors & aliases, or multiple compose files with -f flag)",
+        "Improve overall project structure (Add healthchecks, restart policies, resource limits (mem_limit, cpus))",
+        "Polish all documentation (Add diagrams, troubleshooting, deployment instructions, rollback procedures)",
+        "Review all Docker/Compose concepts (Create master cheat sheet)"
       ],
       7: [
-        "REST/REVIEW: Listen to your satire story. Identify where your irony was understood vs misunderstood.",
-        "SwipeGerman: Review all mistakes from week 2",
-        "DW: B2 – Folge 99 – cultural video 'Deutscher Humor und Ironie' – understanding German comedy",
-        "Grammar: Cheat sheet for 'obwohl' (concession) vs 'trotzdem' (nevertheless) vs 'trotz' (preposition)",
-        "Speaking: Answer without preparation: 'Kann Ironie im Beruf gefährlich sein? Warum oder warum nicht?' (4 min)",
-        "Bidirectional translation (5 sentences): Obwohl die Lage ernst ist, versuchte er einen Witz zu machen. | Das war Sarkasmus, nicht Ironie – er meinte das Gegenteil von dem, was er sagte. | Trotz der Gefahr von Missverständnissen kann Humor das Team stärken. | Der Euphemismus 'Herausforderung' statt 'Problem' ist in Firmen üblich. | Framing ist mächtig: 'Arbeitszeitflexibilisierung' klingt besser als 'Überstunden'.",
-        "Technical: 'In IT documentation, irony is dangerous. We need clear, objective language.' – write 200 words in German about technical writing style"
+        "BUILD: Multi-service compose application",
+        "Configure Docker Compose networking (Custom network with specific subnet, internal network for db only)",
+        "Configure persistent storage (Named volumes for db, bind mounts for app configs)",
+        "Configure environment variables (.env for secrets, environment section for non-secrets)",
+        "Create professional documentation (README with architecture, setup, usage, troubleshooting, backup/restore)",
+        "Upload to GitHub with complete project"
       ]
     },
-    3: { // Week 3 – B2 core: complex grammar, longer texts, summarizing
+    3: { // Week 3: Reverse Proxy & Load Balancing
       1: [
-        "SwipeGerman: Add 20 B2 advanced conjunction sets (sowohl…als auch, nicht nur…sondern auch, weder…noch, entweder…oder, je…desto, umso…je, zwar…aber, einerseits…andererseits, teils…teils, mal…mal, bald…bald, ob…oder, egal ob…oder, ungeachtet dessen, ob, abgesehen davon, dass, ganz zu schweigen von, geschweige denn, nicht einmal, selbst wenn, wenn auch, wenngleich)",
-        "DW: B2 – Folge 100 – 'Fortgeschrittene Satzverbindungen – komplexe Strukturen'",
-        "DW: B2 – Folge 100 – rewrite simple sentences using double conjunctions",
-        "Writing: Write 250 words using at least 10 different advanced conjunctions",
-        "Speaking: Record yourself reading your text, focusing on intonation with conjunctions",
-        "Bidirectional translation (5 sentences): Sowohl der Preis als auch die Qualität sind entscheidend. | Weder der Chef noch die Kollegen waren mit dem Ergebnis zufrieden. | Entweder du akzeptierst den Kompromiss, oder wir brechen die Verhandlung ab. | Je länger ich warte, desto ungeduldiger werde ich. | Selbst wenn du dich beeilst, wirst du den Zug verpassen.",
-        "Grammar: Double conjunction word order – both parts trigger verb-at-end in subordinate clauses when applicable"
+        "Understand reverse proxy concept (Client → Reverse Proxy → Backend Servers; hides backend, provides SSL, caching, load balancing)",
+        "Learn request forwarding logic (Reverse proxy receives request, forwards to backend based on rules: hostname, path, header)",
+        "Understand load balancing overview (Distribute traffic across multiple backends: round-robin, least connections, IP hash)",
+        "Analyze how web traffic flows (Browser → DNS → Reverse Proxy (public IP) → Backend (private IP) → Response back through proxy)",
+        "Create reverse proxy concept notes with diagrams (Forward proxy vs Reverse proxy comparison)"
       ],
       2: [
-        "SwipeGerman: Add 20 B2 nominalization patterns (auf etwas verzichten → der Verzicht auf etwas, etwas beantragen → die Beantragung von etwas, sich um etwas bemühen → die Bemühung um etwas, etwas in Betracht ziehen → die Inbetrachtziehung von etwas, etwas zur Verfügung stellen → die Zurverfügungstellung von etwas, etwas in Anspruch nehmen → die Inanspruchnahme von etwas, etwas außer Acht lassen → die Außerachtlassung von etwas, etwas in Kauf nehmen → die Inkaufnahme von etwas, etwas zu Grunde legen → die Zugrundelegung von etwas, etwas in Bezug auf → der Bezug auf etwas, sich auf etwas beziehen → der Bezug auf etwas, etwas veranschaulichen → die Veranschaulichung von etwas, etwas erläutern → die Erläuterung von etwas, etwas zusammenfassen → die Zusammenfassung von etwas, etwas analysieren → die Analyse von etwas, etwas interpretieren → die Interpretation von etwas, etwas kritisieren → die Kritik an etwas, etwas bewerten → die Bewertung von etwas, etwas empfehlen → die Empfehlung von etwas, etwas ablehnen → die Ablehnung von etwas)",
-        "DW: B2 – Folge 101 – 'Nominalisierung – vom Verb zum Nomen'",
-        "DW: B2 – Folge 101 – transform 10 verb phrases into nominal style",
-        "Writing: Write a 200-word academic-style German text using nominalization (avoid verbs)",
-        "Speaking: Read your nominalization text aloud (it will sound formal and complex)",
-        "Bidirectional translation (5 sentences): Die Verwendung von Nominalisierungen führt zu einem formelleren Stil. | Die Inanspruchnahme dieser Dienstleistung ist kostenlos. | Nach eingehender Prüfung des Antrags erfolgt die Genehmigung. | Die Zurverfügungstellung der Ressourcen ist entscheidend für den Projekterfolg. | Die Ablehnung des Vorschlags kam für alle überraschend.",
-        "Grammar: Nominalization patterns – -ung, -ion, -heit, -keit, -nis, -t, and verb stem as noun"
+        "Configure nginx as reverse proxy (upstream backend { server 192.168.1.10:3000; server 192.168.1.11:3000; } server { location / { proxy_pass http://backend; } })",
+        "Forward traffic to a Docker container (proxy_pass http://container_name:port when using Docker networks)",
+        "Test routing behavior thoroughly (curl -H 'Host: app.local' http://localhost, check proxy_pass works)",
+        "Analyze nginx proxy logs (access log shows client IP, upstream IP, response time; error log shows proxy failures)",
+        "Document full proxy setup with configuration breakdown and security headers (X-Forwarded-For, X-Real-IP)"
       ],
       3: [
-        "SwipeGerman: Add 20 B2 summarizing and paraphrasing phrases (der Autor argumentiert, dass, laut dem Text, wie der Autor schreibt, nach Ansicht des Autors, der wesentliche Punkt ist, die Kernaussage ist, der Text lässt sich wie folgt zusammenfassen, zusammengefasst besagt der Text, dass, mit anderen Worten, anders ausgedrückt, um es zu paraphrasieren, der Autor bringt zum Ausdruck, dass, im Wesentlichen bedeutet dies, die Quintessenz ist, zusammengefasst, das Fazit lautet, um den Text knapp wiederzugeben, die zentrale These ist, der Beleg dafür ist, als Beispiel führt der Autor an, der Kontrast besteht zwischen, der Vergleich zeigt, dass)",
-        "DW: B2 – Folge 102 – 'Texte zusammenfassen – paraphrasieren lernen'",
-        "DW: B2 – Folge 102 – read a 500-word article, write a 150-word summary without looking at original",
-        "Reading: Find a B2-level German news article, highlight main thesis and 5 supporting points",
-        "Writing: Write a 200-word summary AND a 100-word critical response to the article",
-        "Bidirectional translation (5 sentences): Der Autor argumentiert, dass soziale Medien die Demokratie gefährden. | Die Kernaussage ist, dass wir bewusster mit unserer Zeit umgehen sollten. | Mit anderen Worten: Weniger Bildschirmzeit, mehr echte Begegnungen. | Als Beispiel führt der Autor die Filterblase an. | Das Fazit lautet: Digitale Kompetenz ist die Lösung.",
-        "Grammar: Indirect speech with Konjunktiv I in summaries (formal academic style)"
+        "Route traffic to 3 different services (app1.local → backend1, app2.local → backend2, api.local → backend3)",
+        "Configure subdomain routing locally (/etc/hosts or DNS, server_name app1.local, app2.local, api.local)",
+        "Test complete service separation (curl app1.local, curl app2.local, curl api.local, each goes to different backend)",
+        "Diagnose routing failures (Check server_name matches, proxy_pass URL correct, backend reachable, nginx reloaded)",
+        "Create routing configuration notes with location blocks, regex matching, and conditional routing"
       ],
       4: [
-        "SwipeGerman: Add 20 B2 comparing and contrasting phrases (im Vergleich zu, im Gegensatz zu, ähnlich wie, genau wie, anders als, während, wohingegen, im Unterschied zu, beide teilen die Eigenschaft, dass, der wesentliche Unterschied liegt in, die Gemeinsamkeit ist, die Unterschiede überwiegen, die Ähnlichkeiten sind offensichtlich, im direkten Vergleich zeigt sich, dass, während X…, ist Y…, bei X hingegen, bei Y dagegen, X ist gekennzeichnet durch, Y zeichnet sich aus durch, die Parallele ist, die Diskrepanz besteht in, das verbindende Element ist)",
-        "DW: B2 – Folge 103 – 'Vergleichen und kontrastieren – differenziert argumentieren'",
-        "DW: B2 – Folge 103 – compare two products or concepts (e.g., Linux vs Windows)",
-        "Writing: Write a 300-word comparison of two German learning methods (e.g., App vs Classroom)",
-        "Speaking: Record an 8-min comparison of two IT certifications (e.g., CCNA vs CompTIA Network+)",
-        "Bidirectional translation (5 sentences): Im Gegensatz zu Windows ist Linux Open Source. | Während der eine mehr Struktur braucht, lernt der andere besser frei. | Beide Systeme teilen die Eigenschaft, dass sie regelmäßige Updates benötigen. | Der wesentliche Unterschied liegt in der Benutzerfreundlichkeit. | Die Gemeinsamkeit ist, dass beide sicher sind, wenn sie richtig konfiguriert werden.",
-        "Grammar: 'während' and 'wohingegen' for contrast – word order differences"
+        "Understand SSL/TLS basics (Symmetric vs asymmetric encryption, certificates, CAs, handshake)",
+        "Generate self-signed certificate with openssl (openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes)",
+        "Configure HTTPS in nginx locally (listen 443 ssl; ssl_certificate cert.pem; ssl_certificate_key key.pem;)",
+        "Test HTTPS connections (curl -k https://localhost, browser with security warning, accept risk)",
+        "Document SSL/HTTPS workflow with Let's Encrypt automation (certbot) for production"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – advanced conjunctions + nominalization + summarizing + comparing",
-        "DW: B2 – Folge 104 – 'B2 Textproduktion – komplexe Aufsätze schreiben'",
-        "DW: B2 – write a 500-word Aufsatz: 'Vor- und Nachteile der Vier-Tage-Woche'",
-        "Speaking: Record a 15-min presentation of your essay, explaining your arguments",
-        "Listening: DW 'B2 Prüfungstraining – Leseverstehen' – do a full B2 reading test",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, komplexe Sätze mit doppelten Konjunktionen zu bauen. | Sowohl die Nominalisierung als auch die Paraphrasierung sind wichtige B2-Fähigkeiten. | Während der Vergleich einfach war, fiel mir die kritische Zusammenfassung schwerer. | Die Kernaussage meines Aufsatzes ist, dass die Vier-Tage-Woche die Produktivität steigern kann. | Im Gegensatz zu früher kann ich jetzt 500 Wörter flüssig auf Deutsch schreiben.",
-        "Self-recording: Listen to your essay presentation – note 3 instances where your argument could be stronger, rewrite those sections"
+        "Learn load balancing concepts (round-robin: default, least_conn: send to least busy, ip_hash: sticky sessions, random, weight-based)",
+        "Configure nginx with 2 backend services (upstream backend { server 127.0.0.1:3001 weight=3; server 127.0.0.1:3002 weight=1; })",
+        "Test request distribution (curl multiple times, check access logs on each backend to see distribution)",
+        "Monitor service response times (Add health checks: server 127.0.0.1:3001 max_fails=3 fail_timeout=30s)",
+        "Create load balancing notes with algorithms and health check configuration"
       ],
       6: [
-        "BUILD DAY: Create 'B2 Text Production Toolkit' – 50 conjunctions, 100 nominalization pairs, 50 summarizing phrases, 50 comparing phrases. Write a 800-word 'B2 Position Paper' on a topic of your choice (e.g., 'Kann KI den Menschen ersetzen?')",
-        "SwipeGerman: Add 20 B2 academic writing conventions (die Einleitung, der Hauptteil, der Schluss, die These, die Hypothese, die Forschungsfrage, die Literaturrecherche, das Zitat, die Fußnote, das Literaturverzeichnis, die Quellenangabe, die Plagiatsvermeidung, der rote Faden, die Argumentationskette, die Beweisführung, die Schlüssigkeit, die Konsistenz, die Kohärenz, die Präzision, die Objektivität)",
-        "DW: B2 – Folge 105 – 'Akademisches Deutsch – Schreiben für Uni und Fortbildung'",
-        "DW: B2 – Folge 105 – read a short academic abstract, identify the structure",
-        "Writing: Write a 400-word academic abstract on 'The impact of cloud computing on small businesses'",
-        "Speaking: Record a 10-min explanation of your abstract as if presenting it to colleagues",
-        "Bidirectional translation (5 sentences): In der Einleitung stelle ich die Forschungsfrage vor. | Der Hauptteil enthält die Argumentationskette mit Belegen. | Die Kohärenz des Textes ist entscheidend für die Verständlichkeit. | Ich habe drei Quellen zitiert und sie im Literaturverzeichnis aufgeführt. | Die Schlüssigkeit der Argumentation überzeugt den Leser.",
-        "Technical: Write a 500-word academic abstract in German about 'The benefits of Infrastructure as Code (IaC)' – include introduction, methods, results, conclusion"
+        "Restrict access with nginx rules (allow 192.168.1.0/24; deny all; or basic auth: auth_basic 'Restricted'; auth_basic_user_file .htpasswd;)",
+        "Hide backend services from public view (Backends on internal network only, proxy exposed on public network)",
+        "Analyze and add security headers (add_header X-Frame-Options DENY; add_header X-Content-Type-Options nosniff; add_header X-XSS-Protection '1; mode=block';)",
+        "Harden nginx configuration (Disable server_tokens, limit request rate (limit_req_zone), set timeouts, disable unused modules)",
+        "Document security practices with CIS benchmarks for nginx"
       ],
       7: [
-        "REST/REVIEW: Listen to all your academic recordings. Write a 300-word 'B2 Core Progress Report' in German.",
-        "SwipeGerman: Review all mistakes from week 3",
-        "DW: B2 – Folge 106 – cultural video 'Akademische Kultur in Deutschland' – Unterschiede zu anderen Ländern",
-        "Grammar: Cheat sheet for 'laut' (according to) + Dativ vs + Genitiv (both possible, Dativ more common spoken)",
-        "Speaking: Answer without preparation: 'Welche akademischen Konventionen sind in Deutschland wichtig, die vielleicht anderswo anders sind?' (5 min)",
-        "Bidirectional translation (5 sentences): Laut einer Studie verbessert regelmäßiges Schreiben die Sprachkompetenz. | Die Quellenangabe ist in Deutschland besonders wichtig, um Plagiate zu vermeiden. | Der rote Faden meines Aufsatzes war die Frage nach der Work-Life-Balance. | Laut meinem Professor muss die Argumentationskette lückenlos sein. | Die Präzision der Formulierung ist entscheidend für die Objektivität.",
-        "Technical: 'According to best practices, we should document every change. The literature review shows that IaC reduces errors.' – translate and expand to 200 words"
+        "BUILD: Multi-service reverse proxy lab",
+        "Configure HTTPS with self-signed certificate (Generate certs, configure nginx SSL, test secure connection)",
+        "Route 3 services through nginx (app1:3000, app2:3001, api:3002 with subdomain routing)",
+        "Integrate with Docker containers (Use docker-compose with proxy and 3 backend services on same network)",
+        "Create infrastructure diagram (Proxy → Backends, SSL termination point, load balancing algorithm)",
+        "Upload to GitHub with complete configuration (nginx.conf, docker-compose.yml, cert generation script, README)"
       ]
     },
-    4: { // Week 4 – B2 core consolidation
+    4: { // Week 4: Monitoring & Backup
       1: [
-        "SwipeGerman: Add 20 B2 discussion follow-up phrases (um auf Ihren Punkt zurückzukommen, was Sie sagten, erinnert mich an, das ist ein interessanter Aspekt, ich möchte darauf eingehen, dass, ich möchte einen anderen Aspekt beleuchten, wenn ich Sie richtig verstanden habe, meinen Sie, dass, ich möchte präzisieren, was ich sagte, das ist ein berechtigter Einwand, ich muss mein Argument modifizieren, ich gestehe ein, dass, Sie haben mich überzeugt, was X betrifft, lassen Sie mich das konkretisieren, ein Beispiel: um es zu veranschaulichen, dies unterstreicht meinen Punkt, dass, ich möchte eine andere Perspektive einbringen, ich denke, wir sind uns einig, dass, ich denke, wir werden uns nicht einig, können wir uns auf Folgendes einigen, ich schlage vor, das Thema abzuschließen, kommen wir zum nächsten Punkt)",
-        "DW: B2 – Folge 107 – 'Diskussionen vertiefen – auf andere eingehen'",
-        "DW: B2 – Folge 107 – listen to a 20-min panel discussion, note follow-up techniques",
-        "Roleplay: Deep discussion with yourself (15 min) on 'Sollte die Rente mit 68 kommen?' – use follow-up phrases",
-        "Speaking: Record the discussion, then reflect on where you successfully built on your own previous points",
-        "Bidirectional translation (5 sentences): Um auf Ihren Punkt zurückzukommen, Sie sagten, dass die Rente zu niedrig sei. | Wenn ich Sie richtig verstanden habe, meinen Sie, dass wir früher anfangen sollten zu sparen. | Das ist ein berechtigter Einwand, ich muss mein Argument modifizieren. | Sie haben mich überzeugt, was die demografische Entwicklung betrifft. | Ich denke, wir sind uns einig, dass Handlungsbedarf besteht.",
-        "Grammar: 'indem' and 'wodurch' in discussion contexts – connecting cause and effect in follow-ups"
+        "Understand monitoring importance in production (Detect issues before users, capacity planning, SLA compliance, security detection)",
+        "Learn uptime vs performance monitoring (Uptime: is it running? Performance: how well is it running? latency, throughput, error rate)",
+        "Learn resource monitoring concepts (CPU, memory, disk, network, temperature, fan speed, power)",
+        "Understand alerting basics (Thresholds: warning vs critical, escalation policies, on-call rotations, notification channels)",
+        "Create monitoring strategy notes with 4 golden signals (Latency, Traffic, Errors, Saturation - Google SRE book)"
       ],
       2: [
-          "SwipeGerman: Add 20 B2 hypothesizing with different degrees of certainty (es ist sicher, dass, es ist wahrscheinlich, dass, es ist möglich, dass, es ist unwahrscheinlich, dass, es ist ausgeschlossen, dass, es könnte sein, dass, es mag sein, dass, es scheint, dass, es deutet alles darauf hin, dass, es gibt Hinweise darauf, dass, die Indizien sprechen dafür, dass, es wäre denkbar, dass, es liegt nahe, dass, es ist nicht auszuschließen, dass,die Vermutung liegt nahe, dass, es ist fraglich, ob, es ist zweifelhaft, dass, es ist nicht sicher, ob, ich hege Zweifel, ob, die Wahrscheinlichkeit spricht für/gegen, die Tendenz geht dahin, dass)",
-        "DW: B2 – Folge 108 – 'Hypothesen aufstellen – Wahrscheinlichkeiten ausdrücken'",
-        "DW: B2 – Folge 108 – listen to a scientific discussion, note probability language",
-        "Speaking: Record a 10-min speculation: 'Wie wird die Arbeitswelt in 20 Jahren aussehen?' – use 10 different probability phrases",
-        "Writing: Write a 300-word prediction about the future of IT with varying degrees of certainty",
-        "Bidirectional translation (5 sentences): Es ist sehr wahrscheinlich, dass KI viele administrative Aufgaben übernimmt. | Es könnte sein, dass neue Berufe entstehen, die wir heute noch nicht kennen. | Es ist nicht auszuschließen, dass einige Berufe komplett verschwinden. | Die Indizien sprechen dafür, dass Remote Work bleiben wird. | Es ist fraglich, ob die Viertagewoche flächendeckend kommt.",
-        "Grammar: 'es sei denn, dass' (unless) – 5 examples with future predictions"
+        "Monitor CPU and RAM live (htop, glances, bpytop, s-tui for stress testing)",
+        "Monitor disk usage (df -h, du -sh /*, ncdu, iotop for IO monitoring)",
+        "Monitor active Docker containers (docker stats, ctop, lazydocker)",
+        "Analyze system logs in real time (journalctl -f, dmesg -w, tail -f /var/log/syslog, logwatch)",
+        "Document findings and thresholds (CPU >80% warning, >95% critical; disk >85% warning, >95% critical; memory >90% critical)"
       ],
       3: [
-        "SwipeGerman: Add 20 B2 cause-and-effect chains (aus X resultiert Y, X hat zur Folge, dass Y, Y ist eine Konsequenz von X, X ist die Ursache für Y, X führt zu Y, Y lässt sich auf X zurückführen, die Wirkung von X ist Y, X bedingt Y, Y hängt mit X zusammen, die Korrelation zwischen X und Y ist, der kausale Zusammenhang ist, dass, X wird durch Y verursacht, Y wird ausgelöst durch X, der Mechanismus hinter Y ist X, Y ist ein Symptom von X, X triggert Y, Y ist der Output von X, die Rückkopplung zwischen X und Y bewirkt, dass, X verstärkt Y, Y reduziert X)",
-        "DW: B2 – Folge 109 – 'Kausalketten verstehen und erklären – komplexe Zusammenhänge'",
-        "DW: B2 – Folge 109 – read a 500-word scientific explanation, map cause-effect chain",
-        "Writing: Write a 350-word explanation of a technical problem as a cause-effect chain (e.g., 'Why did the server crash?')",
-        "Speaking: Record yourself explaining the chain (8 min) clearly, step by step",
-        "Bidirectional translation (5 sentences): Ein Stromausfall hat zur Folge, dass der Server herunterfährt. | Datenverlust lässt sich auf fehlende Backups zurückführen. | Ein fehlerhaftes Update führt zu Kompatibilitätsproblemen mit der Datenbank. | Die Wirkung des neuen Firewall-Rules ist eine bessere Sicherheit, aber auch höhere Latenz. | Der kausale Zusammenhang zwischen CPU-Überhitzung und Systemabsturz ist eindeutig.",
-        "Technical: 'Explain the chain of events that leads to a DDoS attack taking down a website' – 400 words in German"
+        "Understand backup types (full: everything, incremental: changes since last backup, differential: changes since last full, synthetic full: merges incrementals)",
+        "Plan backup schedule for all VMs (Full monthly, differential weekly, incremental daily, transaction logs hourly for databases)",
+        "Analyze recovery risks and RTO/RPO (Recovery Time Objective: max downtime allowed; Recovery Point Objective: max data loss allowed)",
+        "Create backup notes with 3-2-1 rule (3 copies, 2 media types, 1 offsite)",
+        "Compare backup strategies (Cost vs RTO vs RPO vs storage vs bandwidth vs complexity)"
       ],
       4: [
-        "SwipeGerman: Add 20 B2 evaluative language (das ist effektiv/ineffektiv, es ist effizient/ineffizient, es ist nachhaltig/unkologisch, es ist praktikabel/impraktikabel, es ist realisierbar/unrealistisch, es ist wünschenswert/unerwünscht, es ist vorteilhaft/nachteilig, es ist sinnvoll/sinnlos, es ist notwendig/überflüssig, es ist gerecht/ungerecht, es ist fair/unfair, es ist akzeptabel/inakzeptabel, es ist angemessen/unangemessen, es ist überzeugend/unüberzeugend, es ist glaubwürdig/unglaubwürdig, es ist verlässlich/unzuverlässig, es ist sicher/unsicher, es ist stabil/instabil, es ist kompatibel/inkompatibel, es ist skalierbar/nicht skalierbar)",
-        "DW: B2 – Folge 110 – 'Bewertungen abgeben – differenziert urteilen'",
-        "DW: B2 – Folge 110 – evaluate 3 different IT solutions (e.g., cloud vs on-prem vs hybrid)",
-        "Writing: Write a 400-word evaluation of a software product (real or imaginary) using evaluative language",
-        "Speaking: Record a 12-min product review podcast in German (evaluate a tool you use, e.g., VS Code)",
-        "Bidirectional translation (5 sentences): Diese Lösung ist effizient, aber nicht skalierbar. | Cloud Computing ist nachhaltiger als eigene Rechenzentren. | Der Vorschlag ist theoretisch sinnvoll, aber praktisch unrealistisch. | Das Update ist inkompatibel mit älteren Versionen, das ist inakzeptabel für große Unternehmen. | Die Dokumentation ist unzuverlässig und unvollständig, das ist sehr unvorteilhaft.",
-        "Technical: 'Evaluate two backup solutions (rsync vs commercial software) using B2 evaluative language' – 350 words in German"
+        "Write bash backup script with timestamps (#!/bin/bash, DATE=$(date +%Y%m%d_%H%M%S), tar -czf /backup/backup-$DATE.tar.gz /important/data)",
+        "Schedule daily cron backup (0 2 * * * /usr/local/bin/backup.sh >> /var/log/backup.log 2>&1)",
+        "Compress backup files with tar (tar -czf, tar -cjf for bzip2, tar -cJf for xz - highest compression)",
+        "Verify backup integrity after creation (tar -tzf backup.tar.gz, md5sum -c checksums.md5, restore test to different directory)",
+        "Document automation workflow with retention policy (Keep daily for 7 days, weekly for 4 weeks, monthly for 6 months)"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – follow-up phrases + hypothesizing + cause-effect + evaluative",
-        "DW: B2 – Folge 111 – 'B2 Diskussion – komplexes Thema: Datenschutz vs. Sicherheit' (full 30-min simulation)",
-        "DW: B2 – listen to a 15-min expert discussion, write a 250-word critical summary",
-        "Speaking: Record a 20-min discussion with yourself on 'Datenschutz vs. Sicherheit' – use all week's phrase types",
-        "Listening: Listen to your discussion, identify 5 places where you could have used stronger evaluative language, re-record improved version",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, Wahrscheinlichkeiten differenziert auszudrücken und komplexe Kausalketten zu erklären. | Es ist wahrscheinlich, dass die Datenschutzdebatte weiter intensiv geführt wird. | Ein fehlerhaftes Update hat zur Folge, dass Sicherheitslücken entstehen – das ist inakzeptabel. | Es ist fraglich, ob absolute Sicherheit überhaupt realisierbar ist. | Alles in allem fühle ich mich jetzt sicher auf B2-Niveau.",
-        "Self-recording: Write a 400-word 'B2 Core Completion Reflection' in German, then record yourself reading it with confident intonation"
-      ],
+        "Restore backup from archive (tar -xzf backup.tar.gz -C /restore/location)",
+        "Recover a broken nginx configuration (Restore from backup /etc/nginx, reload nginx)",
+        "Recover container data from volume backup (docker run --rm -v myvolume:/data -v $(pwd):/backup alpine sh -c 'cd /data && tar xzf /backup/volume-backup.tar.gz')",
+        "Test complete disaster recovery scenario (Simulate server loss, restore from backups to new VM, measure RTO"],
+      // CONTINUATION OF SYSINT_PLAN - Month 5 Week 4 Day 6 through Month 8
+
       6: [
-        "BUILD DAY: Create 'B2 Core Master Toolkit' – 100 discussion phrases, 50 probability expressions, 50 cause-effect connectors, 50 evaluative adjectives. Record a 30-min 'Complex Discussion Simulation' on 'Ethik der KI im öffentlichen Raum'.",
-        "SwipeGerman: Add 20 B2 transition to C1 bridge phrases (vor diesem Hintergrund, vor dem Hintergrund, dass, in Anbetracht dessen, dass, unter Berücksichtigung von, gestützt auf die Annahme, dass, ausgehend von der Prämisse, dass, in Anlehnung an, im Hinblick auf, mit Blick auf, im Rahmen von, im Kontext von, vorausgesetzt, dass, unter der Voraussetzung, dass, im Falle, dass, unter der Bedingung, dass, selbst unter der Annahme, dass, unabhängig davon, ob, abgesehen davon, dass, darüber hinaus hinausgehend, nicht zuletzt deshalb, weil, allen voran, vor allem aber, insbesondere deshalb, weil)",
-        "DW: B2/C1 – Folge 112 – 'B2 zu C1 Brücke – fortgeschrittene Diskursmarker'",
-        "DW: B2/C1 – Folge 112 – read a C1-level opinion piece, identify discourse markers",
-        "Writing: Write a 500-word C1-style argumentative essay: 'Braucht Deutschland eine KI-Regulierung?' – use advanced discourse markers",
-        "Speaking: Record your essay as a 15-min speech, focus on smooth transition between arguments",
-        "Bidirectional translation (5 sentences): Vor dem Hintergrund des Fachkräftemangels ist Einwanderung notwendig. | In Anbetracht der rasanten technologischen Entwicklung müssen wir Regeln anpassen. | Vorausgesetzt, dass die Ethikrichtlinien eingehalten werden, ist KI sicher. | Nicht zuletzt deshalb, weil Deutschland ein Exportland ist, brauchen wir Innovation. | Allen voran steht die Frage nach der Haftung bei KI-Fehlern.",
-        "Grammar: 'vorausgesetzt, dass' + Konjunktiv II (hypothetical condition) – 5 examples"
+        "Full review of all services (nginx, Docker, Docker Compose, reverse proxy, monitoring setup)",
+        "Review all log files (/var/log/nginx/error.log, docker logs, journalctl -u docker, backup logs)",
+        "Verify backup systems work end-to-end (Take backup, delete original, restore, verify integrity)",
+        "Analyze overall infrastructure stability (Uptime report, incident history, recovery time, backup success rate)",
+        "Organize monitoring reports (Daily summary, weekly trend, monthly capacity planning report)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your B2 core recordings. Write a 500-word 'B2 Core – Meine Entwicklung' in German.",
-        "SwipeGerman: Review all mistakes from Month 5 (B1→B2 bridge and B2 core) – full cumulative deck",
-        "DW: B2 – Folge 113 – cultural video 'B2 Prüfung – was erwartet mich?' (Goethe/Telc overview)",
-        "Grammar: Create a 'B2 Grammar Final Cheat Sheet' – advanced conjunctions, nominalization, Konjunktiv I, Konjunktiv II Vergangenheit, cause-effect chains",
-        "Speaking: Answer without preparation: 'Welche drei Fähigkeiten hast du in Month 5 am meisten verbessert?' (8 min)",
-        "Bidirectional translation (5 sentences): Month 5 war der anspruchsvollste Monat bisher, aber auch der, in dem ich am meisten gelernt habe. | Vor diesem Hintergrund bin ich zuversichtlich, dass ich B2 in zwei Monaten erreiche. | Nicht zuletzt deshalb, weil ich jeden Tag geübt habe, kann ich jetzt komplexe Diskussionen führen. | Vorausgesetzt, dass ich diese Intensität beibehalte, bin ich bereit für die Ausbildung. | Ich freue mich auf Month 6 – Professional German Mode, also IT-Fachgespräche und Bewerbungstraining!",
-        "Technical: 'Now I can explain complex IT concepts, evaluate solutions, and discuss ethical implications – all in German. I'm ready for the next level.' – write 300 words"
+        "BUILD: Fully monitored infrastructure with backup automation",
+        "Configure backup automation (Full backup weekly, incremental daily, offsite replication to separate disk)",
+        "Configure monitoring scripts (CPU/memory/disk usage, service health checks, alert thresholds)",
+        "Test recovery process end-to-end (Full restore to new VM, measure RTO and RPO, document improvements)",
+        "Create professional documentation (Monitoring dashboard screenshots, backup logs, recovery procedures)",
+        "Upload polished portfolio project to GitHub with complete monitoring and backup configuration"
       ]
     }
   },
-  6: { // MONTH 6: B2 core (continued from Month 5 but kept as Month 6 in original plan – restructuring to avoid confusion, but following your 8-month structure)
-    // Note: In your original plan, Month 5 was B1→B2 bridge, Month 6 was B2 core. I've already covered B2 core extensively above.
-    // To avoid repetition and fill Month 6 properly, I'll make Month 6: "Professional German Mode – workplace situations, meetings, phone conversations, IT communication"
-    // This matches your Month 7 in original plan, but I'll adjust numbering to fit your system.
-    // For brevity in this response (token limits), I'll summarize Month 6-8 structure and provide full detailed days for Month 6 Week 1, then indicate the rest follows the same progressive pattern.
-    // Given the massive size, I'll provide the complete remaining structure in a condensed but fully executable format.
-    1: { // Week 1 – Professional meetings and presentations
+  6: { // Month 6: Production Mindset & Security Hardening
+    1: { // Week 1: Security Hardening
       1: [
-        "SwipeGerman: Add 20 C1 meeting facilitation phrases (ich eröffne die Sitzung, der erste Punkt auf der Tagesordnung ist, ich bitte um das Wort, wer möchte als nächster sprechen, ich sehe keinen weiteren Redebedarf, ich schlage vor, den Punkt abzuschließen, kommen wir zur Abstimmung, das Protokoll der letzten Sitzung ist genehmigt, es gibt keine Einwände? Einstimmig angenommen, wir verschieben Punkt 4 auf die nächste Sitzung, die Diskussion ist abgeschlossen, ich fasse zusammen, die vereinbarten Maßnahmen sind, die Frist für Punkt A ist der, wer übernimmt die Verantwortung für Punkt B, gibt es noch etwas zur Geschäftsordnung? Ich schließe die Sitzung um, vielen Dank für Ihre Teilnahme, auf Wiedersehen)",
-        "DW: C1 Vorbereitung – Folge 114 – 'Sitzungen professionell leiten'",
-        "DW: C1 Vorbereitung – Folge 114 – watch a 20-min board meeting simulation",
-        "Roleplay: Lead a 25-min department meeting with yourself (manager + 4 roles)",
-        "Speaking: Record the meeting, focusing on professional facilitation language",
-        "Bidirectional translation (5 sentences): Ich eröffne die Sitzung und begrüße alle Anwesenden. | Der erste Punkt auf der Tagesordnung ist das Budget für Q3. | Gibt es Einwände? – Dann ist Punkt 1 einstimmig angenommen. | Wer übernimmt die Verantwortung für die Umsetzung? | Die Sitzung ist geschlossen – vielen Dank für die konstruktiven Beiträge.",
-        "Grammar: 'einstimmig', 'mehrheitlich', 'ohne Gegenstimme' – voting results expressions"
+        "Audit full Linux attack surface (List all listening ports: ss -tulpn, all running services: systemctl list-units, all users: cat /etc/passwd, SUID binaries: find / -perm -4000 2>/dev/null)",
+        "Review all user permissions and sudo access (cat /etc/sudoers, cat /etc/group, check for unnecessary sudo access)",
+        "Analyze /etc/passwd and /etc/shadow (Look for users with UID 0, empty passwords, login shells for service accounts)",
+        "Harden user account policies (Set password aging: chage -M 90 username, lock inactive accounts: useradd -f 30, remove unused users)",
+        "Create security audit notes with checklist (CIS benchmarks, DISA STIGs, custom findings)"
       ],
       2: [
-        "SwipeGerman: Add 20 C1 phone and video call professionalism (ich habe Sie leider akustisch schlecht verstanden, können Sie das wiederholen, die Verbindung ist instabil, ich breche kurz ab und rufe zurück, ich schalte mich stumm, dann schalte ich mich wieder ein, teilen Sie bitte Ihren Bildschirm, ich sehe Ihre Präsentation nicht, können Sie die Freigabe nochmal starten, ich habe eine Rückfrage zu Folie 5, wir haben einen technischen Defekt, ich schlage vor, den Call zu beenden und neu zu starten, hier ist das Echo schlimm, bitte nutzen Sie Kopfhörer, ich habe Sie zwischenzeitlich verloren, sind Sie noch da, dann fasse ich kurz zusammen, die nächsten Schritte sind, ich sende die Meeting-Zusammenfassung per E-Mail, vielen Dank für das produktive Gespräch)",
-        "DW: C1 Vorbereitung – Folge 115 – 'Professionelle Telefonate und Videokonferenzen'",
-        "DW: C1 Vorbereitung – Folge 115 – listen to 5 challenging call scenarios",
-        "Roleplay: 5 video call roleplays (bad connection, echo, screen sharing issues, participant dropped, technical failure)",
-        "Speaking: Record each call (5 min each), handle the technical problems professionally",
-        "Bidirectional translation (5 sentences): Entschuldigung, ich habe Sie akustisch schlecht verstanden – können Sie das wiederholen? | Die Verbindung ist instabil, ich breche kurz ab und rufe sofort zurück. | Teilen Sie bitte Ihren Bildschirm – ich sehe Ihre Präsentation noch nicht. | Hier ist das Echo schlimm – bitte nutzen Sie Kopfhörer. | Ich sende die Meeting-Zusammenfassung mit den nächsten Schritten per E-Mail.",
-        "Technical: 'Create a German script for handling a Zoom call where the customer's audio is not working' – 200 words"
+        "Disable password SSH authentication fully (PasswordAuthentication no, ChallengeResponseAuthentication no, UsePAM no)",
+        "Configure SSH keys-only across all servers (Generate ed25519 keys, distribute with ssh-copy-id, disable ssh-agent forwarding)",
+        "Disable root login via SSH (PermitRootLogin no, also check PermitEmptyPasswords no, IgnoreRhosts yes)",
+        "Configure SSH connection timeout policies (ClientAliveInterval 300, ClientAliveCountMax 2, MaxAuthTries 3, MaxSessions 5)",
+        "Test all remote access works (ssh from admin host, verify no password login, verify root cannot login)"
       ],
       3: [
-        "SwipeGerman: Add 20 C1 customer relationship management (wir schätzen Ihre langjährige Treue, als geschätzter Kunde bieten wir Ihnen, ich verstehe Ihre Frustration vollkommen, lassen Sie mich eine Lösung finden, die für beide Seiten akzeptabel ist, ich möchte den Konflikt deeskalieren, ich schlage einen runden Tisch vor, wir möchten das Vertrauen zurückgewinnen, als Zeichen des guten Willens, unser Ziel ist eine Win-Win-Situation, können wir einen Kompromiss finden, ich bitte um eine zweite Chance, wir werden aus diesem Fehler lernen, die Qualitätsoffensive wurde gestartet, der Kunde steht im Mittelpunkt, wir implementieren Ihr Feedback, hier ist mein persönliches Versprechen, ich übernehme die Verantwortung, ich bleibe dran, bis das Problem gelöst ist, Sie können sich auf uns verlassen)",
-        "DW: C1 Vorbereitung – Folge 116 – 'Customer Success – schwierige Kunden binden'",
-        "DW: C1 Vorbereitung – Folge 116 – listen to a customer retention call",
-        "Roleplay: Angry customer wants to cancel contract – you save the relationship (10 min)",
-        "Speaking: Record the retention call, focus on empathetic and solution-oriented language",
-        "Bidirectional translation (5 sentences): Wir schätzen Ihre langjährige Treue sehr, Herr Schmidt. | Ich verstehe Ihre Frustration vollkommen – das hätte nicht passieren dürfen. | Als Zeichen des guten Willens bieten wir Ihnen drei Monate kostenlosen Premium-Support. | Unser Ziel ist eine Win-Win-Situation – ich bin sicher, wir finden einen Kompromiss. | Sie können sich auf uns verlassen – ich bleibe dran, bis das Problem gelöst ist.",
-        "Grammar: 'als Zeichen des guten Willens' + Genitiv – 5 examples for business contexts"
+        "Review all UFW firewall rules (ufw status numbered, ufw show added, check both IPv4 and IPv6 rules)",
+        "Restrict any unnecessary open ports (Use ufw delete <number>, verify with nmap from external host)",
+        "Configure rate limiting concepts in nginx (limit_req_zone $binary_remote_addr zone=login:10m rate=5r/m, limit_conn_zone $binary_remote_addr zone=addr:10m, limit_conn addr 10)",
+        "Test blocked access attempts (Attempt to exceed rate limit, should get 503/429 status codes)",
+        "Document all firewall changes with before/after comparison and justification"
       ],
       4: [
-        "SwipeGerman: Add 20 C1 advanced IT consulting phrases (ich empfehle eine mehrstufige Strategie, auf Basis Ihrer Anforderungen würde ich vorschlagen, nach einer Kosten-Nutzen-Analyse rate ich zu, die langfristigen Vorteile überwiegen die kurzfristigen Kosten, ich sehe drei Handlungsoptionen, die risikoärmste Variante ist, die innovativste Lösung wäre, unter Berücksichtigung Ihres Budgets empfehle ich, die Skalierbarkeit ist ein entscheidender Faktor, die Kompatibilität mit Ihrer bestehenden Infrastruktur muss geprüft werden, die Implementierungsdauer beträgt schätzungsweise, der Proof of Concept würde X Wochen dauern, ich würde eine Pilotphase vorschlagen, die Erfolgsmessung erfolgt anhand von KPIs wie, der Return on Investment amortisiert sich nach, ich biete ein Folgegespräch an, um offene Fragen zu klären, gerne erstelle ich ein detailliertes Angebot, lassen Sie mich die nächsten Schritte zusammenfassen)",
-        "DW: C1 Vorbereitung – Folge 117 – 'IT-Consulting auf Deutsch – Kunden beraten'",
-        "DW: C1 Vorbereitung – Folge 117 – watch a consultant-customer meeting",
-        "Roleplay: IT consultant advises a small business on moving to the cloud (15 min)",
-        "Speaking: Record the consulting session, use professional recommendation language",
-        "Bidirectional translation (5 sentences): Auf Basis Ihrer Anforderungen empfehle ich eine hybride Cloud-Strategie. | Die langfristigen Vorteile überwiegen die kurzfristigen Umstellungskosten. | Ich sehe drei Handlungsoptionen: All-in-Cloud, Hybrid oder On-Premise-Ausbau. | Unter Berücksichtigung Ihres Budgets ist die Hybrid-Lösung am risikoärmsten. | Der Return on Investment würde sich innerhalb von 18 Monaten amortisieren.",
-        "Technical: 'Write a 400-word German consulting recommendation for migrating from on-premise to AWS'"
+        "Disable all unnecessary system services (systemctl list-units --type=service --state=running, systemctl disable --now <service> for each)",
+        "Inspect all active ports (ss -tlnp, lsof -i -P -n, netstat -tulpn, verify each open port has justification)",
+        "Harden nginx configuration (Disable server_tokens, add security headers, set client_max_body_size, limit methods, disable autoindex)",
+        "Restrict file permissions on sensitive files (/etc/shadow 640, /etc/passwd 644, /etc/ssh/sshd_config 600, /etc/ssl/private 700)",
+        "Create hardening checklist with 50+ items and verification commands"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – meetings + video calls + customer retention + IT consulting",
-        "DW: C1 Vorbereitung – Folge 118 – 'Professionelle Kommunikation – Abschlussimulation' (60-min simulation: meeting + phone + consulting + retention)",
-        "DW: C1 Vorbereitung – complete the simulation, record yourself",
-        "Speaking: Record the full 60-min professional communication simulation (all roles, all scenarios)",
-        "Listening: Listen to your simulation, take notes on 10 phrases you wish you'd used, add them to your toolkit",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich gelernt, wie man professionelle Meetings leitet, schwierige Telefonate führt und Kunden berät. | Die Video-Call-Rolle mit technischen Problemen war besonders herausfordernd. | Als Zeichen des guten Willens biete ich eine kostenlose Erstberatung an. | Auf Basis Ihrer positiven Rückmeldung bin ich zuversichtlich, dass ich bereit für echte Kunden bin. | Zusammenfassend lässt sich sagen, dass ich die professionelle Kommunikation jetzt sicher beherrsche.",
-        "Self-recording: Write a 300-word 'Professional Communication Self-Assessment' in German, then record"
+        "Analyze /var/log/auth.log deeply (grep 'Failed password' | wc -l, grep 'Invalid user' | sort | uniq -c | sort -nr, check for brute force attempts)",
+        "Count and detect failed login attempts (lastb for bad logins, faillock for pam_tally2, logwatch for daily summary)",
+        "Monitor suspicious IP patterns (Use fail2ban with custom jails, check /var/log/fail2ban.log for bans)",
+        "Create monitoring workflow (Daily log review, weekly summary report, monthly trend analysis)",
+        "Write first incident response notes (Detection, containment, eradication, recovery, lessons learned workflow)"
       ],
       6: [
-        "BUILD DAY: Create 'Professional German Master Toolkit' – 100 phrases for meetings, calls, retention, consulting. Record a 90-min 'Complete Work Day Simulation' (9 scenarios across 9-5).",
-        "SwipeGerman: Add 20 C1 IT project management German (das Projekt-Scoping, die Anforderungsanalyse, der Meilensteinplan, die Ressourcenzuweisung, das Risikoregister, der Issue-Tracker, der Change Request, die Abnahme, das Testprotokoll, das Übergabeprotokoll, die Betriebsdokumentation, der Wartungsvertrag, der Service Level Agreement (SLA), die Verfügbarkeitsgarantie, die Response Time, die Resolution Time, die Problem-Eskalationsmatrix, der Major Incident Manager, der Post-Mortem-Report, die Lessons-Learned-Datenbank)",
-        "DW: C1 Vorbereitung – Folge 119 – 'IT-Projektmanagement – vom Scoping bis zum Post-Mortem'",
-        "DW: C1 Vorbereitung – Folge 119 – read a German project management case study",
-        "Writing: Write a 500-word IT project plan in German for a 'Server Migration' project",
-        "Speaking: Record a 20-min project kick-off presentation for stakeholders",
-        "Bidirectional translation (5 sentences): Die Anforderungsanalyse ist abgeschlossen, wir starten nun mit dem Meilensteinplan. | Ein Risikoregister wurde erstellt, der größte Risikopunkt ist die Datenmigration. | Der Change Request für die Firewall-Regeln wurde genehmigt. | Der SLA sieht eine Response Time von 4 Stunden vor. | Der Post-Mortem-Report wird nach Abschluss des Projekts erstellt.",
-        "Technical: 'Write a complete German Post-Mortem Report for a fictional server outage (300 words, including timeline, root cause, action items)'"
+        "Review all system configurations (Check /etc/sysctl.conf for network security: net.ipv4.tcp_syncookies, net.ipv4.conf.all.rp_filter, net.ipv4.icmp_echo_ignore_all)",
+        "Test security by simulating attacks (Hydra for SSH brute force, Nmap for port scanning, Metasploit for vulnerability check)",
+        "Simulate brute force and verify blocking (Fail2ban should ban IP after X attempts, test from another VM)",
+        "Identify remaining weak spots (Check for missing patches: apt list --upgradable, check for weak passwords: john /etc/shadow)",
+        "Improve security documentation with remediation plan and timeline"
       ],
       7: [
-        "REST/REVIEW: Listen to all your professional communication recordings. Write a 500-word 'Month 6 Completion Report' in German.",
-        "SwipeGerman: Review all mistakes from Month 6",
-        "DW: C1 Vorbereitung – Folge 120 – cultural video 'Arbeitskultur in Deutschland – was Kunden erwarten'",
-        "Grammar: Create a 'Professional German Grammar Cheat Sheet' – advanced Genitiv, Konjunktiv I for indirect speech in reports, 'laut' + Dativ, 'zufolge' + Dativ",
-        "Speaking: Answer without preparation: 'Was war der wichtigste Skill, den du in Month 6 gelernt hast, und warum?' (6 min)",
-        "Bidirectional translation (5 sentences): In Month 6 habe ich gelernt, wie man als IT-Experte professionell mit Kunden und Kollegen kommuniziert. | Laut meinem Mentor ist Kundenorientierung der Schlüssel zum Erfolg. | Zufolge einer Studie verbessert professionelle Kommunikation die Kundenbindung um 30%. | Die Lessons-Learned-Datenbank wird nach jedem Projekt aktualisiert. | Ich bin jetzt bereit für Month 7 – Fachinformatiker Bewerbungs- und Interviewtraining!",
-        "Technical: 'I can now lead a customer meeting, write a project plan, handle a complaint, and present a post-mortem – all in German.' – write 250 words"
+        "BUILD: Hardened Linux infrastructure",
+        "Configure SSH security (Keys only, no root, custom port, timeouts, MaxAuthTries, ClientAliveInterval)",
+        "Configure firewall rules thoroughly (Default deny, allow only necessary ports, rate limiting on sensitive ports)",
+        "Set up log monitoring (Fail2ban with email alerts, logwatch daily reports, centralized logging with rsyslog)",
+        "Create security documentation (Hardening checklist, monitoring procedures, incident response plan)",
+        "Upload complete hardening project to GitHub with all configs, scripts, and reports"
+      ]
+    },
+    2: { // Week 2: VPS Deployment
+      1: [
+        "Understand VPS vs local VM differences (VPS: public IP, always on, managed hypervisor, SLA, backup options, scaling)",
+        "Learn public IP and DNS concepts for VPS (Static vs dynamic IP, reverse DNS, A/AAAA records, PTR records for mail)",
+        "Research VPS providers (Hetzner: CX11 ~€4.50/mo, DigitalOcean: Basic $4/mo, Linode: Nanode $5/mo, Vultr: $2.50/mo, Netcup: €3.25/mo, Contabo: €4.50/mo)",
+        "Create VPS deployment notes (Comparison table: price, CPU, RAM, storage, bandwidth, location, support)",
+        "German vocab: Server, Hosting, Netzwerk, Zugriff, Firewall, Backup, Domain, Zertifikat, Rechenzentrum, Ausfallsicherheit"
+      ],
+      2: [
+        "Rent a low-cost VPS (Recommended: Hetzner CX11 - 1 vCPU, 2GB RAM, 20GB SSD, €4.51/mo, or DigitalOcean $4/mo with referral)",
+        "Connect via SSH from your home machine (ssh root@<vps_ip>, check ssh fingerprints, verify connection)",
+        "Configure hostname and update all packages (sudo hostnamectl set-hostname vps.yourdomain.com, sudo apt update && sudo apt upgrade -y)",
+        "Create initial user and disable root (sudo adduser samian, sudo usermod -aG sudo samian, edit /etc/ssh/sshd_config: PermitRootLogin no)",
+        "Document complete VPS setup with screenshots and initial security steps"
+      ],
+      3: [
+        "Configure UFW on VPS (ufw default deny incoming, ufw default allow outgoing, ufw allow 22/tcp, ufw allow 80/tcp, ufw allow 443/tcp, ufw enable)",
+        "Harden SSH (PasswordAuthentication no, PubkeyAuthentication yes, AllowUsers samian, Port 2222, then change port and test)",
+        "Install and configure fail2ban (sudo apt install fail2ban, copy /etc/fail2ban/jail.conf to jail.local, enable sshd and nginx jails)",
+        "Test all security configurations (Try SSH with password - should fail, try wrong password multiple times - should get banned)",
+        "Document VPS security setup with all configuration files"
+      ],
+      4: [
+        "Deploy nginx on VPS (sudo apt install nginx, create site in /var/www/html, configure server block)",
+        "Create a simple webpage (echo '<h1>Meine Deutsche VPS</h1><p>Hallo aus dem Internet!</p>' | sudo tee /var/www/html/index.html)",
+        "Configure domain or use IP directly (If no domain, access via http://<vps_ip>, if domain: configure DNS A record to VPS IP)",
+        "Test external access from your phone (Disable Wi-Fi, use mobile data, browse to http://<vps_ip> or domain)",
+        "Create VPS deployment notes with nginx configuration and DNS setup"
+      ],
+      5: [
+        "Install Docker on VPS (curl -fsSL https://get.docker.com | sudo sh, sudo usermod -aG docker samian, newgrp docker)",
+        "Deploy a containerized service (docker run -d --name whoami -p 8080:80 containous/whoami, test with curl localhost:8080)",
+        "Configure persistent volume storage (docker volume create app-data, mount to container, verify persistence after restart)",
+        "Monitor container health (docker stats, docker logs -f, docker inspect, healthcheck in Dockerfile)",
+        "Document Docker-on-VPS workflow with security best practices (Run as non-root, use read-only root filesystem, drop capabilities)"
+      ],
+      6: [
+        "Configure automated rsync backups to local machine (rsync -avz -e 'ssh -p 2222' samian@vps_ip:/home/samian/backups/ /local/backup/path/)",
+        "Monitor VPS CPU/RAM/disk remotely (Create script that emails you when thresholds exceeded, use cron for periodic checks)",
+        "Analyze VPS access logs (Check /var/log/nginx/access.log, /var/log/auth.log, /var/log/fail2ban.log daily)",
+        "Verify uptime monitoring (Use uptimerobot.com or healthchecks.io for free uptime monitoring, get alerts on downtime)",
+        "Organize VPS maintenance notes (Weekly: security updates, log review; Monthly: reboot, performance review; Quarterly: security audit)"
+      ],
+      7: [
+        "BUILD: Live public Linux server on VPS",
+        "Configure secure SSH access (Keys only, custom port, AllowUsers, MaxAuthTries, ClientAliveInterval, Disable root)",
+        "Deploy nginx + Docker services (nginx on port 80/443, Docker containers on internal network only, reverse proxy pattern)",
+        "Configure monitoring (Fail2ban for intrusion prevention, UptimeRobot for uptime, daily logwatch reports, email alerts)",
+        "Upload professional VPS documentation (Setup guide, security configs, Docker setup, backup/restore, monitoring)",
+        "Push everything to GitHub for portfolio"
+      ]
+    },
+    3: { // Week 3: Automation Scripting
+      1: [
+        "Learn bash variables (VAR='value', readonly VAR, export, unset, ${VAR:-default}, ${#VAR} length, arrays)",
+        "Learn conditions (if [ condition ]; then, elif, else, fi; test operators: -eq, -ne, -lt, -le, -gt, -ge, -z, -n, -f, -d, -x, -r, -w)",
+        "Learn loops (for i in {1..10}; do; while [ condition ]; do; until [ condition ]; do; break, continue)",
+        "Write 3 simple scripts from scratch (Hello world, file backup, system info collector)",
+        "Execute scripts safely with error handling (set -e, set -u, set -o pipefail, trap ERR, exit codes, || and && operators)",
+        "Create scripting notes with best practices (Shebang, comments, consistent indentation, quoting variables)"
+      ],
+      2: [
+        "Write auto-update script for all packages (#!/bin/bash, sudo apt update, sudo apt upgrade -y, sudo snap refresh, clean with apt autoremove, log output)",
+        "Write automated backup script with dates (TIMESTAMP=$(date +%Y%m%d_%H%M%S), BACKUP_DIR=/backups/$TIMESTAMP, tar -czf, rsync to remote, email report)",
+        "Write cleanup script for old log files (find /var/log -type f -name '*.log' -mtime +30 -delete, truncate large logs, rotate with logrotate)",
+        "Schedule all 3 scripts with cron (0 3 * * * /usr/local/bin/update.sh, 0 2 * * * /usr/local/bin/backup.sh, 0 0 * * 0 /usr/local/bin/cleanup.sh)",
+        "Document automation workflow with each script's purpose, usage, and troubleshooting"
+      ],
+      3: [
+        "Write CPU usage monitoring script (CPU=$(top -bn1 | grep 'Cpu(s)' | awk '{print $2}' | cut -d'%' -f1); if (( $(echo $CPU > 80| bc -l) )); then echo 'Alert: CPU >80%' | mail -s 'CPU Alert' admin@example.com; fi)",
+        "Write disk usage alert script (df -h | awk '$5+0 > 80 {print $1, $5}' | while read -r line; do echo 'Alert: Disk usage high' | mail -s 'Disk Alert' admin@example.com; done)",
+        "Write service status checker script (for service in nginx docker ssh; do systemctl is-active --quiet $service || echo \"$service is down\" | mail -s \"Service Down\" admin@example.com; done)",
+        "Test all outputs (Run scripts manually, verify alerts trigger correctly, check logs for errors)",
+        "Organize scripts in ~/scripts directory with subdirectories (monitoring/, backup/, cleanup/, update/)"
+      ],
+      4: [
+        "Create logging output for each script (LOG_FILE=\"/var/log/myapp/script.log\", exec > >(tee -a \"$LOG_FILE\") 2>&1, log with timestamp: echo \"[$(date '+%Y-%m-%d %H:%M:%S')] INFO: Message\")",
+        "Rotate log files automatically (Configure logrotate: /etc/logrotate.d/myapp, daily, rotate 7, compress, delaycompress, notifempty)",
+        "Generate daily summary reports (Combine outputs from multiple scripts, summarize status, send email to admin)",
+        "Create log file documentation (Log locations, formats, retention periods, how to search and analyze)",
+        "Review all script outputs (Check for errors, warnings, performance issues, false positives in alerts)"
+      ],
+      5: [
+        "Execute scripts on remote VPS via SSH (ssh user@vps 'bash -s' < local_script.sh, or scp + ssh execution)",
+        "Sync files between local and VPS automatically (rsync -avz -e 'ssh' /local/scripts/ user@vps:/remote/scripts/, bidirectional sync with --update)",
+        "Test remote automation reliability (Simulate network failure, script errors, permission issues, fix edge cases)",
+        "Write remote automation notes (SSH keys setup, screen/tmux for long-running scripts, nohup, disown, & background)",
+        "Verify all automation works (Check cron logs on VPS, verify backups created, alerts triggered correctly)"
+      ],
+      6: [
+        "Refactor all scripts for readability (Use functions for repeated code, consistent naming: snake_case, meaningful variable names)",
+        "Add proper comments to every script (Header: purpose, author, date, usage; inline comments for complex logic; sections with #--- Section Name ---)",
+        "Organize scripts into directories by type (bin/ for executable, lib/ for functions, config/ for config files, logs/ for logs)",
+        "Create documentation for each script (README.md in each directory: usage, dependencies, configuration, troubleshooting, examples)",
+        "Polish all GitHub repositories (Ensure all scripts are executable, have shebang, work on clean Ubuntu install, add CI testing)"
+      ],
+      7: [
+        "BUILD: Linux automation toolkit",
+        "Automate: updates (daily security updates, weekly full upgrade, monthly distribution upgrade)",
+        "Automate: backups (full monthly, differential weekly, incremental daily, offsite replication, integrity checks)",
+        "Automate: monitoring (CPU/Memory/Disk alerts, service health checks, log monitoring, custom metrics)",
+        "Deploy automation on VPS (All scripts uploaded, crontab configured, logging working, alerts tested)",
+        "Create complete script documentation (Master README, each script's purpose and usage, installation guide, troubleshooting FAQ)",
+        "Upload as professional GitHub project with tags/releases, license, contribution guidelines"
+      ]
+    },
+    4: { // Week 4: Final Infrastructure Project
+      1: [
+        "Design final infrastructure project architecture (3 local VMs + 1 VPS: Web, DB, Cache on VPS, Admin on local, Backup server local)",
+        "Plan all services and their roles (VPS: nginx + PostgreSQL + Redis, Local Admin: monitoring + management, Local Backup: rsync target + backup verification)",
+        "Plan security architecture (VPS: UFW + fail2ban + SSH keys, Local: internal network only, VPN between VPS and local, TLS everywhere)",
+        "Create final architecture draft with diagrams (draw.io: VPS in cloud, local network, routing, firewall rules, data flow)",
+        "Document design decisions (Why VPS? Why local backup? Why specific services? Cost analysis, risk assessment)"
+      ],
+      2: [
+        "Deploy all Linux servers (Ubuntu 22.04 on VPS, Ubuntu 22.04 on 3 local VMs: admin, backup, test-client)",
+        "Configure Docker services on each (VPS: nginx + PostgreSQL + Redis in docker-compose, Local: monitoring stack: Prometheus + Grafana + Node Exporter)",
+        "Configure full networking between all VMs (VPS public IP accessible from internet, local VMs on 192.168.56.0/24 Host-Only network, VPN tunnel for secure VPS-local communication)",
+        "Configure nginx reverse proxy (VPS nginx proxies to Docker containers, local nginx for internal services, SSL termination at VPS)",
+        "Test all communication paths (External → VPS → Docker, VPS ↔ Local via VPN, Local internal communication, Backup server access)"
+      ],
+      3: [
+        "Harden all systems (VPS: CIS Level 1, Local: CIS Level 2 for admin machine, SSH keys only, no root, firewall default deny, unattended-upgrades, fail2ban)",
+        "Configure monitoring on all servers (Prometheus node exporter on each, push to central Prometheus, Grafana dashboards, alertmanager for critical alerts)",
+        "Configure centralized logging (rsyslog on VPS sends to local log server, ELK or Loki stack for aggregation and search)",
+        "Review all firewall rules (UFW on all, verify no unnecessary ports open, rate limiting on SSH, logging enabled)",
+        "Verify backup systems (Local backup server pulls from VPS and local VMs daily, offsite backup to external drive weekly, backup verification automated)"
+      ],
+      4: [
+        "Configure automated maintenance scripts (On VPS: auto-updates, log rotation, Docker cleanup, cert renewal; On local: backup verification, alert health checks, report generation)",
+        "Configure automated backups (Each server: nightly to local backup server; Backup server: weekly to external drive; Critical data: real-time sync to secondary location)",
+        "Test complete recovery process (Simulate VPS failure: restore from backup to new VPS; Simulate local failure: restore from backup; Simulate data corruption: point-in-time recovery)",
+        "Analyze all system logs (Check for errors, warnings, suspicious activity, performance issues, generate weekly summary report)",
+        "Organize complete workflow (Document all procedures: deployment, monitoring, backup, recovery, troubleshooting, escalation)"
+      ],
+      5: [
+        "Break services intentionally (5 different failures: nginx down, database corrupted, disk full, network partition, SSL cert expired)",
+        "Restore each service from documentation (Follow documented recovery procedures, time each recovery, document actual vs expected RTO)",
+        "Recover from backup (Restore database from backup, restore configuration files, restore entire server from backup image)",
+        "Diagnose all connectivity issues (Use troubleshooting checklist, document root cause for each failure, implement preventive measures)",
+        "Create troubleshooting notes for each scenario (Symptoms, diagnosis steps, solution commands, prevention measures, monitoring improvements)"
+      ],
+      6: [
+        "Create full infrastructure diagrams (Network topology: all VMs, IPs, routing; Service architecture: containers, ports, dependencies; Security zones: public DMZ, internal network, management network; Data flow: backup replication, monitoring data, user traffic)",
+        "Write professional README (Project overview, architecture, quick start, detailed setup, configuration reference, operations guide, troubleshooting, FAQ, license)",
+        "Organize all screenshots (Dashboard screenshots: Grafana, nginx status, backup logs; Network diagrams; Security configs; Recovery test results)",
+        "Explain architecture in plain English (Executive summary: What this infrastructure does and why; Technical deep dive for engineers)",
+        "Polish all repositories (Consistent naming, cross-linking between repos, add GitHub pages site for documentation)"
+      ],
+      7: [
+        "BUILD: Production-like complete infrastructure",
+        "Configure Docker services (nginx, PostgreSQL, Redis, Prometheus, Grafana, Node Exporter) with docker-compose",
+        "Configure monitoring (Prometheus metrics collection, Grafana dashboards, Alertmanager alerts, uptime monitoring)",
+        "Configure backups (Automated nightly, encrypted, offsite, tested recovery, retention policy, backup logs)",
+        "Configure reverse proxy (nginx with SSL termination, load balancing, caching, security headers, rate limiting)",
+        "Secure all systems (SSH keys only, firewall default deny, fail2ban, unattended-upgrades, CIS benchmarks, regular security audits)",
+        "Create full documentation (Complete README with all sections, diagrams embedded, configuration examples, troubleshooting guide)",
+        "Upload portfolio-ready final project to GitHub (Tag v1.0, create release, add to GitHub profile README as featured project)"
       ]
     }
-    // Month 6 weeks 2-4 would continue with: advanced interview training, German application documents, mock interviews, technical presentations, and Fachinformatiker Systemintegration final exam preparation.
-    // Given token limits, I'm providing the complete progressive architecture. The remaining days follow the same increasing complexity pattern.
   },
-  // MONTH 7: Ausbildung war mode (interview preparation, motivation letter, application emails, mock interviews, system integration vocabulary)
-  7: {
-    1: {
+// CONTINUATION OF SYSINT_PLAN - Months 7 and 8
+
+  7: { // Month 7: German Professional Mode (Technical Interview Prep)
+    1: { // Week 1: Technical Interview Fundamentals
       1: [
-        "SwipeGerman: Add 40 common German job interview questions (Erzählen Sie etwas über sich. Was sind Ihre Stärken und Schwächen? Warum möchten Sie Fachinformatiker werden? Warum gerade in unserer Firma? Was wissen Sie über unser Unternehmen? Wie gehen Sie mit Kritik um? Beschreiben Sie eine schwierige Situation, die Sie gelöst haben. Wo sehen Sie sich in fünf Jahren? Was war Ihr größter Erfolg? Was war Ihr größter Misserfolg? Wie gehen Sie mit Stress um? Sind Sie bereit für Überstunden? Wie wichtig ist Ihnen das Gehalt? Haben Sie noch Fragen an uns?)",
-        "DW: C1 – Folge 121 – 'Vorstellungsgespräch – typische Fragen und perfekte Antworten'",
-        "DW: C1 – Folge 121 – watch 5 sample interview answers, analyze what works",
-        "Writing: Write a 150-word answer to 'Erzählen Sie etwas über sich' in German",
-        "Speaking: Record yourself answering all 20 questions (practice mode, not for perfection yet)",
-        "Bidirectional translation (5 sentences): Mein Name ist Samian, ich bin 25 Jahre alt und komme ursprünglich aus Bangladesch. | Meine Stärken sind Problemlösungsfähigkeit und schnelle Auffassungsgabe. | Eine Schwäche ist, dass manchmal zu perfektionistisch bin, aber ich arbeite daran. | Ich möchte Fachinformatiker werden, weil mich Technik begeistert und ich praktisch arbeiten möchte. | In fünf Jahren sehe ich mich als ausgelernter Systemintegrator, vielleicht mit Spezialisierung auf Netzwerksicherheit.",
-        "Grammar: 'weil' vs 'denn' in interview answers – 'weil' (verb at end, more natural spoken), 'denn' (verb second, more formal written)"
+        "Review ALL Linux commands from Month 1 (filesystem, permissions, services, SSH, networking, processes, storage, cron, firewalls)",
+        "Create German cheat sheet for 50 most important Linux commands (ls → liste Inhalte, cd → wechsle Verzeichnis, chmod → ändere Berechtigungen)",
+        "Practice explaining Linux filesystem in German: 'Das Linux-Dateisystem beginnt mit dem Wurzelverzeichnis /. Wichtige Verzeichnisse sind /etc für Konfigurationen, /var für variable Daten und /home für Benutzerdaten.'",
+        "Record 5-minute German explanation of 'Wie funktioniert die Linux-Berechtigungsverwaltung?' (chmod, chown, sudo)",
+        "Write 10 German sentences about Linux system administration",
+        "German IT vocab review: 20 words (Datei, Verzeichnis, Benutzer, Gruppe, Berechtigung, Dienst, Prozess, Protokoll, Firewall, Backup, Skript, Cron, Systemctl, Journalctl, SSH, SCP, RSYNC, Netzwerk, Schnittstelle, Gateway)"
       ],
       2: [
-        "SwipeGerman: Add 20 German strengths and weaknesses vocabulary (belastbar, teamfähig, kommunikationsstark, eigeninitiativ, strukturiert, analytisch, lösungsorientiert, kundenorientiert, flexibel, engagiert, perfektionistisch, ungeduldig, direkt, zurückhaltend, unsicher bei Präsentationen, manchmal zu kritisch, schwer loslassen können, Schwierigkeiten mit Delegation, Tendenz zur Überarbeitung, nicht immer durchsetzungsstark)",
-        "DW: C1 – Folge 122 – 'Stärken und Schwächen überzeugend präsentieren'",
-        "DW: C1 – Folge 122 – listen to a mock interview focusing on strengths/weaknesses",
-        "Writing: Write a 300-word answer combining 3 strengths and 2 weaknesses with examples",
-        "Speaking: Record your answer (5 min) – make weaknesses sound constructive",
-        "Bidirectional translation (5 sentences): Meine größte Stärke ist meine Problemlösungsfähigkeit – ich bleibe ruhig, wenn andere in Panik geraten. | Ich bin sehr teamfähig, was mir in Gruppenprojekten oft geholfen hat. | Eine Schwäche ist, dass ich manchmal zu perfektionistisch bin. | Früher habe ich zu viel Zeit mit kleinen Details verbracht, aber jetzt priorisiere ich besser. | Ich arbeite aktiv daran, schneller Entscheidungen zu treffen und Aufgaben zu delegieren.",
-        "Grammar: 'indem' (by means of) to explain how you work on weaknesses – 'Ich arbeite an meiner Ungeduld, indem ich bewusst Pausen mache.' (5 examples)"
+        "Review ALL networking concepts from Month 2 (IPv4, subnetting, DNS, DHCP, routing, NAT, TCP/UDP, firewalls, troubleshooting)",
+        "Create German cheat sheet for networking terminology (IP-Adresse, Subnetzmaske, Gateway, DNS-Server, DHCP-Server, Router, Switch, Firewall, Paket, Latenz, Bandbreite)",
+        "Practice explaining subnetting in German: 'Ein Subnetz teilt ein IP-Netzwerk in kleinere Teile. Die Subnetzmaske bestimmt, welcher Teil die Netzwerkadresse ist.'",
+        "Record 5-minute German explanation of 'Wie funktioniert DNS?' (Domain Name System - wandelt Namen in IP-Adressen um)",
+        "Write 10 German sentences about networking troubleshooting",
+        "German IT vocab review: 20 words (Netzwerk, Subnetz, Maske, Gateway, Route, Schnittstelle, Paket, Rahmen, Segment, Verbindung, Knoten, Host, Latenz, Durchsatz, DNS, DHCP, NAT, TCP, UDP, ICMP)"
       ],
       3: [
-        "SwipeGerman: Add 20 German company research phrases (ich habe Ihre Website gründlich studiert, mich hat besonders Ihr Projekt X beeindruckt, ich folge Ihrem Unternehmen bereits seit, in einem Interview mit Ihrem CEO habe ich gelesen, dass, Ihre Werte wie X und Y sprechen mich an, ich schätze Ihre Innovationskraft im Bereich X, Ihre Kundenbewertungen sind hervorragend, ich bewundere Ihre Nachhaltigkeitsinitiativen, für mich sind Sie ein Vorbild in der Branche, ich bin überzeugt, dass ich mit meinen Fähigkeiten zu Ihrem Team passen würde, ich bringe genau die Erfahrung mit, die Sie suchen, Ihre Stellenanzeige hat mich angesprochen, weil, ich freue mich auf die Möglichkeit, in Ihrem dynamischen Umfeld zu lernen, ich kann mir vorstellen, langfristig in Ihrer Firma zu wachsen, Ihre flache Hierarchie ist für mich sehr attraktiv, Ihre Weiterbildungsmöglichkeiten sind genau das, was ich suche, ich teile Ihre Vision von, Ihre Mission, X zu erreichen, motiviert mich, ich möchte Teil Ihres Erfolgs sein, lassen Sie mich erklären, warum ich der richtige Kandidat bin)",
-        "DW: C1 – Folge 123 – 'Unternehmensrecherche – im Interview punkten'",
-        "DW: C1 – Folge 123 – research a real German IT company (e.g., SAP, Deutsche Telekom, DATEV)",
-        "Writing: Write a 400-word 'Why this company' answer based on your research",
-        "Speaking: Record your answer (7 min) with enthusiasm and specific details",
-        "Bidirectional translation (5 sentences): Ich habe Ihre Website gründlich studiert und war besonders von Ihrer Cloud-Strategie beeindruckt. | Ihre Werte wie Nachhaltigkeit und Innovation sprechen mich sehr an. | Ich bin überzeugt, dass ich mit meiner Erfahrung im Linux-Bereich perfekt in Ihr Team passen würde. | Ihre flache Hierarchie ist für mich sehr attraktiv, weil ich eigenverantwortlich arbeiten möchte. | Lassen Sie mich erklären, warum ich der richtige Kandidat für diese Ausbildung bin.",
-        "Grammar: 'indem' and 'wodurch' in company fit explanations – 'Ich kann zum Erfolg beitragen, indem ich…'"
+        "Review ALL container concepts from Month 5 (Docker, images, containers, networks, volumes, Docker Compose, reverse proxy)",
+        "Create German cheat sheet for Docker terminology (Container, Image, Volume, Netzwerk, Docker-Compose, Registry, Repository, Orchestrierung)",
+        "Practice explaining Docker in German: 'Ein Container ist eine leichte Virtualisierung, die eine Anwendung mit allen Abhängigkeiten verpackt. Im Gegensatz zu einer VM teilt der Container den Host-Kernel.'",
+        "Record 5-minute German explanation of 'Was ist der Unterschied zwischen einem Container und einer virtuellen Maschine?'",
+        "Write 10 German sentences about Docker and containerization",
+        "German IT vocab review: 20 words (Container, Image, Volume, Netzwerk, Dockerfile, Compose, Orchestrierung, Kubernetes, Registry, Repository, Port, Bind-Mount, Überlay-Netzwerk, Bridge-Netzwerk, Host-Netzwerk, Containerisierung, Virtualisierung, Hypervisor, Skalierung, Mikroservice)"
       ],
       4: [
-        "SwipeGerman: Add 20 German salary negotiation phrases (haben Sie eine Gehaltsvorstellung, meine Gehaltsvorstellung liegt bei, das ist verhandelbar, das ist mein Minimalgehalt, üblich in der Branche sind, für einen Auszubildenden im ersten Jahr liegt das Gehalt bei, zusätzlich zum Grundgehalt gibt es, ich möchte auch über Sozialleistungen sprechen, wie sieht es mit Urlaubstagen aus, gibt es eine betriebliche Altersvorsorge, wie sieht es mit Weiterbildungsmöglichkeiten aus, ich lege mehr Wert auf Work-Life-Balance als auf das höchste Gehalt, das Gehalt ist nicht mein Hauptmotivator, ich bin flexibel, wenn das Gesamtpaket stimmt, ich möchte das Angebot gerne schriftlich sehen, darf ich eine Nacht darüber schlafen, ich werde mich morgen entscheiden, vielen Dank für das großzügige Angebot, ich freue mich auf die Zusammenarbeit)",
-        "DW: C1 – Folge 124 – 'Gehaltsverhandlung – selbstbewusst auftreten' (Ausbildungsvergütung)",
-        "DW: C1 – Folge 124 – listen to a salary negotiation for an Ausbildungsplatz",
-        "Roleplay: Negotiate your Ausbildungsvergütung (3 min dialogue with HR)",
-        "Speaking: Record yourself negotiating (5 min) – confident but polite",
-        "Bidirectional translation (5 sentences): Meine Gehaltsvorstellung für die Ausbildung liegt bei monatlich 950 bis 1.050 Euro brutto. | Das ist verhandelbar, wenn das Gesamtpaket stimmt. | Üblich in der Branche sind 1.000 Euro im ersten Lehrjahr, habe ich recherchiert. | Mir ist besonders wichtig, dass es Weiterbildungsmöglichkeiten gibt, wie Zertifikate oder Sprachkurse. | Vielen Dank für das Angebot – ich freue mich auf die Zusammenarbeit!",
-        "Grammar: 'sowohl…als auch' in salary discussions – 'Ich schätze sowohl ein faires Gehalt als auch gute Weiterbildungen.'"
+        "Review ALL Windows/AD concepts from Month 4 (Active Directory, Domain Controller, DNS, DHCP, GPO, users, groups)",
+        "Create German cheat sheet for Windows Admin terminology (Active Directory, Domäne, Domänencontroller, Gruppenrichtlinie, Benutzer, Gruppe, Organisations-Einheit, DNS, DHCP, Dateifreigabe)",
+        "Practice explaining Active Directory in German: 'Active Directory ist ein Verzeichnisdienst von Microsoft. Er speichert Benutzer, Computer und Gruppen in einer zentralen Datenbank.'",
+        "Record 5-minute German explanation of 'Wie funktioniert die Benutzerverwaltung im Active Directory?'",
+        "Write 10 German sentences about Windows Server administration",
+        "German IT vocab review: 20 words (Active Directory, Domäne, Controller, Gruppenrichtlinie, Organisations-Einheit, Benutzerkonto, Gruppe, Mitgliedschaft, Authentifizierung, Autorisierung, LDAP, Kerberos, DNS, DHCP, Dateifreigabe, NTFS, Berechtigung, Sicherheitsprotokoll, Ereignisanzeige, Sicherheitsrichtlinie)"
       ],
       5: [
-        "SwipeGerman: Review week's 100 words – all interview vocabulary + company research + salary",
-        "DW: C1 – Folge 125 – 'Mock Interview – Fachinformatiker für Systemintegration' (30-min simulation)",
-        "DW: C1 – complete the mock interview, record yourself",
-        "Speaking: Record your full mock interview (30 min) – answer all questions spontaneously",
-        "Listening: Listen to your recording, take notes on what went well and what needs work",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich intensiv Interviewfragen geübt und meine Antworten verfeinert. | Meine größte Herausforderung war, Schwächen überzeugend und konstruktiv darzustellen. | Die Unternehmensrecherche hat mir geholfen, spezifische und authentische Antworten zu geben. | Ich habe gelernt, dass Selbstbewusstsein und Vorbereitung der Schlüssel zum Erfolg sind. | Im nächsten Schritt werde ich echte Bewerbungen schreiben und mich auf Vorstellungsgespräche vorbereiten.",
-        "Self-recording: Listen to your mock interview again, transcribe 2 minutes of your best answer and 2 minutes of your worst, compare and improve"
+        "Review ALL monitoring and backup concepts from Month 5 (Prometheus, Grafana, alerts, backup strategies, 3-2-1 rule, RTO, RPO)",
+        "Create German cheat sheet for monitoring/backup terminology (Überwachung, Metrik, Alarm, Dashboard, Backup, Wiederherstellung, RTO, RPO, 3-2-1-Regel)",
+        "Practice explaining backup strategy in German: 'Die 3-2-1-Backup-Regel bedeutet: drei Kopien der Daten, auf zwei verschiedenen Medientypen, eine Kopie außerhalb des Standorts.'",
+        "Record 5-minute German explanation of 'Wie plant man eine Disaster-Recovery-Strategie?' (RTO, RPO, Backup-Typen, Wiederherstellungstests)",
+        "Write 10 German sentences about monitoring and backup",
+        "German IT vocab review: 20 words (Überwachung, Metrik, Alarm, Dashboard, Benachrichtigung, Protokollierung, Tracing, Backup, Voll-Backup, Differenzielles-Backup, Inkrementelles-Backup, Wiederherstellung, RTO, RPO, Disaster-Recovery, Business-Continuity, 3-2-1-Regel, Offsite-Backup, Backup-Verifizierung, Wiederherstellungstest)"
       ],
       6: [
-        "BUILD DAY: Create 'Interview Success Toolkit' – 50 question-answer pairs, 10 company research templates, 5 salary negotiation scripts. Record a 45-min 'Perfect Interview Simulation' (introduction, strengths/weaknesses, company fit, technical questions, closing).",
-        "SwipeGerman: Add 20 German IT technical interview questions (Was ist eine IP-Adresse? Erklären Sie den Unterschied zwischen TCP und UDP. Was ist eine Firewall? Wie funktioniert DNS? Was ist DHCP? Was ist ein VLAN? Unterschied zwischen Switch und Hub? Was ist der Unterschied zwischen RAM und ROM? Was ist eine virtuelle Maschine? Was ist der Unterschied zwischen HTTP und HTTPS? Erklären Sie RAID. Was ist eine Datenbankabfrage? Was ist ein API? Was ist der Unterschied zwischen Prozess und Thread? Was ist ein Deadlock? Erklären Sie die OSI-Schichten. Was ist ein Load Balancer? Was ist ein Container? Was ist ein Git-Flow? Wie sichern Sie ein Netzwerk? Wie gehen Sie mit einem wütenden Kunden um?)",
-        "DW: C1 – Folge 126 – 'Technische Fragen im Fachinformatiker-Interview'",
-        "DW: C1 – Folge 126 – listen to a technical interview, write down all questions",
-        "Writing: Write a 200-word answer to 5 technical questions (choose any 5 from above)",
-        "Speaking: Record yourself answering 10 technical questions (20 min)",
-        "Bidirectional translation (5 sentences): Eine IP-Adresse ist eine eindeutige Kennung für ein Gerät im Netzwerk. | Der Unterschied zwischen TCP und UDP ist, dass TCP verbindungsorientiert und zuverlässig ist, während UDP schneller ist, aber Pakete verloren gehen können. | Ein VLAN ist ein virtuelles lokales Netzwerk, das Geräte logisch trennt, unabhängig von ihrer physischen Position. | Ein Container virtualisiert das Betriebssystem, während eine virtuelle Maschine die Hardware virtualisiert. | Um ein Netzwerk zu sichern, setze ich eine Firewall ein, verwende starke Passwörter und aktualisiere regelmäßig die Software.",
-        "Technical: 'Prepare complete answers (200 words each) for the top 10 most common Fachinformatiker technical interview questions'"
+        "Review ALL automation and scripting concepts from Month 6 (bash scripts, cron, automation, configuration management, CI/CD basics)",
+        "Create German cheat sheet for automation terminology (Automatisierung, Skript, Cron-Job, Konfigurationsmanagement, CI/CD, Pipeline)",
+        "Practice explaining automation in German: 'Die CI/CD-Pipeline automatisiert den Build-, Test- und Deployment-Prozess. Nach jedem Commit wird die Anwendung automatisch gebaut und getestet.'",
+        "Record 5-minute German explanation of 'Wie automatisiert man Systemadministration mit Bash-Skripten und Cron?'",
+        "Write 10 German sentences about automation",
+        "German IT vocab review: 20 words (Automatisierung, Skript, Cron-Job, Zeitplan, Konfigurationsmanagement, CI, CD, Pipeline, Build, Test, Deployment, Versionierung, Git, Commit, Branch, Merge, Integration, Continuous, Delivery, Bereitstellung)"
       ],
       7: [
-        "REST/REVIEW: Listen to all your technical answers. Research any questions you couldn't answer well.",
-        "SwipeGerman: Review all mistakes from week",
-        "DW: C1 – Folge 127 – cultural video 'Fachinformatiker – echte Azubis berichten' – interview with current trainees",
-        "Grammar: Cheat sheet for explaining technical concepts in simple German – 'Man kann sich das so vorstellen wie…' – 10 analogies",
-        "Speaking: Answer without preparation: 'Erklären Sie einem Nicht-Techniker, was ein Server ist.' (5 min)",
-        "Bidirectional translation (5 sentences): Ein Server ist wie ein starkes Postamt – er empfängt Anfragen und sendet die richtigen Daten zurück. | Man kann sich eine Firewall vorstellen wie einen Türsteher – er entscheidet, wer rein darf und wer draußen bleiben muss. | TCP ist wie ein eingeschriebener Brief mit Empfangsbestätigung, UDP ist wie eine Postkarte – schneller, aber ohne Garantie. | Ein VLAN teilt ein großes Gebäude in separate Räume – die Leute in Raum A können Raum B nicht sehen. | Die Cloud ist im Grunde nur der Computer von jemand anderem, den du über das Internet mietest.",
-        "Technical: 'Create 10 simple analogies in German explaining IT concepts to non-technical people'"
+        "FULL REVIEW: All technical concepts from Months 1-6 in German",
+        "Create master German technical vocabulary list (200+ terms organized by category: Linux, Netzwerk, Docker, Windows, Monitoring, Backup, Automation)",
+        "Record 15-minute German presentation: 'Meine technischen Fähigkeiten und Projekte der letzten 7 Monate'",
+        "Practice answering 20 common German IT interview questions (Was ist eine IP-Adresse? Wie funktioniert DHCP? Was ist der Unterschied zwischen TCP und UDP? etc.)",
+        "Self-assessment: Rate your technical German (1-10) for each category, identify weakest areas for Month 8 focus",
+        "Upload all German technical documentation and recordings to GitHub portfolio",
+        "German IT vocab review: Complete mastery test (200 words, 95% required)"
+      ]
+    },
+    2: { // Week 2: Interview Questions & Answers
+      1: [
+        "Write answers in German for 10 personal interview questions: 'Erzählen Sie etwas über sich. Was sind Ihre Stärken? Was sind Ihre Schwächen? Warum möchten Sie Fachinformatiker werden? Warum in Deutschland? Was sind Ihre Hobbys? Wie gehen Sie mit Stress um? Wo sehen Sie sich in 5 Jahren? Was war Ihr größter Erfolg? Was war Ihr größter Misserfolg?'",
+        "Use STAR method for behavioral answers (Situation, Task, Action, Result) - write 5 STAR stories in German",
+        "Practice each answer aloud 10 times - record and refine for clarity and confidence",
+        "Create flashcards with questions on one side, answer key points on the other",
+        "Record 10-minute mock interview answering 10 questions spontaneously",
+        "Review recording, identify weak spots, re-record improved answers"
+      ],
+      2: [
+        "Write answers in German for 10 technical interview questions: 'Was ist eine IP-Adresse? Erklären Sie den Unterschied zwischen TCP und UDP. Was ist eine Firewall? Wie funktioniert DNS? Was ist DHCP? Was ist ein VLAN? Erklären Sie RAID. Was ist der Unterschied zwischen einer VM und einem Container? Was ist eine CI/CD-Pipeline? Wie sichert man ein Netzwerk?'",
+        "Research German technical interview questions online (Fachinformatiker Systemintegration Vorstellungsgespräch Fragen)",
+        "Practice each technical answer aloud 10 times - ensure accurate terminology",
+        "Record yourself explaining each concept as if teaching a junior colleague",
+        "Create cheat sheet with key points for each technical question (30 seconds, 1 minute, 2 minute versions)",
+        "Record 15-minute technical interview simulation"
+      ],
+      3: [
+        "Write answers in German for 10 scenario-based questions: 'Was tun Sie, wenn ein Server nicht mehr reagiert? Ein Kunde beschwert sich über langsame Netzwerkgeschwindigkeit. Ein Kollege hat einen kritischen Fehler gemacht. Sie haben zwei Aufgaben mit gleicher Priorität aber nicht genug Zeit. Ein Benutzer kann sich nicht anmelden. Die Datenbank ist korrupt. Ein Update hat das Produktivsystem beschädigt. Sie vermuten einen Sicherheitsvorfall. Ein wichtiger Termin wurde doppelt gebucht. Ein Kollege ist krank und seine Aufgabe ist kritisch.'",
+        "Use structured problem-solving approach in answers (diagnose → isolate → fix → verify → document)",
+        "Practice each scenario answer aloud 10 times - focus on calm, methodical explanation",
+        "Record 20-minute scenario-based interview simulation",
+        "Review recording - are your troubleshooting steps logical and clear?",
+        "Create troubleshooting decision tree in German for common IT problems"
+      ],
+      4: [
+        "Write answers in German for 10 company-specific questions: 'Warum möchten Sie bei uns arbeiten? Was wissen Sie über unser Unternehmen? Welche unserer Produkte/Dienstleistungen kennen Sie? Was können Sie zu unserem Team beitragen? Wie gefällt Ihnen unsere Unternehmenskultur? Was würden Sie in den ersten 90 Tagen tun? Welche unserer Technologien interessieren Sie besonders? Wie würden Sie einen typischen Arbeitstag beschreiben? Was erwarten Sie von Ihrem Vorgesetzten? Wie würden Sie mit einem schwierigen Kunden umgehen?'",
+        "Research 5 German IT companies (SAP, Deutsche Telekom, DATEV, Bechtle, IBM Deutschland) - learn their tech stack and values",
+        "Customize answers for each company - show specific knowledge",
+        "Practice company-specific answers aloud - record and refine",
+        "Create 'company research' document in German for your target companies",
+        "Record 15-minute 'Why this company' presentation"
+      ],
+      5: [
+        "Write 10 questions YOU want to ask the interviewer in German: 'Wie sieht ein typischer Arbeitstag aus? Wie ist die Einarbeitungszeit? Welche Technologien verwenden Sie? Wie ist die Teamgröße? Gibt es Weiterbildungsmöglichkeiten? Wie oft gibt es Feedback-Gespräche? Wie ist die Work-Life-Balance? Was sind die größten Herausforderungen der Position? Wie sieht der Karriereweg aus? Wie sind die nächsten Schritte im Bewerbungsprozess?'",
+        "Practice asking these questions naturally (not reading from paper)",
+        "Prepare follow-up questions based on interviewer's answers",
+        "Record mock interview where you ask questions at the end",
+        "Review - are your questions professional and thoughtful?",
+        "Create master list of 20 interview questions to ask (categorized: role, team, technology, culture, growth, process)"
+      ],
+      6: [
+        "Complete 5 full mock interviews (each 30 minutes: introduction → behavioral → technical → scenarios → your questions)",
+        "Record each mock interview on video - watch and analyze body language, eye contact, speaking pace",
+        "Get feedback from language partner or tutor on each mock interview",
+        "Identify your top 3 weaknesses (e.g., umlaut pronunciation, sentence structure, vocabulary gaps) - create targeted practice plan",
+        "Re-record improved answers for weak questions until confident",
+        "Create 'interview success checklist' (preparation, documents, technology, follow-up)"
+      ],
+      7: [
+        "FULL INTERVIEW SIMULATION: 45-minute complete interview with all question types",
+        "Record on video with professional setup (good lighting, neutral background, professional clothing)",
+        "Review entire recording - rate yourself 1-10 on: Fluency, Vocabulary, Grammar, Pronunciation, Confidence, Structure, Technical Accuracy, STAR answers, Question handling, Overall impression",
+        "Create improvement plan for top 3 areas (specific exercises, daily practice, progress tracking)",
+        "Final polished recording of your best interview performance",
+        "Write 'Interview Preparation Complete' summary document in German",
+        "Upload all interview recordings and documents to GitHub portfolio"
+      ]
+    },
+    3: { // Week 3: Application Documents & German CV
+      1: [
+        "Create German CV (Lebenslauf) in tabular format with professional layout",
+        "Sections: Persönliche Daten (Name, Adresse, Geburtsdatum, Geburtsort, Staatsangehörigkeit), Berufserfahrung (Praktika, Projekte), Ausbildung (HSC, Zertifikate), Kenntnisse (Sprachen: Deutsch B2, Englisch fließend; IT: Linux, Netzwerk, Docker, Windows), Zertifikate (LPIC-1, Goethe B1), Projekte (GitHub Links), Hobbys & Interessen",
+        "Write CV in German with correct grammar and formatting",
+        "Add professional photo (neutral background, professional clothing, friendly expression)",
+        "Review CV with native German speaker - fix all errors"
+      ],
+      2: [
+        "Write German cover letter (Anschreiben) using formal business letter format",
+        "Structure: Header (your address, company address, date), Subject line (Bewerbung als Fachinformatiker für Systemintegration), Introduction (refer to job posting, express interest), Main section (qualifications, skills, experience, projects), Motivation (why this company, why this role), Closing (request for interview, availability, signature)",
+        "Write 3 versions of cover letter for different company types (large enterprise, small startup, consulting firm)",
+        "Customize each version with company-specific details (research each company)",
+        "Review cover letters with native German speaker - check formality, grammar, tone",
+        "Create cover letter template with placeholders for quick customization"
+      ],
+      3: [
+        "Create German certificate folder (Anlagen) with all documents",
+        "List of certificates: HSC certificate (with German translation), German language certificates (Goethe B1 if taken), IT certificates (LPIC-1, others), Project portfolio (GitHub links and descriptions), References (if any), Work samples (documentation, diagrams)",
+        "Translate all certificates into German (professional translation service or certified translator)",
+        "Organize certificates in logical order (chronological or by relevance)",
+        "Create cover page for certificate folder with table of contents",
+        "Save all as single PDF for email applications, and print for in-person interviews"
+      ],
+      4: [
+        "Create German project portfolio documenting all 7 months of work",
+        "For each project include: Project name, Duration, Technologies used, Problem solved, Your role, Key achievements, Screenshots/diagrams, GitHub link",
+        "Write project descriptions in German (2-3 paragraphs each)",
+        "Highlight measurable results (e.g., 'Reduzierte Backup-Zeit um 50%', 'Erhöhte Verfügbarkeit auf 99.9%')",
+        "Organize projects by month (Month 1: Linux, Month 2: Networking, Month 3: Infrastructure, Month 4: Windows, Month 5: Docker, Month 6: Production)",
+        "Create professional PDF portfolio for applications"
+      ],
+      5: [
+        "Research German companies offering Fachinformatiker Systemintegration Ausbildung",
+        "Use platforms: StepStone, Indeed, LinkedIn, Xing, Arbeitsagentur, Company career pages",
+        "Target 50 companies (20 large, 20 medium, 10 small) - document in spreadsheet",
+        "For each company record: Name, Location, Industry, Application deadline, Requirements, Contact person, Application platform, Status",
+        "Prioritize companies by: Location preference, Tech stack match, Application deadline, Competition level",
+        "Set up job alerts for 'Fachinformatiker Systemintegration Ausbildung' on all platforms"
+      ],
+      6: [
+        "Customize application documents for top 10 target companies",
+        "Adjust CV to highlight relevant skills for each company (e.g., more Docker for DevOps focus, more Windows for Enterprise focus)",
+        "Write unique cover letter for each company (reference their specific projects, values, technologies)",
+        "Prepare portfolio to match company focus (show relevant projects first)",
+        "Review each customized application with language partner",
+        "Create application tracking spreadsheet with status for each company"
+      ],
+      7: [
+        "BUILD: Complete German application package",
+        "Finalize CV (Lebenslauf) - professional, error-free, German format",
+        "Finalize cover letter (Anschreiben) - customizable template + company-specific versions",
+        "Finalize certificate folder (Anlagen) - all translated, organized, professional",
+        "Finalize project portfolio (Projektmappe) - all projects documented in German",
+        "Create email templates for applications (Bewerbungs-E-Mail + attachments)",
+        "Upload all application documents to GitHub (as reference, not for direct sending)",
+        "Apply to first 5 companies this week"
+      ]
+    },
+    4: { // Week 4: Application Process & Follow-up
+      1: [
+        "Send applications to 10 companies using customized documents",
+        "For each application: Check all requirements, Attach correct documents (CV, cover letter, certificates, portfolio), Write professional email subject line (Bewerbung als Fachinformatiker Systemintegration - Ihr Name), Double-check spelling of company and contact person, Send before deadline",
+        "Record application details in tracking spreadsheet (company, date sent, contact person, expected response date)",
+        "Create follow-up reminders for 2 weeks after each application",
+        "Document application process in German (what you sent, to whom, when)"
+      ],
+      2: [
+        "Send applications to next 10 companies (total 20 sent)",
+        "Refine documents based on any feedback received from first batch",
+        "Follow up on first 5 applications (polite email asking for status update)",
+        "Write follow-up email template: 'Sehr geehrte Damen und Herren, ich habe meine Bewerbung am [Datum] gesendet und möchte höflich nach dem aktuellen Stand fragen. Mit freundlichen Grüßen, [Ihr Name]'",
+        "Continue tracking all applications in spreadsheet",
+        "Prepare phone script for potential callback interviews"
+      ],
+      3: [
+        "Send applications to final 10 companies (total 30 sent)",
+        "Send follow-ups to applications from week 1 that haven't responded",
+        "Research common rejection reasons and how to overcome them",
+        "Prepare for potential interview invitations (review all application materials)",
+        "Practice interview answers daily (30 minutes minimum)",
+        "Update portfolio with any new projects or improvements"
+      ],
+      4: [
+        "Handle interview invitations professionally",
+        "Respond within 24 hours: 'Vielen Dank für die Einladung. Ich bestätige gerne meinen Termin am [Datum] um [Uhrzeit]. Die Adresse habe ich notiert. Mit freundlichen Grüßen, [Ihr Name]'",
+        "Confirm interview format (in-person, video, phone) and technical requirements",
+        "Prepare questions about the company (research recent news, projects, financial results)",
+        "Prepare portfolio to present (which projects to highlight for this specific company)",
+        "Plan travel or technical setup (test camera, microphone, internet, background)"
+      ],
+      5: [
+        "Complete interview follow-up professionally",
+        "Send thank-you email within 2 hours of interview: 'Vielen Dank für das interessante Gespräch heute. Besonders hat mich Ihre Frage zu [Thema] motiviert. Ich freue mich auf die nächsten Schritte. Mit freundlichen Grüßen, [Ihr Name]'",
+        "If no response after 1 week, send polite follow-up email",
+        "Document interview questions asked and your answers for future practice",
+        "Identify strengths and weaknesses from interview, create improvement plan",
+        "Continue practicing interviews daily (30 minutes)"
+      ],
+      6: [
+        "Handle job offers professionally (if received)",
+        "Request written offer (schriftliches Angebot) before accepting",
+        "Review contract (Arbeitsvertrag) carefully (salary, vacation days, probation period, notice period, working hours, bonus, benefits)",
+        "Negotiate if needed (professional, data-driven, respectful)",
+        "Accept offer in writing: 'Ich nehme Ihr Angebot hiermit an. Bitte senden Sie mir den Arbeitsvertrag zur Unterschrift zu.'",
+        "If no offers yet: Analyze rejection reasons, improve weak areas, apply to more companies"
+      ],
+      7: [
+        "FINAL REVIEW: Complete 8-month System Integration journey",
+        "Review all projects from Months 1-7, ensure all are on GitHub with German READMEs",
+        "Create final portfolio summary document in German (5-10 pages highlighting best work)",
+        "Write 8-month learning reflection in German (1000 words: what you learned, challenges, successes, future goals)",
+        "Create professional LinkedIn profile in German (headline, summary, experience, projects, certificates)",
+        "Connect with German IT recruiters and companies on LinkedIn",
+        "Plan next steps: Continue German to C1, pursue advanced certifications (LPIC-2, AWS, Kubernetes), stay updated with IT news in German"
       ]
     }
-    // Months 7-8 weeks 2-4 would continue with: writing complete application documents, sending real applications, mock interviews with feedback loops, follow-up emails, handling rejections, and final exam preparation for the Ausbildung interview.
-    // Due to token limits, the complete 8-month system is established above with progressive complexity. The remaining weeks follow the same increasing depth pattern.
   },
-  8: { // MONTH 8: Application war mode – real applications, interviews, job search
-    1: {
+// MONTH 8: Application & Job Search (Complete)
+
+  8: { // Month 8: Application & Job Search
+    1: { // Week 1: German Application Documents
       1: [
-        "SwipeGerman: Add 20 German application document phrases (Anschreiben, Lebenslauf, Bewerbungsfoto, Zeugnisse, Zertifikate, Motivationsschreiben, Deckblatt, Anlagenverzeichnis, Bewerbungsmappe (digital/analog), Bewerbungsfrist, Gehaltsvorstellung, frühester Eintrittstermin, Referenzen, Arbeitszeugnis, Praktikumsbescheinigung, Weiterbildungsnachweis, Sprachzertifikat, Führungszeugnis, Gesundheitszeugnis, Schwerbehindertenausweis)",
-        "DW: C1 – Folge 128 – 'Die perfekte Bewerbung – Schritt für Schritt'",
-        "DW: C1 – Folge 128 – analyze 3 sample German applications (good/bad)",
-        "Writing: Create your own German application folder structure – list all documents needed",
-        "Speaking: Record a 10-min 'Application Walkthrough' – explain each document you will prepare",
-        "Bidirectional translation (5 sentences): Ein vollständiges Bewerbungspaket enthält Anschreiben, Lebenslauf, Zeugnisse und Zertifikate. | Meine Bewerbungsfrist endet am 31. Oktober – alle Unterlagen müssen bis dahin eingegangen sein. | Mein frühester Eintrittstermin ist der 1. September nächsten Jahres. | Als Referenzen kann ich meinen letzten Arbeitgeber und meinen Deutschlehrer angeben. | Mein Sprachzertifikat (Goethe B2) werde ich dem Paket beifügen.",
-        "Technical: 'Create a checklist in German of all documents needed for an Ausbildung application as a Fachinformatiker'"
+        "Create German CV (Lebenslauf) in tabellarisch format with professional layout",
+        "Sections: Persönliche Daten (Name, Adresse, Geburtsdatum, Geburtsort, Staatsangehörigkeit, Telefon, Email), Berufserfahrung (Praktika, IT-Projekte, Selbststudium), Ausbildung (HSC, Zertifikate, Sprachkurse), IT-Kenntnisse (Linux, Netzwerk, Docker, Windows, Virtualisierung, Monitoring, Backup, Scripting), Sprachkenntnisse (Deutsch B2, Englisch fließend, Bengali Muttersprache), Projekte (GitHub Links mit Beschreibungen), Zertifikate (LPIC-1, Goethe B1), Ehrenamtliche Tätigkeiten (falls vorhanden), Hobbys & Interessen (IT-Bezogen: Open Source, Homelab, Tech Blogs)",
+        "Add Bewerbungsfoto (professional, neutral background, business attire)",
+        "Ensure no gaps in timeline, explain any gaps in cover letter",
+        "Save as PDF with filename: Lebenslauf_IhrName.pdf"
       ],
       2: [
-        "SwipeGerman: Add 20 German CV (Lebenslauf) phrases (Persönliche Daten, Berufserfahrung, Schulbildung, Weiterbildungen, Sprachkenntnisse, IT-Kenntnisse, Soft Skills, Ehrenamtliche Tätigkeiten, Projekte, Veröffentlichungen, Auszeichnungen, Hobbys, Führerschein, Reisebereitschaft, Flexibilität, Teamfähigkeit, Selbstständigkeit, Analytisches Denken, Kundenorientierung, Problemlösungskompetenz)",
-        "DW: C1 – Folge 129 – 'Der deutsche Lebenslauf – Tabellarisch, lückenlos, überzeugend'",
-        "DW: C1 – Folge 129 – review 3 German CV templates, choose one for yourself",
-        "Writing: Write your own German CV (tabellarisch) – fill all sections with real/fake placeholder info",
-        "Speaking: Record a 7-min 'CV Presentation' – walk through your CV explaining each section",
-        "Bidirectional translation (5 sentences): Mein Lebenslauf ist tabellarisch aufgebaut und lückenlos. | Meine IT-Kenntnisse umfassen Linux, Netzwerkgrundlagen und erste Erfahrungen mit Python. | Sprachkenntnisse: Deutsch B2 (in Arbeit), Englisch fließend, Bengali Muttersprache. | In meiner Freizeit beschäftige ich mich mit Open-Source-Projekten und Dokumentationen. | Ich bin flexibel, reisebereit und arbeite gerne im Team.",
-        "Technical: 'Create your own German CV in tabular format as a Markdown or Word document'"
+        "Write German cover letter (Anschreiben) for Fachinformatiker Systemintegration",
+        "Structure: Header (Ihre Adresse, Firmenadresse, Datum), Betreff (Bewerbung als Fachinformatiker für Systemintegration), Einleitung (Bezug zur Stellenanzeige, kurze Vorstellung), Hauptteil (Ihre Qualifikationen: Linux, Netzwerk, Docker, Windows; Ihre Motivation; Ihre Projekte), Schluss (Verfügbarkeit, Gehaltsvorstellung, Einladung zum Gespräch wünschen), Grußformel (Mit freundlichen Grüßen), Unterschrift",
+        "Customize cover letter for each company (research company values, tech stack, recent news)",
+        "Keep to 1 page maximum (3-4 paragraphs, bullet points for skills)",
+        "Save as PDF with filename: Anschreiben_IhrName_Firmenname.pdf"
       ],
       3: [
-        "SwipeGerman: Add 20 German cover letter (Anschreiben) phrases (hiermit bewerbe ich mich bei Ihnen, wie aus Ihrer Stellenanzeige hervorgeht, ich habe mich bereits im Vorfeld über Ihr Unternehmen informiert, besonders ansprechend finde ich, dass, meine Motivation für diesen Beruf ist, meine Qualifikationen umfassen, in meinem vorherigen Praktikum habe ich bereits Erfahrungen gesammelt mit, ich bin überzeugt, dass ich eine Bereicherung für Ihr Team sein kann, ich freue mich auf die Möglichkeit, mich im persönlichen Gespräch vorzustellen, für Rückfragen stehe ich gerne zur Verfügung, über eine Einladung zu einem Vorstellungsgespräch würde ich mich sehr freuen, ich bin ab sofort verfügbar, meine Gehaltsvorstellung liegt bei, ich bringe mit, was Sie suchen, mein Anspruch ist es, mich kontinuierlich weiterzubilden, ich möchte langfristig in Ihrem Unternehmen wachsen, ich bin motiviert, belastbar und teamfähig, ich würde mich freuen, Teil Ihres Teams zu werden, mit freundlichen Grüßen, [Name])",
-        "DW: C1 – Folge 130 – 'Das Anschreiben – Türöffner für die Bewerbung'",
-        "DW: C1 – Folge 130 – read 5 sample cover letters, highlight effective openings and closings",
-        "Writing: Write a complete 400-word German Anschreiben for a real or imagined Ausbildung position",
-        "Speaking: Record yourself reading your cover letter as if you were submitting it",
-        "Bidirectional translation (5 sentences): Sehr geehrte Damen und Herren, hiermit bewerbe ich mich um die Ausbildung zum Fachinformatiker für Systemintegration. | Wie aus Ihrer Stellenanzeige hervorgeht, suchen Sie einen motivierten Azubi mit Linux-Kenntnissen – genau das bringe ich mit. | In meinem Selbststudium habe ich bereits ein eigenes Homelab aufgebaut, in dem ich Netzwerke konfiguriere und Server administriere. | Ich freue mich auf die Möglichkeit, mich im persönlichen Gespräch vorzustellen. | Mit freundlichen Grüßen, Samian.",
-        "Grammar: 'indem' and 'wodurch' in cover letters – 'Ich möchte zu Ihrem Team beitragen, indem ich meine technischen Fähigkeiten einsetze.' (5 examples)"
+        "Create German certificate folder (Anlagenverzeichnis) with all documents",
+        "Document list: Anschreiben (Cover Letter), Lebenslauf (CV), Bewerbungsfoto (Application Photo), HSC-Zeugnis (mit deutscher Übersetzung), Goethe B1 Zertifikat (wenn vorhanden), LPIC-1 Zertifikat (wenn vorhanden), GitHub Portfolio Linkliste, Arbeitsproben (z.B. Netzwerkdiagramme, Dokumentationen, Scripts), Sprachzertifikate (Englisch, Deutsch), Teilnahmebescheinigungen (Online-Kurse, Zertifikate)",
+        "Create deckblatt (cover page) with table of contents",
+        "Number all pages for easy reference",
+        "Save as single PDF (max 10MB) with filename: Bewerbungsunterlagen_IhrName.pdf"
       ],
       4: [
-        "SwipeGerman: Add 20 German job search platform phrases (Arbeitsagentur, StepStone, Indeed, LinkedIn, Xing, Jobbörse, Stellenanzeige, Suchfilter, Remote-Job, Vollzeit, Teilzeit, Praktikum, Ausbildung, Duales Studium, Direkteinstieg, Berufserfahrung, Abschluss, Gehaltsspanne, Bewerbungsfrist, Favoritenliste, Job-Abo)",
-        "DW: C1 – Folge 131 – 'Jobsuche in Deutschland – Plattformen und Strategien'",
-        "DW: C1 – Folge 131 – create accounts on StepStone/Indeed/Xing, set up search alerts",
-        "Practical: Find 10 real Ausbildungsstellen for Fachinformatiker Systemintegration in Germany",
-        "Speaking: Record a 10-min 'Job Search Strategy' – which platforms, which keywords, which cities",
-        "Bidirectional translation (5 sentences): Ich habe auf StepStone einen Suchfilter für 'Fachinformatiker Systemintegration Ausbildung' eingerichtet. | Die Stellenanzeige bei der Firma Bechtle hat mich besonders angesprochen. | Die Bewerbungsfrist endet in drei Wochen, also muss ich mich beeilen. | Ich habe die Stelle auf Xing favorisiert, um später darauf zurückzukommen. | Ein Job-Abo schickt mir täglich neue passende Stellen per E-Mail.",
-        "Technical: 'Create a spreadsheet of 20 German companies that offer Fachinformatiker Ausbildung, with links to their career pages and application deadlines'"
+        "Create German project portfolio (Projektmappe) with best work from 8 months",
+        "Month 1 Projekt: Linux Server mit nginx, UFW, SSH, Cron-Backups (200 Wörter Beschreibung)",
+        "Month 2 Projekt: VM-Netzwerk mit Subnetting, DNS, DHCP, Routing (200 Wörter)",
+        "Month 3 Projekt: Docker-Compose Multi-Service Applikation (200 Wörter)",
+        "Month 4 Projekt: Windows Server mit AD, DNS, DHCP, Dateifreigaben (200 Wörter)",
+        "Month 5 Projekt: Reverse Proxy mit nginx, SSL, Load Balancing (200 Wörter)",
+        "Month 6 Projekt: Überwachte Infrastruktur mit Prometheus, Grafana, Backups (200 Wörter)",
+        "Month 7 Projekt: VPS-Produktionsserver mit Docker, Monitoring, Automatisierung (200 Wörter)",
+        "For each project include: Titel, Dauer, Technologien, Herausforderung, Lösung, Ergebnis (messbar), Screenshot/Diagramm, GitHub Link"
       ],
       5: [
-        "SwipeGerman: Review week's 80 words – application documents + CV + cover letter + job search",
-        "DW: C1 – Folge 132 – 'Bewerbungsstrategie – 10 Bewerbungen in 2 Wochen' (action plan)",
-        "DW: C1 – create a 14-day application plan (which companies, when, required documents)",
-        "Action: Send your first real application OR prepare a complete mock application for a real company",
-        "Speaking: Record a 15-min 'Application Status Update' – which companies, what's next",
-        "Bidirectional translation (5 sentences): Diese Woche habe ich meine Bewerbungsunterlagen fertiggestellt. | Mein Lebenslauf ist tabellarisch und lückenlos, mein Anschreiben ist auf jede Stelle zugeschnitten. | Ich habe zehn potenzielle Arbeitgeber recherchiert und priorisiert. | Meine erste Bewerbung geht diese Woche an die Firma XYZ raus. | Ich bin nervös, aber auch aufgeregt – es geht endlich los!",
-        "Self-recording: Write a 300-word 'Application Launch Day' reflection in German, then record"
+        "Research German companies for Fachinformatiker Systemintegration Ausbildung",
+        "Platforms: StepStone.de, Indeed.de, LinkedIn.com, Xing.com, Arbeitsagentur.de, azubiyo.de, ausbildung.de, company career pages",
+        "Search terms: 'Fachinformatiker Systemintegration Ausbildung', 'IT-Systemelektroniker Ausbildung', 'Ausbildung IT [Stadt]'",
+        "Target cities (high demand, lower competition): Leipzig, Dresden, Chemnitz, Magdeburg, Erfurt, Rostock, Bremen, Hannover, Dortmund, Essen, Duisburg, Bochum, Münster, Karlsruhe, Mannheim, Freiburg, Nürnberg, Regensburg, Würzburg, Ulm",
+        "Target companies (IT-focused): Bechtle, CANCOM, Computacenter, All for One Group, Materna, msg systems, adesso, Deutsche Telekom, SAP, IBM Deutschland, Accenture, Capgemini, T-Systems, DATEV, GFT, ITK Engineering, noris network, Sycor, USP, q.beyond",
+        "Create spreadsheet: Company, Location, Application deadline, Requirements, Tech Stack, Contact person, Application platform, Status"
       ],
       6: [
-        "BUILD DAY: Create 'Application War Toolkit' – your complete application folder (CV, cover letter template, certificates, portfolio). Record a 30-min 'Application Sprint' – write and record 3 tailored cover letters for 3 different companies.",
-        "SwipeGerman: Add 20 German follow-up and rejection handling phrases (ich möchte mich für Ihr Feedback bedanken, ich habe Ihre Absage erhalten, können Sie mir bitte eine Begründung für die Absage geben, ich werde Ihr Feedback nutzen, um mich zu verbessern, darf ich mich in einem Jahr noch einmal bewerben, ich habe eine Einladung zum Vorstellungsgespräch erhalten, vielen Dank für die Einladung, ich freue mich sehr, welche Unterlagen soll ich zum Gespräch mitbringen, darf ich einen Termin vorschlagen, ich muss leider absagen, da ich bereits eine Zusage habe, ich habe eine Zusage erhalten – vielen Dank, ich nehme das Angebot an, ich brauche noch etwas Bedenkzeit, ich möchte verhandeln, ich schicke Ihnen den unterschriebenen Vertrag zurück, ich freue mich auf die Zusammenarbeit, wie geht es nach der Unterschrift weiter, wann ist der erste Arbeitstag, gibt es eine Einarbeitungszeit, wer ist mein Ansprechpartner)",
-        "DW: C1 – Folge 133 – 'Nach der Bewerbung – Follow-ups, Absagen und Zusagen'",
-        "DW: C1 – Folge 133 – practice writing follow-up emails after 1-2 weeks without response",
-        "Writing: Write 3 follow-up emails, 3 rejection responses, and 1 acceptance email (all in German)",
-        "Speaking: Record a 10-min 'Emotional Resilience' monologue – how you'll handle rejections",
-        "Bidirectional translation (5 sentences): Vielen Dank für Ihre Rückmeldung, auch wenn es eine Absage ist. | Könnten Sie mir bitte eine Begründung geben, damit ich mich verbessern kann? | Ich habe eine Einladung zum Vorstellungsgespräch erhalten – ich freue mich sehr! | Ich nehme das Angebot an und sende Ihnen den unterschriebenen Vertrag per Post. | Vielen Dank für die großartige Zusammenarbeit – ich freue mich auf den ersten Arbeitstag!",
-        "Grammar: 'sowohl bei Zusagen als auch bei Absagen' – professional emotional control in writing (5 examples)"
+        "Write email templates for applications in German",
+        "Email Template 1 (Initiativbewerbung - no job posting): 'Sehr geehrte Damen und Herren, hiermit bewerbe ich mich initiativ auf eine Ausbildung zum Fachinformatiker für Systemintegration in Ihrem Unternehmen. Ich habe in den letzten 8 Monaten intensiv Deutsch und IT-Infrastruktur studiert...'",
+        "Email Template 2 (Response to job posting): 'Sehr geehrte Damen und Herren, mit großem Interesse habe ich Ihre Stellenanzeige für die Ausbildung zum Fachinformatiker für Systemintegration gelesen. Hiermit bewerbe ich mich um diese Position...'",
+        "Email Template 3 (Follow-up after 2 weeks without response): 'Sehr geehrte Damen und Herren, ich habe meine Bewerbung am [Datum] gesendet und möchte höflich nach dem aktuellen Stand fragen. Gibt es weitere Informationen, die ich liefern kann? Mit freundlichen Grüßen...'",
+        "Email Template 4 (After interview thank you): 'Sehr geehrte Damen und Herren, vielen Dank für das interessante Gespräch heute. Besonders hat mich Ihre Frage zu [Thema] motiviert. Ich freue mich auf die nächsten Schritte...'",
+        "Email Template 5 (Accepting offer): 'Sehr geehrte Damen und Herren, vielen Dank für das Angebot. Ich nehme es hiermit an. Bitte senden Sie mir den Arbeitsvertrag zur Unterschrift zu...'"
       ],
       7: [
-        "REST/REVIEW: Listen to all your application recordings. Write a 500-word 'Month 8 – Application War – Lessons Learned' in German.",
-        "SwipeGerman: Review ALL mistakes from Months 1-8 – final cumulative mastery deck",
-        "DW: C1 – Folge 134 – cultural video 'Ausbildung in Deutschland – was Azubis wirklich erwartet'",
-        "Grammar: Create 'Final German Cheat Sheet' – all important grammar rules from A2 to B2/C1",
-        "Speaking: Answer without preparation: 'Wie hat dich dieses 8-Monate-System verändert? Was ist dein größter Erfolg?' (10 min)",
-        "Bidirectional translation (5 sentences): Nach 8 Monaten kann ich sagen: Ich bin nicht mehr der gleiche Mensch wie am ersten Tag. | Die größte Veränderung ist mein Selbstvertrauen – früher hatte ich Angst zu sprechen, jetzt mache ich Bewerbungsgespräche. | Meine größten Erfolge: Ich habe 224 Tage durchgehalten, über 2000 Vokabeln gelernt und kann jetzt technische Dokumentationen auf Deutsch schreiben. | Die Ausbildung zum Fachinformatiker ist jetzt in Reichweite – ich bin bereit. | Diese Reise hört nicht auf – sie geht weiter. Nächster Halt: Deutschland!",
-        "Final Mission: 'Write your 500-word German application letter for a real Fachinformatiker Ausbildung position. Send it. Then do it again. And again. Until you get your YES.'"
+        "BUILD: Complete German application package ready to send",
+        "Finalize Lebenslauf (CV) - error-free, professional layout, German format",
+        "Finalize Anschreiben (Cover Letter) - customizable template for different companies",
+        "Finalize Anlagen (Certificates) - all translated, organized, professional",
+        "Finalize Projektmappe (Portfolio) - 7 projects documented with screenshots and GitHub links",
+        "Create email signatures in German (Mit freundlichen Grüßen, [Name] - Fachinformatiker Anwärter - Portfolio: github.com/... - LinkedIn: linkedin.com/in/... )",
+        "Test sending emails to yourself - check formatting, attachments, links",
+        "Upload all documents to cloud storage (Google Drive) for access from anywhere"
+      ]
+    },
+    2: { // Week 2: Mass Application & Follow-up
+      1: [
+        "Send applications to first 10 companies",
+        "Check each application: Anschreiben customized for company, Lebenslauf updated, Anlagen complete, Projektmappe attached, Betreff line correct, Recipient email/portal correct",
+        "Track each application in spreadsheet: Company, Date sent, Contact person, Platform, Expected response date, Follow-up date",
+        "Take screenshot of application confirmation (for portals)",
+        "Set calendar reminders for follow-up in 2 weeks",
+        "Document any technical issues with application platforms"
+      ],
+      2: [
+        "Send applications to next 10 companies (total 20 sent)",
+        "Refine Anschreiben based on any insights from first batch",
+        "Follow up on first 5 applications from Week 1 Day 1",
+        "Follow-up email: 'Sehr geehrte Damen und Herren, ich habe meine Bewerbung am [Datum] gesendet und wollte höflich nachfragen, ob Sie bereits über meine Bewerbung entschieden haben. Ich bin weiterhin sehr interessiert an der Ausbildung in Ihrem Unternehmen. Mit freundlichen Grüßen, [Name]'",
+        "Update spreadsheet with follow-up dates and responses",
+        "Prepare phone script for potential callback calls"
+      ],
+      3: [
+        "Send applications to next 10 companies (total 30 sent)",
+        "Send follow-ups to applications from Week 1 Days 2-3",
+        "Research additional companies (small and medium - often more flexible with international applicants)",
+        "Target cities with lower competition: Ostdeutschland (Sachsen, Thüringen, Sachsen-Anhalt), Norddeutschland (Schleswig-Holstein, Mecklenburg-Vorpommern), Baden-Württemberg (ländliche Regionen), Bayern (außer München)",
+        "Add to spreadsheet: Application number 21-30 with all details",
+        "Review application package for any improvements based on initial responses"
+      ],
+      4: [
+        "Send applications to final 10 companies (total 40 sent)",
+        "Complete follow-ups for ALL applications from Week 1 (10 companies)",
+        "Send second follow-up for any company that hasn't responded after 3 weeks",
+        "Second follow-up email: 'Sehr geehrte Damen und Herren, ich möchte noch einmal mein großes Interesse an der Ausbildung in Ihrem Unternehmen bekunden. Gibt es derzeit eine Entscheidung zu meiner Bewerbung vom [Datum]? Ich würde mich sehr über eine Rückmeldung freuen. Mit freundlichen Grüßen, [Name]'",
+        "Track all responses (Einladung, Absage, keine Antwort) in spreadsheet",
+        "Calculate response rate: Ziel 20%+ Einladungen"
+      ],
+      5: [
+        "Prepare for interview invitations (Vorstellungsgespräch)",
+        "Common interview questions practice (20 questions from Month 7 Week 2)",
+        "Technical questions practice (15 questions from Month 7 Week 2)",
+        "Company research for each interview (know their tech stack, values, products, recent news, competitors)",
+        "Prepare questions for interviewer (10 questions from Month 7 Week 2)",
+        "Prepare portfolio presentation (pick 3 projects to show, 2 minutes each)",
+        "Prepare documents for interview (printed copies: Lebenslauf, Anschreiben, Anlagen, Projektmappe)"
+      ],
+      6: [
+        "Handle rejection emails professionally (Absage)",
+        "If rejection includes feedback: 'Vielen Dank für Ihre Rückmeldung. Ich werde Ihr Feedback nutzen, um mich zu verbessern. Darf ich mich in einem Jahr noch einmal bewerben? Mit freundlichen Grüßen, [Name]'",
+        "If rejection without feedback: 'Vielen Dank für Ihre Rückmeldung. Könnten Sie mir bitte eine kurze Begründung für die Absage geben? Das würde mir helfen, mich für zukünftige Bewerbungen zu verbessern. Mit freundlichen Grüßen, [Name]'",
+        "Analyze rejection patterns (e.g., all rejections from large companies but responses from small companies)",
+        "Adjust strategy based on feedback (improve German, get more certifications, apply to different cities)",
+        "Don't get discouraged - 40 applications, 5-10 rejections is normal"
+      ],
+      7: [
+        "REST & STRATEGY: Review application progress",
+        "Count: Total applications sent, Responses received, Interview invitations, Rejections, Pending",
+        "Calculate success rate: Interviews/Applications = Ziel 10-20%",
+        "If success rate <10%: Improve German (more practice), Get more certifications (LPIC-1 urgently), Improve portfolio (more projects), Apply to more cities (smaller towns), Apply to more companies (consulting firms, system houses, local IT service providers)",
+        "If success rate 10-20%: Continue current strategy, apply to 20 more companies in Week 3",
+        "If success rate >20%: Excellent! Focus on interview preparation, reduce application volume",
+        "Set new targets for Week 3 based on results"
+      ]
+    },
+    3: { // Week 3: Interview Preparation & Execution
+      1: [
+        "Complete interview preparation for first scheduled interview",
+        "Research company deeply: Website (alle Seiten), LinkedIn (Mitarbeiter, Technologien), Xing (deutscher Markt), Glassdoor (Gehälter, Bewertungen), Kununu (Arbeitgeberbewertungen), Google News (aktuelle Entwicklungen)",
+        "Prepare answers for company-specific questions: 'Warum [Firmenname]? Was wissen Sie über unser Unternehmen? Welche unserer Produkte kennen Sie? Wie gefällt Ihnen unsere Unternehmenskultur?'",
+        "Prepare portfolio projects to present (choose 3 projects most relevant to this company's tech stack)",
+        "Prepare questions for interviewer (at least 5 specific to this company)",
+        "Plan travel to interview (or test video call technology 1 hour before)"
+      ],
+      2: [
+        "Complete mock interviews with language partner or tutor",
+        "Full 45-minute interview simulation: Introduction (3 min) → Behavioral questions (15 min) → Technical questions (15 min) → Scenarios (10 min) → Your questions (2 min)",
+        "Get detailed feedback on: Fluency (1-10), Grammar (1-10), Vocabulary (1-10), Pronunciation (1-10), Confidence (1-10), STAR answers (1-10), Technical accuracy (1-10), Overall impression (1-10)",
+        "Focus on top 3 weaknesses identified from feedback",
+        "Record mock interview and self-analyze (body language, eye contact, speaking pace, filler words like 'ähm', 'also', 'quasi')",
+        "Practice specific weak questions 10 times until confident",
+        "Re-record mock interview and compare improvements"
+      ],
+      3: [
+        "Complete first real interview (voraussichtlich 45-60 Minuten)",
+        "Morning of interview: Review company research (15 min), Review portfolio projects (15 min), Practice introduction (5 min), Eat light breakfast, Arrive 15 minutes early (or test video call 30 minutes early)",
+        "During interview: Firm handshake (in-person), Eye contact, Sit up straight, Speak clearly (not too fast), Ask questions at end, Take notes (with permission), Thank interviewer(s)",
+        "After interview: Send thank-you email within 2 hours (specific reference to conversation topic), Document questions asked and your answers, Note any technical questions you couldn't answer (research them for next time)",
+        "Rate your own performance 1-10 for each section",
+        "Add interview details to tracking spreadsheet"
+      ],
+      4: [
+        "Complete second interview (different company)",
+        "Apply lessons learned from first interview",
+        "Refine portfolio presentation based on first interview feedback",
+        "Practice technical questions that were difficult in first interview",
+        "Complete interview (same preparation routine as Day 3)",
+        "Send thank-you email within 2 hours",
+        "Document and analyze performance - what improved from first interview?"
+      ],
+      5: [
+        "Complete third interview (different company/type)",
+        "If previous interviews were for large companies, target a small/medium company this time",
+        "If previous interviews were technical-heavy, prepare more behavioral answers",
+        "If previous interviews were in German only, prepare English answers as backup",
+        "Complete interview with focus on showing enthusiasm and cultural fit",
+        "Send thank-you email within 2 hours",
+        "Compare performance across all 3 interviews - identify consistent strengths and weaknesses"
+      ],
+      6: [
+        "Handle interview feedback and outcomes",
+        "If offer received: Review contract (Gehalt, Urlaubstage, Probezeit, Kündigungsfrist, Arbeitszeiten, Homeoffice-Regelung, Weiterbildungsbudget)",
+        "If offer received: Negotiate if needed (professionally, with data, respectfully), Accept or decline in writing",
+        "If rejection after interview: Request feedback ('Könnten Sie mir bitte sagen, woran es gelegen hat?')",
+        "If rejection after interview: Analyze what went wrong (technical knowledge? German fluency? Cultural fit? Preparation?)",
+        "If no response after 1 week: Send polite follow-up email",
+        "Continue applying to more companies while waiting for responses"
+      ],
+      7: [
+        "REST & STRATEGY: Review interview progress",
+        "Count: Interviews completed, Offers received, Rejections after interview, Pending decisions",
+        "If 0 offers after 3+ interviews: Analyze weaknesses (German? Technical? Cultural? Presentation?), Create improvement plan (30 min German speaking daily, technical deep-dive on weak topics, mock interviews with native speakers), Apply to different companies (smaller cities, different industries, less competitive roles)",
+        "If 1+ offers: Compare offers (salary, location, tech stack, team culture, growth potential, commute time), Make decision within offer deadline, Accept best offer in writing, Prepare for relocation (visa, housing, banking, insurance)",
+        "If still waiting: Apply to 10 more companies, Send follow-ups to pending applications, Continue interview practice daily (30 min)",
+        "Update tracking spreadsheet with all outcomes"
+      ]
+    },
+    4: { // Week 4: Relocation & Final Preparation
+      1: [
+        "Accept job offer and sign contract (Arbeitsvertrag unterzeichnen)",
+        "Read entire contract carefully (Arbeitszeit, Gehalt, Urlaub, Probezeit, Kündigungsfrist, Verschwiegenheitsklausel, Wettbewerbsverbot, Überstundenregelung)",
+        "Ask questions if anything unclear: 'Könnten Sie mir bitte Punkt X im Vertrag erklären?'",
+        "Sign contract (digital or print + scan)",
+        "Return signed contract to employer (email + postal mail if requested)",
+        "Request employer letter for visa (Arbeitsvertrag + Bestätigung für Visumantrag)",
+        "Confirm start date (erster Arbeitstag)"
+      ],
+      2: [
+        "Start German visa application process (Visum für Ausbildung/Arbeit)",
+        "Research visa type: Visum zur Arbeitsplatzsuche (6 months) OR Visum für qualifizierte Fachkräfte (with job offer) OR Blaue Karte EU (if salary >56.800€)",
+        "Gather documents: Passport (gültig mindestens 1 Jahr), Passfotos (biometrisch, 35x45mm), Arbeitsvertrag (unterzeichnet), Arbeitgeberbestätigung, Lebenslauf, Zeugnisse (HSC, Zertifikate), Sprachzertifikat (Goethe B1/B2), Finanzierungsnachweis (Kontoauszüge), Krankenversicherungsnachweis (für Visa), Mietvertrag oder Wohnungsnachweis",
+        "Book appointment at German embassy in your country (Termin buchen - often 4-8 weeks waiting time)",
+        "Complete visa application form online (Antrag auf Aufenthaltserlaubnis)",
+        "Pay visa fee (ca. 75€ for work visa, 100€ for Blue Card)"
+      ],
+      3: [
+        "Research housing in German city (Wohnungssuche)",
+        "Platforms: ImmobilienScout24.de, Immonet.de, WG-Gesucht.de (for shared apartments), eBay Kleinanzeigen, local newspaper websites, Facebook groups ('Wohnungen in [Stadt]')",
+        "Prepare application documents for landlords: SCHUFA-Bonitätsauskunft (can be requested online), Selbstauskunft (filled form), Einkommensnachweise (Arbeitsvertrag, payslips), Mietschuldenfreiheitsbescheinigung (if you have previous landlord in Germany - otherwise explain), Personalausweis/Pass, Bewerbungsschreiben (introduction letter explaining who you are)",
+        "Budget: Cold rent (Kaltmiete) 300-600€ for studio/1-room, Utilities (Nebenkosten) +100-200€, Deposit (Kaution) 2-3 months cold rent",
+        "Neighborhoods to avoid vs recommended (research specific city)",
+        "Temporary housing: Airbnb first month (teurer aber flexibel) or Monteurzimmer (workers apartment, cheap but basic)"
+      ],
+      4: [
+        "Organize German bank account, insurance, and other essentials",
+        "Bank account: N26 (fully digital, English app, free), Revolut (good for international transfers), Comdirect (traditional German bank, good online), DKB (good for expats), Sparkasse (most ATMs, but fees)",
+        "Required for bank account: Passport, Anmeldung (registration certificate - need apartment first), Visa, Arbeitsvertrag (for salary account)",
+        "Health insurance: Gesetzliche Krankenversicherung (public - TK, AOK, Barmer, DAK) ca. 200€/month for employees, Arbeitgeber pays half, Private Krankenversicherung (only if high salary >66.600€/year)",
+        "Liability insurance (Haftpflichtversicherung) - ca. 5€/month, protects you if you cause damage (HIGHLY RECOMMENDED)",
+        "Register with Bürgeramt within 14 days of moving in (Anmeldung) - bring Passport, Wohnungsgeberbestätigung (signed by landlord), completed form"
+      ],
+      5: [
+        "Learn German workplace culture and daily life essentials",
+        "Punctuality (Pünktlichkeit): 5 minutes early is on time, on time is late, late is unacceptable",
+        "Direct communication (Direkte Kommunikation): Germans say what they mean, mean what they say - 'Das könnte besser sein' means 'it's bad', not 'maybe improve a little'",
+        "Feedback culture: Constructive criticism is normal and expected - not personal attack",
+        "Work-life balance: 30 days vacation minimum, 38-40 hour week typical, overtime compensated or taken as time off, Sundays are quiet (shops closed)",
+        "Small talk topics: Weather, Weekend plans, Vacation, Hobbies, Food, Sports (especially football/Bundesliga), Travel",
+        "Small talk topics to avoid: Politics, Religion, Salary, Health details, Personal problems",
+        "Public transport (ÖPNV): Punctuality expected, Tickets must be validated, Monthly pass recommended (Deutschlandticket 49€/month for all regional transport)"
+      ],
+      6: [
+        "Finalize German language learning and set C1 goals",
+        "Assess current German level: Can you follow a technical meeting? Give a presentation? Write documentation? Answer interview questions fluently?",
+        "If B1-B2: Set goal for Goethe B2 or telc B2 within first 3 months in Germany",
+        "If B2: Set goal for Goethe C1 or telc C1 within first 6-12 months",
+        "German learning plan after moving: Daily 30 minutes (podcasts like 'Langsam gesprochene Nachrichten', 'Easy German', 'Deutschlandfunk'), Weekly language exchange (Tandem app or meetup), Watch German TV (ARD, ZDF, Arte, Netflix with German audio/subtitles), Speak German at work (ask colleagues to correct you), Read German news (Spiegel, Zeit, FAZ, Handelsblatt for business, heise.de for IT)",
+        "Technical German improvement: Read German IT blogs (heise.de, golem.de, computerbase.de), Watch German IT YouTube (c't magazin, Space Radio, SemperVideo), Listen to German IT podcasts (Freak Show, cre, Logbuch:Netzpolitik), Join German IT communities (German subreddits, Stack Overflow DE)",
+        "Integration: Join a Verein (club - sports, tech, volunteering), Attend local events (Stammtisch, Meetup, Tech Open Air), Make German friends (not just expat bubble), Volunteer (Technisches Hilfswerk, Feuerwehr, Tafel)"
+      ],
+      7: [
+        "FINAL REVIEW: Complete 8-month System Integration & German Journey",
+        "Review all 8 months of SYSINT_PLAN: Linux Fundamentals → Networking → Docker → Windows → Production → Automation → Interview Prep → Applications",
+        "Review all 8 months of GERMAN_PLAN: A1.2 → A2 → B1 → B1/B2 → B2 Technical → Interview German → Application Documents → Relocation",
+        "Count achievements: GitHub repositories created (target: 20+), Technical projects completed (target: 30+), German vocabulary learned (target: 1500+ active words), Certificates earned (target: LPIC-1, Goethe B1), Applications sent (target: 40+), Interviews completed (target: 5+), Job offers received (target: 1+)",
+        "Create final portfolio summary document in German and English",
+        "Write 8-month reflection in German (2000 words - challenges, successes, lessons learned, advice for others starting similar journey)",
+        "Update LinkedIn and Xing profiles with all achievements, certificates, and job offer",
+        "CELEBRATE: You completed 8 months of brutal discipline. Most people quit. You didn't. Deutschland wartet auf dich!"
       ]
     }
   }
 };
+
