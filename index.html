@@ -102,6 +102,7 @@ h1 .hl{color:var(--german);}
 .sdot{width:7px;height:7px;border-radius:2px;background:var(--border2);}
 .sdot.done{background:var(--german);}
 .sdot.today{background:var(--sysint);}
+.sdot.today.done{background:var(--sysint);}
 
 /* ── TABS ── */
 .tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;animation:fadeDown .5s .12s ease both;}
@@ -176,6 +177,7 @@ h1 .hl{color:var(--german);}
 .hday{width:10px;height:10px;border-radius:2px;background:var(--border2);position:relative;cursor:default;}
 .hday.active{background:var(--german);}
 .hday.active-p{background:rgba(74,232,153,.4);}
+.hday.hist-today{outline:1px solid var(--muted2);outline-offset:1px;}
 .export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
 .export-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border2);background:none;color:var(--muted2);border-radius:3px;cursor:pointer;transition:all .2s;}
 .export-btn:hover{border-color:var(--german);color:var(--german);}
@@ -4918,10 +4920,11 @@ const LS_KEY = 'opDeutschland_v3';
 // ════════════════════════════════════════════
 function lsSave() {
   try {
+    // NOTE: we intentionally do NOT save S.month/week/day (the viewed position).
+    // On every reload the app snaps back to today's roadmap day automatically.
     localStorage.setItem(LS_KEY, JSON.stringify({
       completedTasks: S.completedTasks,
       streakData: S.streakData,
-      month: S.month, week: S.week, day: S.day,
       planMonth: S.planMonth, shift: S.shift,
       campaignStartDate: S.campaignStartDate,
       lastOpenedDate: S.lastOpenedDate,
@@ -4943,9 +4946,7 @@ function lsLoad() {
         lastActiveDate: null, activeDatesHistory: []
       }, d.streakData);
     }
-    if (d.month) S.month = d.month;
-    if (d.week) S.week = d.week;
-    if (d.day) S.day = d.day;
+    // month/week/day are NOT restored — they always snap to today's roadmap position on load
     if (d.planMonth) S.planMonth = d.planMonth;
     if (d.shift) S.shift = d.shift;
     if (d.campaignStartDate) S.campaignStartDate = d.campaignStartDate;
@@ -4982,23 +4983,27 @@ function _applyFirebaseData(r) {
     var hist = new Set((ls.activeDatesHistory||[]).concat(rs.activeDatesHistory||[]));
     S.streakData.activeDatesHistory = Array.from(hist).sort();
   }
-  if (r.month)    S.month    = r.month;
-  if (r.week)     S.week     = r.week;
-  if (r.day)      S.day      = r.day;
   if (r.planMonth) S.planMonth = r.planMonth;
-  if (r.shift)    S.shift    = r.shift;
+  if (r.shift)     S.shift     = r.shift;
+
   // campaignStartDate is the canonical anchor — trust Firebase
   if (r.campaignStartDate) S.campaignStartDate = r.campaignStartDate;
+
   // lastOpenedDate: never go backwards — keeps the same-day reload guard intact
   if (r.lastOpenedDate && r.lastOpenedDate > (S.lastOpenedDate || '')) {
     S.lastOpenedDate = r.lastOpenedDate;
   }
+
   // currentRoadmapDay / totalMissionDays: always recompute from campaignStartDate
+  // so no stored value can ever drift out of sync with the real date.
   if (S.campaignStartDate) {
     var todayKey = localDateKey(new Date());
     var elapsed  = daysBetween(S.campaignStartDate, todayKey);
     S.currentRoadmapDay = Math.min(elapsed + 1, 224);
     S.totalMissionDays  = elapsed + 1;
+    // Always snap viewed position to today's roadmap day
+    var autoMwd = mwdFromAbsoluteDay(S.currentRoadmapDay);
+    S.month = autoMwd.month; S.week = autoMwd.week; S.day = autoMwd.day;
   }
 }
 
@@ -5055,7 +5060,7 @@ function save() {
   var payload = {
     completedTasks: S.completedTasks,
     streakData: S.streakData,
-    month: S.month, week: S.week, day: S.day,
+    // month/week/day intentionally omitted — always recomputed from campaignStartDate on load
     planMonth: S.planMonth, shift: S.shift,
     campaignStartDate: S.campaignStartDate,
     lastOpenedDate: S.lastOpenedDate,
@@ -5192,6 +5197,9 @@ function checkDayRollover() {
   // Same calendar day — self-heal any corruption, then stop
   if (S.lastOpenedDate === todayStr) {
     S.currentRoadmapDay = newRoadmapDay;   // keep in sync even if Firebase drifted it
+    // Always snap to today's position (in case user was browsing another day last session)
+    var mwdToday = mwdFromAbsoluteDay(newRoadmapDay);
+    S.month = mwdToday.month; S.week = mwdToday.week; S.day = mwdToday.day;
     S._newDayDetected   = false;
     return 0;
   }
@@ -5296,16 +5304,17 @@ function updateStreak(newActivityDate) {
   document.getElementById('statCurrent').textContent = sd.currentStreak;
   document.getElementById('statTotal').textContent = countTotalDone();
 
-  // Dots — last 30 days
+  // Dots — last 30 days (noon-anchored to avoid DST/timezone off-by-one)
   var dots = document.getElementById('streakDots');
   dots.innerHTML = '';
+  var noonToday = new Date(); noonToday.setHours(12,0,0,0);
   for (var j = 29; j >= 0; j--) {
-    var dd = new Date(new Date().getTime() - j * 86400000);
+    var dd = new Date(noonToday.getTime() - j * 86400000);
     var dStr = localDateKey(dd);
     var dot = document.createElement('div');
     var isToday = (dStr === todayStr);
     var isDone = sd.activeDatesHistory.indexOf(dStr) >= 0;
-    dot.className = 'sdot' + (isToday && isDone ? ' today' : isDone ? ' done' : '');
+    dot.className = 'sdot' + (isToday && isDone ? ' today' : isToday ? ' today' : isDone ? ' done' : '');
     dot.title = dStr;
     dots.appendChild(dot);
   }
@@ -5643,17 +5652,18 @@ function renderStatsPanel() {
     statsGrid.appendChild(card);
   });
 
-  // History grid — last 120 days
+  // History grid — last 120 days (noon-anchored to avoid DST/timezone off-by-one)
   var hGrid = document.getElementById('historyGrid');
   hGrid.innerHTML = '';
-  var todayStr = localDateKey(new Date());
+  var noonBase = new Date(); noonBase.setHours(12,0,0,0);
   for (var i = 119; i >= 0; i--) {
-    var dd = new Date(new Date().getTime() - i * 86400000);
+    var dd = new Date(noonBase.getTime() - i * 86400000);
     var dStr = localDateKey(dd);
     var isActive = sd.activeDatesHistory.indexOf(dStr) >= 0;
+    var isHistToday = (dStr === todayStr);
     var div = document.createElement('div');
-    div.className = 'hday' + (isActive ? ' active' : '');
-    div.title = dStr + (isActive ? ' ✓' : '');
+    div.className = 'hday' + (isActive ? ' active' : '') + (isHistToday ? ' hist-today' : '');
+    div.title = dStr + (isActive ? ' ✓' : '') + (isHistToday ? ' (today)' : '');
     hGrid.appendChild(div);
   }
 }
