@@ -7,25 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/fav.png?v=2">
 <script>
-// Load Firebase scripts asynchronously — app works fully offline if they fail
+// Load Firebase SDK scripts asynchronously.
+// The main app init retries until firebase is defined (up to 6 s).
 (function() {
   var srcs = [
     'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
     'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js'
   ];
-  var loaded = 0;
-  function tryInit() {
-    loaded++;
-    if (loaded === srcs.length) window._fbReady = true;
-  }
-  function onFail() {
-    window._fbReady = false;
-    var el = document.getElementById('syncStatus');
-    if (el) { el.textContent = '✗ offline'; el.style.color = '#ff5e5e'; }
-  }
   srcs.forEach(function(src) {
     var s = document.createElement('script');
-    s.src = src; s.onload = tryInit; s.onerror = onFail;
+    s.src = src;
     document.head.appendChild(s);
   });
 })();
@@ -4905,60 +4896,39 @@ var S = {
     golang: { total: 0, done: 0 }
   },
 
-  // Campaign timeline & auto-progression
-  campaignStartDate: null,   // YYYY-MM-DD — set on very first open, never changes
-  lastOpenedDate: null,      // YYYY-MM-DD — last real calendar date app was opened
-  currentRoadmapDay: 1,      // absolute campaign day (1–224), auto-advances on new calendar day
-  totalMissionDays: 0,       // total real elapsed calendar days since campaignStartDate
-  _newDayDetected: false     // runtime flag — not persisted, used for banner animation
+  // Campaign timeline (computed live from campaignStartDate + today, never stored)
+  campaignStartDate: null,   // YYYY-MM-DD — set on very first open, stored on server
+  currentRoadmapDay: 1,      // derived: daysBetween(campaignStartDate, today) + 1
+  totalMissionDays: 0,       // same as currentRoadmapDay
+  _newDayDetected: false     // runtime flag only — not persisted anywhere
 };
 
-const LS_KEY = 'opDeutschland_v3';
+// ════════════════════════════════════════════
+// NO LOCAL STORAGE — Firestore is the sole
+// source of truth. Nothing is cached locally.
+// ════════════════════════════════════════════
 
 // ════════════════════════════════════════════
-// LOCAL STORAGE
-// ════════════════════════════════════════════
-function lsSave() {
-  try {
-    // NOTE: we intentionally do NOT save S.month/week/day (the viewed position).
-    // On every reload the app snaps back to today's roadmap day automatically.
-    localStorage.setItem(LS_KEY, JSON.stringify({
-      completedTasks: S.completedTasks,
-      streakData: S.streakData,
-      planMonth: S.planMonth, shift: S.shift,
-      campaignStartDate: S.campaignStartDate,
-      lastOpenedDate: S.lastOpenedDate,
-      currentRoadmapDay: S.currentRoadmapDay,
-      totalMissionDays: S.totalMissionDays
-    }));
-  } catch(e) { console.warn('localStorage save failed', e); }
-}
-
-function lsLoad() {
-  try {
-    var raw = localStorage.getItem(LS_KEY);
-    if (!raw) return false;
-    var d = JSON.parse(raw);
-    if (d.completedTasks) S.completedTasks = d.completedTasks;
-    if (d.streakData) {
-      S.streakData = Object.assign({
-        lifetimeActiveDays: 0, longestStreak: 0, currentStreak: 0,
-        lastActiveDate: null, activeDatesHistory: []
-      }, d.streakData);
-    }
-    // month/week/day are NOT restored — they always snap to today's roadmap position on load
-    if (d.planMonth) S.planMonth = d.planMonth;
-    if (d.shift) S.shift = d.shift;
-    if (d.campaignStartDate) S.campaignStartDate = d.campaignStartDate;
-    if (d.lastOpenedDate) S.lastOpenedDate = d.lastOpenedDate;
-    if (d.currentRoadmapDay) S.currentRoadmapDay = d.currentRoadmapDay;
-    if (d.totalMissionDays) S.totalMissionDays = d.totalMissionDays;
-    return true;
-  } catch(e) { console.warn('localStorage load failed', e); return false; }
-}
-
-// ════════════════════════════════════════════
-// FIREBASE
+// FIREBASE  —  READ-ONCE on load, WRITE-ONLY
+//              on real user actions.
+//
+// Rules:
+//  • No onSnapshot / live listener — eliminates
+//    cross-browser and cross-device conflicts.
+//  • On every page load we do a single .get()
+//    to fetch the full state from Firestore,
+//    then compute today's campaign day locally.
+//  • We ONLY write back to Firestore when the
+//    user performs a real action:
+//      – check / uncheck a task
+//      – reset day / mission / full reset
+//      – import data
+//      – change shift preference
+//      – change plan month tab
+//  • currentRoadmapDay and totalMissionDays are
+//    NEVER stored — always derived from
+//    campaignStartDate + today's real date.
+//  • No localStorage used anywhere.
 // ════════════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyB_WXXGBpkv6skHGaZwIHZKRFBB4bPJSZw",
@@ -4968,112 +4938,112 @@ const firebaseConfig = {
   messagingSenderId: "599093524802",
   appId: "1:599093524802:web:5105c2349a1aabae23f0db"
 };
-var _app, _db, _doc, _saving = false, _fbReady = false;
+
+var _app, _db, _doc;
 var syncEl;
 
-// ─ Internal Firebase merge helper ─────────────────────────────────────────
-function _applyFirebaseData(r) {
-  if (r.completedTasks) Object.assign(S.completedTasks, r.completedTasks);
-  if (r.streakData) {
-    var rs = r.streakData, ls = S.streakData;
-    S.streakData.lifetimeActiveDays = Math.max(ls.lifetimeActiveDays||0, rs.lifetimeActiveDays||0);
-    S.streakData.longestStreak      = Math.max(ls.longestStreak||0, rs.longestStreak||0);
-    S.streakData.currentStreak      = rs.currentStreak || ls.currentStreak || 0;
-    S.streakData.lastActiveDate     = rs.lastActiveDate || ls.lastActiveDate;
-    var hist = new Set((ls.activeDatesHistory||[]).concat(rs.activeDatesHistory||[]));
-    S.streakData.activeDatesHistory = Array.from(hist).sort();
-  }
-  if (r.planMonth) S.planMonth = r.planMonth;
-  if (r.shift)     S.shift     = r.shift;
+// ─ Apply server data into S ────────────────────────────────────────────────
+// Called once per page load after the Firestore .get() resolves.
+// Overwrites S completely with server data, then derives the live
+// campaign day from campaignStartDate + today.
+function _applyServerData(r) {
+  // Completed tasks — server is the authoritative record
+  if (r.completedTasks) S.completedTasks = r.completedTasks;
 
-  // campaignStartDate is the canonical anchor — trust Firebase
+  // Streak data — server is authoritative
+  if (r.streakData) {
+    S.streakData = Object.assign({
+      lifetimeActiveDays: 0, longestStreak: 0, currentStreak: 0,
+      lastActiveDate: null, activeDatesHistory: []
+    }, r.streakData);
+  }
+
+  // Preferences
+  if (r.shift)     S.shift     = r.shift;
+  if (r.planMonth) S.planMonth = r.planMonth;
+
+  // Campaign anchor — set once on first ever open, never changes
   if (r.campaignStartDate) S.campaignStartDate = r.campaignStartDate;
 
-  // lastOpenedDate: never go backwards — keeps the same-day reload guard intact
-  if (r.lastOpenedDate && r.lastOpenedDate > (S.lastOpenedDate || '')) {
-    S.lastOpenedDate = r.lastOpenedDate;
-  }
-
-  // currentRoadmapDay / totalMissionDays: always recompute from campaignStartDate
-  // so no stored value can ever drift out of sync with the real date.
+  // Derive campaign day live — never trust a stored value
   if (S.campaignStartDate) {
     var todayKey = localDateKey(new Date());
-    var elapsed  = daysBetween(S.campaignStartDate, todayKey);
+    var elapsed  = daysBetween(S.campaignStartDate, todayKey); // 0 on day 1
     S.currentRoadmapDay = Math.min(elapsed + 1, 224);
     S.totalMissionDays  = elapsed + 1;
-    // Always snap viewed position to today's roadmap day
-    var autoMwd = mwdFromAbsoluteDay(S.currentRoadmapDay);
-    S.month = autoMwd.month; S.week = autoMwd.week; S.day = autoMwd.day;
   }
+
+  // Always snap the viewed day to today's roadmap position on load
+  var mwd = mwdFromAbsoluteDay(S.currentRoadmapDay);
+  S.month = mwd.month; S.week = mwd.week; S.day = mwd.day;
 }
 
-// ─ initFirebase ────────────────────────────────────────────────────────────
-// firstSyncCb  — called once after the very first snapshot (used by new-device
-//                init to defer checkDayRollover until Firebase data is applied)
-// offlineCb    — called if Firebase fails / is unavailable
-function initFirebase(firstSyncCb, offlineCb) {
-  if (typeof firebase === 'undefined') {
-    console.warn('Firebase SDK not available — running in offline-only mode.');
-    if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-    if (offlineCb) offlineCb();
-    return;
-  }
+// ─ Load from Firestore — called once on page load ──────────────────────────
+// onReady(exists) fires when the fetch is complete.
+// exists = true  → server had data, already applied to S
+// exists = false → first ever open, S stays at defaults
+function fbLoad(onReady, onError) {
+  if (typeof firebase === 'undefined') { onError('SDK not loaded'); return; }
   try {
-    _app = firebase.initializeApp(firebaseConfig);
-    _db  = firebase.firestore(_app);
-    _doc = _db.collection('stateV3').doc('samian');
-    syncEl = document.getElementById('syncStatus');
-    var _firstSyncDone = false;
-
-    _doc.onSnapshot(function(snap) {
-      if (_saving) return;
-      if (snap.exists) _applyFirebaseData(snap.data());
-
-      // First snapshot: fire the one-time callback (new-device init path)
-      if (!_firstSyncDone) {
-        _firstSyncDone = true;
-        if (firstSyncCb) firstSyncCb();
+    if (!_app) {
+      _app = firebase.initializeApp(firebaseConfig);
+      _db  = firebase.firestore(_app);
+      _doc = _db.collection('stateV3').doc('samian');
+    }
+    if (syncEl) { syncEl.textContent = '⟳ loading…'; syncEl.style.color = 'var(--muted3)'; }
+    _doc.get().then(function(snap) {
+      if (snap.exists) {
+        _applyServerData(snap.data());
+        if (syncEl) { syncEl.textContent = '✓ loaded'; syncEl.style.color = 'var(--german)'; }
+        onReady(true);
+      } else {
+        // Document doesn't exist yet — first ever open
+        if (syncEl) { syncEl.textContent = '✦ new'; syncEl.style.color = 'var(--muted3)'; }
+        onReady(false);
       }
-
-      _fbReady = true;
-      lsSave();
-      renderAll();
-      calcProgress();
-      if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
-    }, function(err) {
-      console.error('Snapshot error', err);
-      if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-      if (!_firstSyncDone && offlineCb) { _firstSyncDone = true; offlineCb(); }
+    }).catch(function(e) {
+      console.error('fbLoad failed', e);
+      onError(e);
     });
   } catch(e) {
     console.error('Firebase init failed', e);
-    if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-    if (offlineCb) offlineCb();
+    onError(e);
   }
 }
 
+// ─ Write to Firestore — called only on real user actions ───────────────────
+// Writes the complete current state to the server.
+// currentRoadmapDay / totalMissionDays are intentionally excluded —
+// they are always recomputed from campaignStartDate on the next load.
 function save() {
-  lsSave();
-  if (!_doc) return;
-  _saving = true;
+  if (!_doc) {
+    // Firebase not yet initialised — try to init now (edge case: offline on load)
+    if (typeof firebase !== 'undefined' && !_app) {
+      try {
+        _app = firebase.initializeApp(firebaseConfig);
+        _db  = firebase.firestore(_app);
+        _doc = _db.collection('stateV3').doc('samian');
+      } catch(e) { console.warn('Firebase init on save failed', e); return; }
+    } else { return; }
+  }
+
   if (syncEl) { syncEl.textContent = '↑ saving…'; syncEl.style.color = 'var(--muted3)'; }
+
   var payload = {
-    completedTasks: S.completedTasks,
-    streakData: S.streakData,
-    // month/week/day intentionally omitted — always recomputed from campaignStartDate on load
-    planMonth: S.planMonth, shift: S.shift,
-    campaignStartDate: S.campaignStartDate,
-    lastOpenedDate: S.lastOpenedDate,
-    currentRoadmapDay: S.currentRoadmapDay,
-    totalMissionDays: S.totalMissionDays
+    completedTasks:    S.completedTasks,
+    streakData:        S.streakData,
+    shift:             S.shift,
+    planMonth:         S.planMonth,
+    campaignStartDate: S.campaignStartDate
+    // currentRoadmapDay & totalMissionDays intentionally omitted —
+    // always derived from campaignStartDate + real date on next load.
   };
+
   _doc.set(payload).then(function() {
-    if (syncEl) { syncEl.textContent = '✓ synced'; syncEl.style.color = 'var(--german)'; }
-    _saving = false;
+    if (syncEl) { syncEl.textContent = '✓ saved'; syncEl.style.color = 'var(--german)'; }
   }).catch(function(e) {
     console.error('Save failed', e);
-    if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-    _saving = false;
+    if (syncEl) { syncEl.textContent = '✗ save failed'; syncEl.style.color = 'var(--red)'; }
   });
 }
 
@@ -5174,53 +5144,35 @@ function mwdFromAbsoluteDay(absDay) {
 function checkDayRollover() {
   var todayStr = localDateKey(new Date());
 
-  // First ever open — initialise everything
+  // First ever open — campaignStartDate was not on the server yet.
+  // Set it to today; boot() will save() it immediately to the server.
   if (!S.campaignStartDate) {
     S.campaignStartDate = todayStr;
-    S.lastOpenedDate    = todayStr;
     S.currentRoadmapDay = 1;
     S.totalMissionDays  = 1;
-    var mwd = mwdFromAbsoluteDay(1);
-    S.month = mwd.month; S.week = mwd.week; S.day = mwd.day;
+    var mwd0 = mwdFromAbsoluteDay(1);
+    S.month = mwd0.month; S.week = mwd0.week; S.day = mwd0.day;
     S._newDayDetected = false;
     return 0;
   }
 
-  // ── KEY FIX: always derive roadmap day directly from campaignStartDate + today ──
-  // This makes day progression 100% date-deterministic — reloads can never
-  // accidentally advance the counter because the math always gives the same
-  // answer for the same calendar date.
-  var elapsedDays     = daysBetween(S.campaignStartDate, todayStr); // 0 on day 1
-  var newRoadmapDay   = Math.min(elapsedDays + 1, 224);
-  S.totalMissionDays  = elapsedDays + 1;
+  // Campaign day is always 100% derived from campaignStartDate + today.
+  // No stored counter can drift — the math is identical on every reload.
+  var elapsed        = daysBetween(S.campaignStartDate, todayStr); // 0 on campaign day 1
+  var newRoadmapDay  = Math.min(elapsed + 1, 224);
+  var prevRoadmapDay = S.currentRoadmapDay || 1;
 
-  // Same calendar day — self-heal any corruption, then stop
-  if (S.lastOpenedDate === todayStr) {
-    S.currentRoadmapDay = newRoadmapDay;   // keep in sync even if Firebase drifted it
-    // Always snap to today's position (in case user was browsing another day last session)
-    var mwdToday = mwdFromAbsoluteDay(newRoadmapDay);
-    S.month = mwdToday.month; S.week = mwdToday.week; S.day = mwdToday.day;
-    S._newDayDetected   = false;
-    return 0;
-  }
-
-  // New calendar day detected
-  var prevRoadmapDay  = S.currentRoadmapDay;
   S.currentRoadmapDay = newRoadmapDay;
+  S.totalMissionDays  = elapsed + 1;
 
-  // Only jump M/W/D if the roadmap position actually changed
-  if (newRoadmapDay !== prevRoadmapDay) {
-    var mwd = mwdFromAbsoluteDay(newRoadmapDay);
-    S.month = mwd.month;
-    S.week  = mwd.week;
-    S.day   = mwd.day;
-  }
+  // Always snap viewed M/W/D to today's roadmap position
+  var mwd = mwdFromAbsoluteDay(newRoadmapDay);
+  S.month = mwd.month; S.week = mwd.week; S.day = mwd.day;
 
-  // Record today so the next same-day load is a no-op
-  S.lastOpenedDate  = todayStr;
-  S._newDayDetected = true;
+  // Flag a new day only if the roadmap position advanced since last computed
+  S._newDayDetected = (newRoadmapDay > prevRoadmapDay);
 
-  return 1;
+  return S._newDayDetected ? 1 : 0;
 }
 
 /**
@@ -5353,7 +5305,7 @@ function renderDayNav() {
       var btn = document.createElement('button');
       btn.className = 'day-nav-btn'+(dd===S.day?' active':'');
       btn.textContent = 'D'+dd;
-      btn.onclick = function(){ S.day=dd; save(); renderDayNav(); renderTodayGrid(); };
+      btn.onclick = function(){ S.day=dd; renderDayNav(); renderTodayGrid(); };
       nav.appendChild(btn);
     })(d);
   }
@@ -5367,7 +5319,7 @@ function renderDayNav() {
       wb.className = 'day-nav-btn'+(ww===S.week?' active':'');
       wb.textContent = 'W'+ww;
       wb.style.cssText = 'opacity:.7;';
-      wb.onclick = function(){ S.week=ww; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
+      wb.onclick = function(){ S.week=ww; S.day=1; renderDayNav(); renderTodayGrid(); };
       wDiv.appendChild(wb);
     })(w);
   }
@@ -5382,7 +5334,7 @@ function renderDayNav() {
       mb.className = 'day-nav-btn'+(mm===S.month?' active':'');
       mb.textContent = 'M'+mm;
       mb.style.cssText = 'opacity:.6;';
-      mb.onclick = function(){ S.month=mm; S.week=1; S.day=1; save(); renderDayNav(); renderTodayGrid(); };
+      mb.onclick = function(){ S.month=mm; S.week=1; S.day=1; renderDayNav(); renderTodayGrid(); };
       mDiv.appendChild(mb);
     })(m);
   }
@@ -5760,7 +5712,7 @@ function renderAll() {
 window.addEventListener('load', function() {
   syncEl = document.getElementById('syncStatus');
 
-  // ── Static setup (always runs immediately) ──────────────────────────────
+  // ── Static UI setup (instant, no data needed) ──────────────────────────
   var now = new Date();
   document.getElementById('dayNum').textContent = now.getDate();
   document.getElementById('dateStr').textContent =
@@ -5772,63 +5724,48 @@ window.addEventListener('load', function() {
   document.getElementById('importModal').addEventListener('click', function(e){ if(e.target===this) closeImportModal(); });
   document.getElementById('resetMissionModal').addEventListener('click', function(e){ if(e.target===this) closeResetMissionModal(); });
 
-  // ── Shared finalise: rollover → render → persist ────────────────────────
-  function finalise() {
-    checkDayRollover();
-    lsSave();
+  // ── Shared boot: compute day, render everything ─────────────────────────
+  // Called after server data (or lack thereof) is applied into S.
+  // If this is the very first ever open, sets campaignStartDate = today
+  // and writes it immediately to the server so future loads pick it up.
+  function boot(serverHadData) {
+    checkDayRollover();   // computes S.currentRoadmapDay / totalMissionDays / M-W-D
+
+    // First ever open — no document existed on server yet. Write the initial
+    // state (campaignStartDate) so every subsequent load reads it correctly.
+    if (!serverHadData) {
+      save();
+    }
+
     var activeShiftBtn = document.getElementById('sbtn-' + S.shift);
     if (activeShiftBtn) activeShiftBtn.classList.add('active');
     renderAll();
     calcProgress();
   }
 
-  // ── Firebase script retry wrapper ───────────────────────────────────────
-  function tryFirebase(attempts, firstSyncCb, offlineCb) {
+  // ── Retry wrapper for Firebase SDK (loaded async) ───────────────────────
+  function tryLoad(attemptsLeft) {
     if (typeof firebase !== 'undefined') {
-      initFirebase(firstSyncCb, offlineCb);
-    } else if (attempts > 0) {
-      setTimeout(function(){ tryFirebase(attempts - 1, firstSyncCb, offlineCb); }, 500);
+      // SDK ready — fetch from server
+      fbLoad(
+        function onLoaded(existed) { boot(existed); },
+        function onError(e) {
+          console.error('Firestore load failed:', e);
+          if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
+          // Run anyway with blank state so UI is not stuck
+          boot(false);
+        }
+      );
+    } else if (attemptsLeft > 0) {
+      setTimeout(function(){ tryLoad(attemptsLeft - 1); }, 400);
     } else {
+      // Firebase SDK never loaded (network issue)
       if (syncEl) { syncEl.textContent = '✗ offline'; syncEl.style.color = 'var(--red)'; }
-      if (offlineCb) offlineCb();
+      boot(false);
     }
   }
 
-  var hasLocalData = lsLoad();
-
-  if (hasLocalData) {
-    // ── PATH A: Existing device ─────────────────────────────────────────
-    // Local data is the immediate source of truth. Render right away,
-    // Firebase syncs in the background and re-renders when it arrives.
-    finalise();
-    tryFirebase(10, null, null);
-
-  } else {
-    // ── PATH B: New device / fresh browser ─────────────────────────────
-    // No local data — Firebase is the source of truth.
-    // Wait for the first Firebase snapshot before doing rollover & render,
-    // so campaignStartDate comes from the real data instead of defaulting
-    // to today and then being corrected a second later.
-    if (syncEl) { syncEl.textContent = '⟳ fetching data…'; }
-
-    var _fbTimeoutId = setTimeout(function() {
-      // Firebase took too long (>6s) — start fresh as a new campaign
-      finalise();
-    }, 6000);
-
-    tryFirebase(12,
-      function onFirstSync() {
-        // Firebase data is now in S — clear timeout, do rollover, render
-        clearTimeout(_fbTimeoutId);
-        finalise();
-      },
-      function onOffline() {
-        // Firebase unavailable — start fresh
-        clearTimeout(_fbTimeoutId);
-        finalise();
-      }
-    );
-  }
+  tryLoad(15);   // up to 15 × 400 ms = 6 s wait for SDK
 });
 </script>
 </body>
